@@ -14,36 +14,107 @@ function Scene2(aGame, aParent) {
 
 	/* --- pre-init-end --- */
 
-	this.game.add.tileSprite(-96, -192, 500, 500, 'mario_nes_tileset', 46, this);
+	this.game.add.tileSprite(0, -96, 1920, 500, 'mario_nes_tileset', 696, this);
 
 	var floor = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 
-	this.game.add.tileSprite(0, 48, 16, 80, 'mario_nes_tileset', 894, floor);
+	this.game.add.tileSprite(-32, 128, 32, 224, 'mario_nes_tileset', 894, floor);
 
-	this.game.add.tileSprite(0, 128, 320, 16, 'mario_nes_tileset', 894, floor);
+	this.game.add.tileSprite(1024, -192, 32, 224, 'mario_nes_tileset', 894, floor);
 
-	var player = this.game.add.sprite(32, 112, 'mario_nes_small', 1, this);
+	this.game.add.tileSprite(-32, 352, 1920, 32, 'mario_nes_tileset', 894, floor);
+
+	var walls = this.game.add.group(this);
+
+	this.game.add.tileSprite(1072, -192, 32, 224, 'mario_nes_tileset', 1, walls);
+
+	this.game.add.tileSprite(0, 352, 1920, 64, 'mario_nes_tileset', 0, walls);
+
+	var background = this.game.add.group(this);
+
+	var hill = this.game.add.group(background);
+	hill.position.setTo(0, 192);
+
+	this.game.add.sprite(96, 96, 'mario_nes_tileset', 274, hill);
+
+	this.game.add.sprite(0, 128, 'mario_nes_tileset', 272, hill);
+
+	this.game.add.sprite(32, 96, 'mario_nes_tileset', 272, hill);
+
+	this.game.add.sprite(64, 64, 'mario_nes_tileset', 273, hill);
+
+	this.game.add.sprite(64, 96, 'mario_nes_tileset', 305, hill);
+
+	this.game.add.sprite(32, 128, 'mario_nes_tileset', 305, hill);
+
+	this.game.add.sprite(96, 128, 'mario_nes_tileset', 307, hill);
+
+	this.game.add.sprite(64, 128, 'mario_nes_tileset', 306, hill);
+
+	this.game.add.sprite(128, 128, 'mario_nes_tileset', 274, hill);
+
+	var Cloud3 = this.game.add.group(background);
+	Cloud3.position.setTo(240, 64);
+
+	this.game.add.sprite(32, 0, 'mario_nes_tileset', 661, Cloud3);
+
+	this.game.add.sprite(0, 0, 'mario_nes_tileset', 660, Cloud3);
+
+	this.game.add.sprite(128, 0, 'mario_nes_tileset', 662, Cloud3);
+
+	this.game.add.sprite(0, 32, 'mario_nes_tileset', 693, Cloud3);
+
+	this.game.add.sprite(32, 32, 'mario_nes_tileset', 694, Cloud3);
+
+	this.game.add.sprite(64, 0, 'mario_nes_tileset', 661, Cloud3);
+
+	this.game.add.sprite(96, 0, 'mario_nes_tileset', 661, Cloud3);
+
+	this.game.add.sprite(64, 32, 'mario_nes_tileset', 694, Cloud3);
+
+	this.game.add.sprite(96, 32, 'mario_nes_tileset', 694, Cloud3);
+
+	this.game.add.sprite(128, 32, 'mario_nes_tileset', 695, Cloud3);
+
+	var Cloud1 = this.game.add.group(background);
+	Cloud1.position.setTo(64, 96);
+
+	this.game.add.sprite(32, 0, 'mario_nes_tileset', 661, Cloud1);
+
+	this.game.add.sprite(0, 0, 'mario_nes_tileset', 660, Cloud1);
+
+	this.game.add.sprite(64, 0, 'mario_nes_tileset', 662, Cloud1);
+
+	this.game.add.sprite(0, 32, 'mario_nes_tileset', 693, Cloud1);
+
+	this.game.add.sprite(32, 32, 'mario_nes_tileset', 694, Cloud1);
+
+	this.game.add.sprite(64, 32, 'mario_nes_tileset', 695, Cloud1);
+
+	var player = this.game.add.sprite(448, 304, 'mario_nes_small', 1, this);
+	player.anchor.setTo(0.5, 0.0);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
 	player.animations.add('stay', [1], 60, false);
 	player.animations.add('die', [5], 60, false);
 	this.game.physics.arcade.enable(player);
 
-	var walls = this.game.add.group(this);
+	var triggers = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 
-	this.game.add.tileSprite(304, 16, 16, 112, 'mario_nes_tileset', 1, walls);
+	var first_block_trigger = this.game.add.sprite(480, 160, 'mario_nes_tileset', 24, triggers);
 
-	this.game.add.tileSprite(0, 16, 16, 112, 'mario_nes_tileset', 1, walls);
-
-	this.game.add.tileSprite(0, 128, 320, 16, 'mario_nes_tileset', 1, walls);
-
-	this.game.add.tileSprite(0, 0, 320, 16, 'mario_nes_tileset', 1, walls);
+	var gun_machinegun = this.game.add.sprite(832, 352, 'gun_machinegun', null, this);
+	gun_machinegun.scale.setTo(0.5, 0.5);
+	gun_machinegun.anchor.setTo(0.0, 1.0);
 
 	 // public fields
 
 	this.fFloor = floor;
-	this.fPlayer = player;
 	this.fWalls = walls;
+	this.fPlayer = player;
+	this.fTriggers = triggers;
+	this.fFirst_block_trigger = first_block_trigger;
+	this.fGun_machinegun = gun_machinegun;
 
 	/* --- post-init-begin --- */
 

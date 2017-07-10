@@ -1,0 +1,1 @@
+guns_01.png.png 0 12, guns_02.png.png 87 12, guns_03.png.png 173 10, guns_04.png.png 256 3, guns_05.png.png 0 65, guns_06.png.png 68 59, guns_07.png.png 167 60, guns_08.png.png 256 60, guns_09.png.png 0 115, guns_10.png.png 73 103, guns_11.png.png 167 104, guns_12.png.png 256 107, guns_13.png.png 0 165, guns_14.png.png 62 165, guns_15.png.png 167 159, guns_16.png.png 256 146.

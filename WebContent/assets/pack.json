@@ -65,8 +65,8 @@
             "type": "spritesheet",
             "key": "mario_nes_tileset",
             "url": "assets/sprites/mario_nes_tileset.png",
-            "frameWidth": 16,
-            "frameHeight": 16,
+            "frameWidth": 32,
+            "frameHeight": 32,
             "frameMax": -1,
             "margin": 0,
             "spacing": 0
@@ -75,8 +75,8 @@
             "type": "spritesheet",
             "key": "mario_nes_small",
             "url": "assets/sprites/mario_nes_small.png",
-            "frameWidth": 16,
-            "frameHeight": 16,
+            "frameWidth": 32,
+            "frameHeight": 32,
             "frameMax": -1,
             "margin": 0,
             "spacing": 0
@@ -85,10 +85,16 @@
             "type": "script",
             "key": "scene2",
             "url": "assets/scenes/Scene2.js"
+        },
+        {
+            "type": "image",
+            "key": "gun_machinegun",
+            "url": "assets/sprites/guns/guns_04.png",
+            "overwrite": false
         }
     ],
     "meta": {
-        "generated": "1499634629603",
+        "generated": "1499649634784",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",
