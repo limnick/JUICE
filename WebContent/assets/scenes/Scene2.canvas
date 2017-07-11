@@ -19,9 +19,10 @@
           "asset": "0",
           "info": {
             "editorName": "mario_nes_tileset2",
-            "y": -96,
-            "width": 1920,
-            "height": 500
+            "x": -176,
+            "y": -336,
+            "width": 5000,
+            "height": 1000
           }
         },
         {
@@ -39,9 +40,9 @@
                 "info": {
                   "editorName": "mario_nes_tileset31",
                   "x": -32,
-                  "y": 128,
+                  "y": 96,
                   "width": 32,
-                  "height": 224
+                  "height": 464
                 }
               },
               {
@@ -63,7 +64,7 @@
                 "info": {
                   "editorName": "mario_nes_tileset3",
                   "x": -32,
-                  "y": 352,
+                  "y": 560,
                   "width": 1920,
                   "height": 32
                 }
@@ -96,7 +97,7 @@
                 "asset": "3",
                 "info": {
                   "editorName": "mario_nes_tileset1",
-                  "y": 352,
+                  "y": 560,
                   "width": 1920,
                   "height": 64
                 }
@@ -115,7 +116,7 @@
                 "id": "9e02a3b2-6d7e-454f-8d91-a8fd58839d52",
                 "info": {
                   "editorName": "hill",
-                  "y": 192,
+                  "y": 400,
                   "children": [
                     {
                       "type": "spritesheet",
@@ -214,8 +215,8 @@
                 "id": "281c1e5f-46b2-4682-b655-4c6e3c86f6cf",
                 "info": {
                   "editorName": "Cloud3",
-                  "x": 240,
-                  "y": 64,
+                  "x": 512,
+                  "y": 192,
                   "children": [
                     {
                       "type": "spritesheet",
@@ -316,8 +317,8 @@
                 "id": "b6981138-8509-4eb4-986e-c7be667d3d7f",
                 "info": {
                   "editorName": "Cloud1",
-                  "x": 64,
-                  "y": 96,
+                  "x": 224,
+                  "y": 272,
                   "children": [
                     {
                       "type": "spritesheet",
@@ -385,9 +386,10 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 448,
-            "y": 304,
+            "x": 816,
+            "y": 480,
             "anchor.x": 0.5,
+            "anchor.y": 0.5,
             "animations": [
               {
                 "name": "walk",
@@ -425,31 +427,58 @@
             "editorName": "triggers",
             "editorPublic": true,
             "physicsGroup": true,
-            "children": [{
-              "type": "spritesheet",
-              "id": "e4f040a0-47fc-4249-9b8f-f8868297b6c3",
-              "asset": "17",
-              "info": {
-                "editorName": "first_block_trigger",
-                "editorPublic": true,
-                "x": 480,
-                "y": 160
+            "children": [
+              {
+                "type": "image",
+                "id": "4321db90-a47e-47c5-bcf6-77e6fc755224",
+                "asset": "17",
+                "info": {
+                  "editorName": "gun_machinegun",
+                  "editorPublic": true,
+                  "x": 848,
+                  "y": 560,
+                  "scale.x": 0.5,
+                  "scale.y": 0.5,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "e4f040a0-47fc-4249-9b8f-f8868297b6c3",
+                "asset": "18",
+                "info": {
+                  "editorName": "first_block_trigger",
+                  "editorPublic": true,
+                  "x": 496,
+                  "y": 384
+                }
               }
-            }]
+            ]
           }
         },
         {
-          "type": "image",
-          "id": "4321db90-a47e-47c5-bcf6-77e6fc755224",
-          "asset": "18",
+          "type": "group",
+          "id": "07641550-63c6-445b-a400-1eede32d532b",
           "info": {
-            "editorName": "gun_machinegun",
+            "editorName": "triggers_invis",
+            "editorPick": false,
             "editorPublic": true,
-            "x": 832,
-            "y": 352,
-            "scale.x": 0.5,
-            "scale.y": 0.5,
-            "anchor.y": 1
+            "editorShow": false,
+            "physicsGroup": true,
+            "children": [{
+              "type": "tileSprite",
+              "id": "42e0c90c-6360-46e5-bba3-e2a9039c1a4f",
+              "asset": "1",
+              "info": {
+                "editorName": "show_health_trigger",
+                "editorPublic": true,
+                "x": 672,
+                "y": 64,
+                "width": 800,
+                "height": 500
+              }
+            }]
           }
         }
       ]
@@ -561,13 +590,13 @@
     "17": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
-      "asset": "mario_nes_tileset",
-      "sprite": "24"
+      "asset": "gun_machinegun"
     },
     "18": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
-      "asset": "gun_machinegun"
+      "asset": "mario_nes_tileset",
+      "sprite": "24"
     }
   }
 }

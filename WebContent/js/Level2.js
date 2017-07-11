@@ -15,7 +15,7 @@ Level2.prototype.init = function() {
 	this.scale.pageAlignVertically = true;
 	this.scale.pageAlignHorizontally = true;
 	this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-	this.world.setBounds(0, 0, 3000, 1000);
+	this.world.setBounds(0, 0, 2000, 600);
 	
 	this.PLAYER_SPEED = 200;
 	this.JUMP_SPEED = 600;
@@ -49,6 +49,13 @@ Level2.prototype.create = function() {
 
 	var scene = new Scene2(this.game);
 	this.game.stage.smoothed = false;
+	
+	// player
+
+	this.player = scene.fPlayer;
+	this.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
+	this.player.maxHealth = 100;
+	this.player.health = this.player.maxHealth;
 
 	// weapon
 
@@ -58,19 +65,25 @@ Level2.prototype.create = function() {
 	this.weapon.bulletSpeed = 400;
 	this.weapon.bulletGravity.y = -800;
 	this.weapon.fireRate = 100;
-	this.weapon.trackSprite(scene.fPlayer, 0, 8, true);
+	this.weapon.weaponSpeed = 1000;
+	//this.weapon.trackSprite(this.player, 0, 8, true);
+	
+	this.gun_machinegun_sprite = this.game.add.sprite(0,0,"gun_machinegun");
+	this.gun_machinegun_sprite.renderable = false;
+	this.gun_machinegun_sprite.scale.setTo(0.3, 0.3);
+	this.gun_machinegun_sprite.anchor.setTo(0, 0.2);
 
-	// player
-
-	this.player = scene.fPlayer;
-	this.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
-	this.player.maxHealth = 100;
-	this.player.health = this.player.maxHealth;
-
+	// weapon pickup
+	
+	this.machinegun_pickup_trigger = scene.fGun_machinegun;
+	this.player_has_gun_machinegun = false;
+	
 	// world
 
 	this.ground = scene.fFloor;
 	this.triggers = scene.fTriggers;
+	this.triggers_invis = scene.fTriggers_invis;
+	this.health_trigger = scene.fShow_health_trigger;
 //	this.lava = scene.fLava;
 
 	// enemies
@@ -82,7 +95,7 @@ Level2.prototype.create = function() {
 
 	// init physics
 	
-	var immovables = [ this.ground, this.triggers ];
+	var immovables = [ this.ground, this.triggers, this.triggers_invis ];
 
 	for (var i = 0; i < immovables.length; i++) {
 		var g = immovables[i];
@@ -91,10 +104,17 @@ Level2.prototype.create = function() {
 	}
 	
 	this.ground.setAll("renderable", false);
+	this.triggers_invis.setAll("renderable", false);
 
 	// cursors
 
 	this.cursors = this.input.keyboard.createCursorKeys();
+	this.wasd = {
+		up: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
+		down: this.game.input.keyboard.addKey(Phaser.Keyboard.S),
+		left: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
+		right: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
+	};
 	this.fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 	
 	// particle emitters
@@ -123,14 +143,19 @@ Level2.prototype.update = function() {
 
 	this.physics.arcade.collide(this.player, this.ground);
 	this.physics.arcade.collide(this.player, this.first_block_trigger, this.first_block_hit, null, this);
+	this.physics.arcade.collide(this.player, this.health_trigger, this.showHealthBars, null, this);
+	
+	if (!this.player_has_gun_machinegun) {
+		this.physics.arcade.collide(this.player, this.machinegun_pickup_trigger, this.machinegun_trigger_hit, null, this);
+	}
 
 	var vel = 0;
 	
 	if (this.player_has_control) {
-		if (this.cursors.left.isDown) {
+		if (this.cursors.left.isDown || this.wasd.left.isDown) {
 			vel = -this.PLAYER_SPEED;
 			this.player.scale.x = -1;
-		} else if (this.cursors.right.isDown) {
+		} else if (this.cursors.right.isDown || this.wasd.right.isDown) {
 			vel = this.PLAYER_SPEED;
 			this.player.scale.x = 1;
 		}
@@ -155,7 +180,7 @@ Level2.prototype.update = function() {
 	} else {
 		// player control here
 		if (standing) {
-			if (this.player_has_control && this.cursors.up.isDown) {
+			if (this.player_has_control && (this.cursors.up.isDown || this.wasd.up.isDown)) {
 				this.player.body.velocity.y = -this.JUMP_SPEED;
 			}
 	
@@ -172,15 +197,19 @@ Level2.prototype.update = function() {
 
 	// update weapon
 
-	var scaleX = this.player.scale.x;
-	this.weapon.bulletSpeed = scaleX * 400;
-	this.weapon.bulletAngleOffset = scaleX < 0 ? 180 : 0;
-//	this.weapon.fireAngle = Phaser.Math.radToDeg(Phaser.Math.angleBetween(this.game.input.mousePointer.x, this.game.input.mousePointer.y, this.player.x, this.player.y));
-//	this.weapon.fireAngle = 90;
-//	console.log(Phaser.Math.radToDeg(Phaser.Math.angleBetween(this.game.input.mousePointer.x, this.game.input.mousePointer.y, this.player.x, this.player.y)));
-
-	if (this.player_has_control && (this.fireButton.isDown || this.game.input.activePointer.leftButton.isDown)) {
-		this.weapon.fireAtPointer();
+	if (this.player_has_gun_machinegun) {
+		//console.log(this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, this.gun_machinegun_sprite.worldX, this.gun_machinegun_sprite.worldY);
+		var scalefix = (this.player.scale.x > 0) ? 1 : -1;
+		this.gun_machinegun_sprite.rotation = Phaser.Math.angleBetween(scalefix * this.gun_machinegun_sprite.world.x, this.gun_machinegun_sprite.world.y, 
+																	   scalefix * this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
+		var gun_barrel = {
+				x: this.gun_machinegun_sprite.world.x + (this.gun_machinegun_sprite.width * 1.2) * scalefix * Math.cos(this.gun_machinegun_sprite.rotation),
+				y: this.gun_machinegun_sprite.world.y + (this.gun_machinegun_sprite.width * 1.2) * Math.sin(this.gun_machinegun_sprite.rotation),
+			};
+		
+		if (this.player_has_control && (this.fireButton.isDown || this.game.input.activePointer.leftButton.isDown)) {
+			this.weapon.fire(gun_barrel, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
+		}
 	}
 
 	// update enemies
@@ -222,6 +251,7 @@ Level2.prototype.showHealthBars = function() {
 	if (this.health_bars_visible) { return; }
 
 	this.health_bars_visible = true;
+	this.health_trigger.destroy();
 	
 	var bmd = this.game.add.bitmapData(300, 40);
 	bmd.ctx.beginPath();
@@ -230,7 +260,7 @@ Level2.prototype.showHealthBars = function() {
 	bmd.ctx.fill();
 	
 	//var bglife = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, bmd);
-	var bglife = this.game.add.sprite(400, 560, bmd);
+	var bglife = this.game.add.sprite(400, 30, bmd);
 	bglife.fixedToCamera = true;
     bglife.anchor.set(0.5);
     
@@ -242,21 +272,16 @@ Level2.prototype.showHealthBars = function() {
 	
 	this.widthLife = new Phaser.Rectangle(0, 0, bmd.width, bmd.height);
 	this.totalLife = this.player.maxHealth;
-	this.life = this.game.add.sprite(400 - bglife.width/2 + 5, 560, bmd);
+	this.life = this.game.add.sprite(400 - bglife.width/2 + 5, 30, bmd);
 	this.life.fixedToCamera = true;
 	this.life.anchor.y = 0.5;
 	this.life.cropEnabled = true;
 	this.life.crop(this.widthLife);
-	this.game.time.events.loop(500, this.cropHealthBar, this);  
+	this.game.time.events.loop(200, this.cropHealthBar, this);  
 };
 
 Level2.prototype.cropHealthBar = function() {
-	if (this.widthLife.width <= 0) {
-//		this.widthLife.width = this.totalLife;
-	} else {
-		//this.game.add.tween(this.widthLife).to( { width: (this.widthLife.width - (this.totalLife / 10)) }, 200, Phaser.Easing.Linear.None, true);
-	}
-	var targetWidth = 280 * (this.player.health / this.player.maxHealth);
+	var targetWidth = 300 * (this.player.health / this.player.maxHealth);
 	this.game.add.tween(this.widthLife).to( { width: targetWidth }, 200, Phaser.Easing.Linear.None, true);
 };
 
@@ -285,7 +310,21 @@ Level2.prototype.first_block_hit = function(player, block) {
 
 		this.showHealthBars();
 		this.time.events.add(100, function() {
-			this.player.damage(5);
+			this.player.damage(15);
 		}, this);
 	}
+};
+
+
+Level2.prototype.machinegun_trigger_hit = function() {
+	//TODO: show weapon UI? just leave 1 weapon at a time?
+//	this.machinegun_pickup_trigger.destroy();
+	this.game.add.tween(this.machinegun_pickup_trigger).to( {
+		y: this.machinegun_pickup_trigger.y - 80,
+		alpha: 0,
+	} , 400, Phaser.Easing.Linear.None, true);
+	this.game.add.tween(this.machinegun_pickup_trigger.scale).to( {x: 1, y: 1} , 400, Phaser.Easing.Linear.None, true);
+	this.player_has_gun_machinegun = true;
+	this.player.addChild(this.gun_machinegun_sprite);
+	this.gun_machinegun_sprite.renderable = true;
 };
