@@ -103,10 +103,20 @@
             "key": "turret01",
             "url": "assets/sprites/turrets/turret01.png",
             "overwrite": false
+        },
+        {
+            "type": "spritesheet",
+            "key": "healthbar",
+            "url": "assets/sprites/healthbar_sheet.png",
+            "frameWidth": 2,
+            "frameHeight": 5,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
         }
     ],
     "meta": {
-        "generated": "1499755014010",
+        "generated": "1499807721415",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

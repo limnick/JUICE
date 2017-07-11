@@ -87,6 +87,8 @@ Level2.prototype.create = function() {
 	// enemies
 	
 	this.t_enemy = scene.fTetris_t_enemy_group;
+	this.t_enemy.max_health = 100;
+	this.t_enemy.health = this.t_enemy.max_health;
 	this.t_enemy_t1 = scene.fTurret_left;
 	this.t_enemy_t2 = scene.fTurret_right;
 	this.t_enemy.setAll("body.allowGravity", false);
@@ -320,7 +322,14 @@ Level2.prototype.machinegun_trigger_hit = function() {
 	this.player.addChild(this.gun_machinegun_sprite);
 	this.gun_machinegun_sprite.renderable = true;
 	
+	this.showEnemy();
+	
+};
+
+Level2.prototype.showEnemy = function() {
+	// move enemy above map so we can slide it in from the top
 	this.t_enemy.y -= 300;
+	
 	this.game.add.tween(this.t_enemy).to( {y: this.t_enemy.y+300} , 1200, Phaser.Easing.Cubic.None, true);
 	this.t_enemy.setAll("renderable", true);
 	this.time.events.add(800, function() {
@@ -328,8 +337,18 @@ Level2.prototype.machinegun_trigger_hit = function() {
 		this.game.time.events.loop(2000, this.moveEnemy, this);
 	}, this);
 	
+	var healthbar = new Phaser.Sprite(this.game, 0, -10, "healthbar", 0);
+	healthbar.scale.x = 20;
+	healthbar.anchor.x = 0.5;
+	this.t_enemy.healthbar = this.t_enemy.addChild(healthbar);
+	
 };
 
+Level2.prototype.updateEnemyHealthbar = function() {
+	var health_pct = this.t_enemy.health / this.t_enemy.max_health;
+	this.t_enemy.healthbar.scale.x = 20 * health_pct;
+	this.t_enemy.healthbar.frame = Math.floor(10 - (health_pct * 10));
+};
 
 Level2.prototype.moveEnemy = function() {
 	this.game.add.tween(this.t_enemy).to( {x: this.player.world.x} , 2000, Phaser.Easing.Linear.None, true);
@@ -368,9 +387,13 @@ Level2.prototype.playerHit = function(player, bullet) {
 
 Level2.prototype.enemyHit = function(bullet, enemy) {
 	bullet.kill();
-	if (enemy.parent) {
-		enemy.parent.alive = false;
-		enemy.parent.destroy();
+	if (enemy.parent == this.t_enemy) {
+		this.t_enemy.health -= 5;
+		this.updateEnemyHealthbar();
+		if (this.t_enemy.health <= 0) {
+			this.t_enemy.alive = false;
+			this.t_enemy.destroy();
+		}
 		
 	}
 };
