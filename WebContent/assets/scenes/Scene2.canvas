@@ -3,7 +3,7 @@
     "sceneWidth": 640,
     "sceneHeight": 360,
     "generateOnSave": true,
-    "enableStepping": true,
+    "enableStepping": false,
     "stepWidth": 16,
     "stepHeight": 16
   },
@@ -386,8 +386,8 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 816,
-            "y": 480,
+            "x": 798,
+            "y": 412,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [
@@ -479,6 +479,54 @@
                 "height": 500
               }
             }]
+          }
+        },
+        {
+          "type": "group",
+          "id": "54fd27f1-c3cc-40a6-9378-37dbb2b9ed06",
+          "info": {
+            "editorName": "tetris_t_enemy_group",
+            "editorPublic": true,
+            "x": 944,
+            "y": 96,
+            "physicsGroup": true,
+            "children": [
+              {
+                "type": "image",
+                "id": "32305277-b5ea-4ca5-badb-1c101afe465c",
+                "asset": "19",
+                "info": {
+                  "editorName": "tetris_t",
+                  "anchor.x": 0.5
+                }
+              },
+              {
+                "type": "image",
+                "id": "7827f92c-cab7-4e63-b923-5460693b00f6",
+                "asset": "20",
+                "info": {
+                  "editorName": "turret_left",
+                  "editorPublic": true,
+                  "x": -27,
+                  "y": 22,
+                  "anchor.x": 0.5,
+                  "anchor.y": 0.25
+                }
+              },
+              {
+                "type": "image",
+                "id": "545476be-da26-4d31-83e1-b04cc9755d8f",
+                "asset": "20",
+                "info": {
+                  "editorName": "turret_right",
+                  "editorPublic": true,
+                  "x": 27,
+                  "y": 22,
+                  "anchor.x": 0.5,
+                  "anchor.y": 0.25
+                }
+              }
+            ]
           }
         }
       ]
@@ -597,6 +645,16 @@
       "section": "level",
       "asset": "mario_nes_tileset",
       "sprite": "24"
+    },
+    "19": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tetris_t"
+    },
+    "20": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "turret01"
     }
   }
 }

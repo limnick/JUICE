@@ -91,10 +91,22 @@
             "key": "gun_machinegun",
             "url": "assets/sprites/guns/guns_04.png",
             "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "tetris_t",
+            "url": "assets/sprites/tetris_t.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "turret01",
+            "url": "assets/sprites/turrets/turret01.png",
+            "overwrite": false
         }
     ],
     "meta": {
-        "generated": "1499649634784",
+        "generated": "1499755014010",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

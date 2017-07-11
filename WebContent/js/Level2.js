@@ -65,7 +65,6 @@ Level2.prototype.create = function() {
 	this.weapon.bulletSpeed = 400;
 	this.weapon.bulletGravity.y = -800;
 	this.weapon.fireRate = 100;
-	this.weapon.weaponSpeed = 1000;
 	//this.weapon.trackSprite(this.player, 0, 8, true);
 	
 	this.gun_machinegun_sprite = this.game.add.sprite(0,0,"gun_machinegun");
@@ -84,9 +83,22 @@ Level2.prototype.create = function() {
 	this.triggers = scene.fTriggers;
 	this.triggers_invis = scene.fTriggers_invis;
 	this.health_trigger = scene.fShow_health_trigger;
-//	this.lava = scene.fLava;
 
 	// enemies
+	
+	this.t_enemy = scene.fTetris_t_enemy_group;
+	this.t_enemy_t1 = scene.fTurret_left;
+	this.t_enemy_t2 = scene.fTurret_right;
+	this.t_enemy.setAll("body.allowGravity", false);
+	this.t_enemy.setAll("renderable", false);
+	
+	this.t_enemy_weapon = this.add.weapon(80, "items");
+	this.t_enemy_weapon.setBulletFrames(8, 10, true);
+	this.t_enemy_weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
+	this.t_enemy_weapon.bulletSpeed = 100;
+	this.t_enemy_weapon.bulletGravity.y = -800;
+	this.t_enemy_weapon.fireRate = 0;
+	this.t_enemy_weapon.multiFire = true;
 
 //	this.enemies = scene.fEnemies;
 //	this.enemies.forEach(function(sprite) {
@@ -143,7 +155,9 @@ Level2.prototype.update = function() {
 
 	this.physics.arcade.collide(this.player, this.ground);
 	this.physics.arcade.collide(this.player, this.first_block_trigger, this.first_block_hit, null, this);
-	this.physics.arcade.collide(this.player, this.health_trigger, this.showHealthBars, null, this);
+	this.physics.arcade.overlap(this.player, this.health_trigger, this.showHealthBars, null, this);
+	this.physics.arcade.overlap(this.player, this.t_enemy_weapon.bullets, this.playerHit, null, this);
+	this.physics.arcade.overlap(this.weapon.bullets, this.t_enemy, this.enemyHit, null, this);
 	
 	if (!this.player_has_gun_machinegun) {
 		this.physics.arcade.collide(this.player, this.machinegun_pickup_trigger, this.machinegun_trigger_hit, null, this);
@@ -222,30 +236,6 @@ Level2.prototype.update = function() {
 	}
 };
 
-/**
- * 
- * @param {Phaser.Sprite} sprite The enemy to move.
- */
-Level2.prototype.moveEnemy = function(sprite) {
-
-	// use the data set in the scene to move the enemies
-
-	var data = sprite.data;
-
-	if (sprite.x < data.left) {
-		sprite.body.velocity.x = 50;
-	} else if (sprite.x > data.right) {
-		sprite.body.velocity.x = -50;
-	}
-
-	if (sprite.body.velocity.x < 0) {
-		sprite.scale.x = -1;
-	} else if (sprite.body.velocity.x > 0) {
-		sprite.scale.x = 1;
-	}
-
-};
-
 
 Level2.prototype.showHealthBars = function() {
 	if (this.health_bars_visible) { return; }
@@ -318,13 +308,69 @@ Level2.prototype.first_block_hit = function(player, block) {
 
 Level2.prototype.machinegun_trigger_hit = function() {
 	//TODO: show weapon UI? just leave 1 weapon at a time?
-//	this.machinegun_pickup_trigger.destroy();
 	this.game.add.tween(this.machinegun_pickup_trigger).to( {
 		y: this.machinegun_pickup_trigger.y - 80,
 		alpha: 0,
 	} , 400, Phaser.Easing.Linear.None, true);
+	this.time.events.add(500, function() {
+		this.machinegun_pickup_trigger.destroy();
+	}, this);
 	this.game.add.tween(this.machinegun_pickup_trigger.scale).to( {x: 1, y: 1} , 400, Phaser.Easing.Linear.None, true);
 	this.player_has_gun_machinegun = true;
 	this.player.addChild(this.gun_machinegun_sprite);
 	this.gun_machinegun_sprite.renderable = true;
+	
+	this.t_enemy.y -= 300;
+	this.game.add.tween(this.t_enemy).to( {y: this.t_enemy.y+300} , 1200, Phaser.Easing.Cubic.None, true);
+	this.t_enemy.setAll("renderable", true);
+	this.time.events.add(800, function() {
+		this.game.time.events.loop(600, this.aimEnemyTurrets, this);
+		this.game.time.events.loop(2000, this.moveEnemy, this);
+	}, this);
+	
+};
+
+
+Level2.prototype.moveEnemy = function() {
+	this.game.add.tween(this.t_enemy).to( {x: this.player.world.x} , 2000, Phaser.Easing.Linear.None, true);
+};
+
+Level2.prototype.aimEnemyTurrets = function() {
+	var t1_rot = -1.5708 + Phaser.Math.angleBetween(this.t_enemy_t1.world.x, this.t_enemy_t1.world.y, this.player.world.x, this.player.world.y);
+	var t2_rot = -1.5708 + Phaser.Math.angleBetween(this.t_enemy_t2.world.x, this.t_enemy_t2.world.y, this.player.world.x, this.player.world.y);
+	
+	this.game.add.tween(this.t_enemy_t1).to({rotation: t1_rot}, 200, Phaser.Easing.Linear.None, true);
+	this.game.add.tween(this.t_enemy_t2).to({rotation: t2_rot}, 200, Phaser.Easing.Linear.None, true);
+	
+	this.time.events.add(200, function() {
+		var turret_barrel_1 = {
+			x: this.t_enemy_t1.world.x + (this.t_enemy_t1.height * 1.2) * -1 * Math.sin(this.t_enemy_t1.rotation),
+			y: this.t_enemy_t1.world.y + (this.t_enemy_t1.height * 1.2) * Math.cos(this.t_enemy_t1.rotation),
+		};
+	
+	
+		var turret_barrel_2 = {
+			x: this.t_enemy_t2.world.x + (this.t_enemy_t2.height * 1.2) * -1 * Math.sin(this.t_enemy_t2.rotation),
+			y: this.t_enemy_t2.world.y + (this.t_enemy_t2.height * 1.2) * Math.cos(this.t_enemy_t2.rotation),
+		};
+	
+		if (this.t_enemy.alive) {
+			this.t_enemy_weapon.fire(turret_barrel_1, this.player.world.x, this.player.world.y);
+			this.t_enemy_weapon.fire(turret_barrel_2, this.player.world.x, this.player.world.y);
+		}
+	}, this);
+};
+
+Level2.prototype.playerHit = function(player, bullet) {
+	this.player.damage(5);
+	bullet.kill();
+};
+
+Level2.prototype.enemyHit = function(bullet, enemy) {
+	bullet.kill();
+	if (enemy.parent) {
+		enemy.parent.alive = false;
+		enemy.parent.destroy();
+		
+	}
 };
