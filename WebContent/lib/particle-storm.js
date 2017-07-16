@@ -935,8 +935,8 @@ Phaser.ParticleStorm.Emitter.prototype = {
 
         if (renderType === undefined) { renderType = Phaser.ParticleStorm.SPRITE; }
 
-        var w = this.game.width;
-        var h = this.game.height;
+        var w = this.game.world.bounds.width || this.game.width;
+        var h = this.game.world.bounds.height || this.game.height;
 
         switch (renderType)
         {

@@ -102,6 +102,16 @@ Level2.prototype.create = function() {
 	this.t_enemy_weapon.fireRate = 0;
 	this.t_enemy_weapon.multiFire = true;
 
+	
+	this.ps_manager.addData('spritedie', {
+        lifespan: { min: 200, max: 600 },
+        green: 255,
+        vx: { min: -1, max: 1 },
+        vy: { min: 1, max: 4 }
+    });
+
+	
+
 //	this.enemies = scene.fEnemies;
 //	this.enemies.forEach(function(sprite) {
 //		sprite.play("walk");
@@ -133,12 +143,12 @@ Level2.prototype.create = function() {
 	
 	// particle emitters
 	this.bloodParticleGravity = 0.2;
-	this.emitter_blood_big = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL);
+	this.emitter_blood_big = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.world.bounds.width, this.world.bounds.height);
 	this.emitter_blood_big.renderer.pixelSize = 5;
 	this.emitter_blood_big.force.y = this.bloodParticleGravity;
 	this.emitter_blood_big.addToWorld();
 	
-	this.emitter_blood_sm = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL);
+	this.emitter_blood_sm = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.world.bounds.width, this.world.bounds.height);
 	this.emitter_blood_sm.renderer.pixelSize = 2;
 	this.emitter_blood_sm.force.y = this.bloodParticleGravity;
 	this.emitter_blood_sm.addToWorld();
@@ -236,6 +246,10 @@ Level2.prototype.update = function() {
 	if (this.health_bars_visible) {
 		this.life.updateCrop();
 	}
+};
+
+Level2.prototype.render = function() {
+	if (this.enemydie_emitter) this.enemydie_emitter.debug(432, 522);
 };
 
 
@@ -388,11 +402,21 @@ Level2.prototype.playerHit = function(player, bullet) {
 Level2.prototype.enemyHit = function(bullet, enemy) {
 	bullet.kill();
 	if (enemy.parent == this.t_enemy) {
-		this.t_enemy.health -= 5;
+		this.t_enemy.health -= 50;
 		this.updateEnemyHealthbar();
 		if (this.t_enemy.health <= 0) {
 			this.t_enemy.alive = false;
-			this.t_enemy.destroy();
+			var enemy_sprite = this.ps_manager.createImageZone(enemy.key);
+			console.log("killing enemy with sprite key: ", enemy.key);
+			this.enemydie_emitter = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.world.bounds.width, this.world.bounds.height);
+			this.enemydie_emitter.addToWorld();
+			
+		    this.enemydie_emitter.emit('spritedie', enemy.world.x - (enemy.width / 2), enemy.world.y, { zone: enemy_sprite, full: true, setColor: true });
+		    console.log(enemy.world.x, enemy.world.y);
+		    this.t_enemy.destroy();
+		    
+			
+			
 		}
 		
 	}
