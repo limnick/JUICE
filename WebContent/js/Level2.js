@@ -86,6 +86,14 @@ Level2.prototype.create = function() {
 
 	// enemies
 	
+	this.t_enemy_2 = new Tetris_T_Enemy({
+		ctx: this,
+		game: this.game,
+		spawn_trigger: scene.fEnemy_spawn_trigger_1,
+	});
+	
+	this.enemies = [this.t_enemy_2,];
+	
 	this.t_enemy = scene.fTetris_t_enemy_group;
 	this.t_enemy.max_health = 100;
 	this.t_enemy.health = this.t_enemy.max_health;
@@ -241,6 +249,10 @@ Level2.prototype.update = function() {
 	// update enemies
 
 //	this.enemies.forEach(this.moveEnemy);
+	for (var i = 0; i < this.enemies.length; i++) {
+		var e = this.enemies[i];
+		e.update();
+	}
 
 //	this.physics.arcade.collide(this.player, this.lava, this.die, null, this);
 	if (this.health_bars_visible) {
@@ -249,7 +261,7 @@ Level2.prototype.update = function() {
 };
 
 Level2.prototype.render = function() {
-	if (this.enemydie_emitter) this.enemydie_emitter.debug(432, 522);
+//	if (this.enemydie_emitter) this.enemydie_emitter.debug(432, 522);
 };
 
 
@@ -415,7 +427,11 @@ Level2.prototype.enemyHit = function(bullet, enemy) {
 		    console.log(enemy.world.x, enemy.world.y);
 		    this.t_enemy.destroy();
 		    
-			
+		    this.time.events.add(2000, function() {
+		    	this.ps_manager.removeEmitter(this.enemydie_emitter);
+		    	this.enemydie_emitter.destroy();
+			}, this);
+		    
 			
 		}
 		

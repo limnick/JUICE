@@ -20,8 +20,6 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.tileSprite(-32, 96, 32, 464, 'mario_nes_tileset', 894, floor);
 
-	this.game.add.tileSprite(1024, -192, 32, 224, 'mario_nes_tileset', 894, floor);
-
 	this.game.add.tileSprite(-32, 560, 1920, 32, 'mario_nes_tileset', 894, floor);
 
 	var walls = this.game.add.group(this);
@@ -91,7 +89,7 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(64, 32, 'mario_nes_tileset', 695, Cloud1);
 
-	var player = this.game.add.sprite(798, 412, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(724, 483, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
@@ -110,6 +108,8 @@ function Scene2(aGame, aParent) {
 	var triggers_invis = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 
 	var show_health_trigger = this.game.add.tileSprite(672, 64, 800, 500, 'mario_nes_tileset', 894, triggers_invis);
+
+	var enemy_spawn_trigger_1 = this.game.add.tileSprite(710, 524, 32, 32, 'mario_nes_tileset', 894, triggers_invis);
 
 	var tetris_t_enemy_group = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 	tetris_t_enemy_group.position.setTo(944, 96);
@@ -133,6 +133,7 @@ function Scene2(aGame, aParent) {
 	this.fFirst_block_trigger = first_block_trigger;
 	this.fTriggers_invis = triggers_invis;
 	this.fShow_health_trigger = show_health_trigger;
+	this.fEnemy_spawn_trigger_1 = enemy_spawn_trigger_1;
 	this.fTetris_t_enemy_group = tetris_t_enemy_group;
 	this.fTurret_left = turret_left;
 	this.fTurret_right = turret_right;
