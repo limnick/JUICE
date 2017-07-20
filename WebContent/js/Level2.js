@@ -58,24 +58,25 @@ Level2.prototype.create = function() {
 	this.player.health = this.player.maxHealth;
 
 	// weapon
+	
+	this.weapons = {
+			'machinegun': new Weapon_Machinegun({ctx: this}),
+	};
 
-	this.weapon = this.add.weapon(30, "items");
-	this.weapon.setBulletFrames(8, 10, true);
-	this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
-	this.weapon.bulletSpeed = 400;
-	this.weapon.bulletGravity.y = -800;
-	this.weapon.fireRate = 100;
+//	this.weapon = this.add.weapon(30, "items");
+//	this.weapon.setBulletFrames(8, 10, true);
+//	this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
+//	this.weapon.bulletSpeed = 400;
+//	this.weapon.bulletGravity.y = -800;
+//	this.weapon.fireRate = 100;
 	//this.weapon.trackSprite(this.player, 0, 8, true);
 	
-	this.gun_machinegun_sprite = this.game.add.sprite(0,0,"gun_machinegun");
-	this.gun_machinegun_sprite.renderable = false;
-	this.gun_machinegun_sprite.scale.setTo(0.3, 0.3);
-	this.gun_machinegun_sprite.anchor.setTo(0, 0.2);
+
 
 	// weapon pickup
 	
 	this.machinegun_pickup_trigger = scene.fGun_machinegun;
-	this.player_has_gun_machinegun = false;
+//	this.player_has_gun_machinegun = false;
 	
 	// world
 
@@ -87,11 +88,7 @@ Level2.prototype.create = function() {
 
 	// enemies
 	
-	this.t_enemy_2 = new Tetris_T_Enemy({
-		ctx: this,
-		game: this.game,
-//		spawn_trigger: scene.fEnemy_spawn_trigger_1,
-	});
+	this.t_enemy_2 = new Tetris_T_Enemy({ctx: this,});
 	
 	this.enemies = [this.t_enemy_2,];
 	
@@ -156,8 +153,8 @@ Level2.prototype.update = function() {
 	this.physics.arcade.overlap(this.player, this.health_trigger, this.showHealthBars, null, this);
 	
 	
-	if (!this.player_has_gun_machinegun) {
-		this.physics.arcade.collide(this.player, this.machinegun_pickup_trigger, this.machinegun_trigger_hit, null, this);
+	if (!this.player.weapon) {
+		this.physics.arcade.overlap(this.player, this.machinegun_pickup_trigger, this.machinegun_trigger_hit, null, this);
 	}
 
 	var vel = 0;
@@ -208,19 +205,21 @@ Level2.prototype.update = function() {
 
 	// update weapon
 
-	if (this.player_has_gun_machinegun) {
-		var scalefix = (this.player.scale.x > 0) ? 1 : -1;
-		this.gun_machinegun_sprite.rotation = Phaser.Math.angleBetween(scalefix * this.gun_machinegun_sprite.world.x, this.gun_machinegun_sprite.world.y, 
-																	   scalefix * this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
-		var gun_barrel = {
-				x: this.gun_machinegun_sprite.world.x + (this.gun_machinegun_sprite.width * 1.2) * scalefix * Math.cos(this.gun_machinegun_sprite.rotation),
-				y: this.gun_machinegun_sprite.world.y + (this.gun_machinegun_sprite.width * 1.2) * Math.sin(this.gun_machinegun_sprite.rotation),
-			};
-		
-		if (this.player_has_control && (this.fireButton.isDown || this.game.input.activePointer.leftButton.isDown)) {
-			this.weapon.fire(gun_barrel, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
-		}
-	}
+//	if (this.player_has_gun_machinegun) {
+//		var scalefix = (this.player.scale.x > 0) ? 1 : -1;
+//		this.gun_machinegun_sprite.rotation = Phaser.Math.angleBetween(scalefix * this.gun_machinegun_sprite.world.x, this.gun_machinegun_sprite.world.y, 
+//																	   scalefix * this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
+//		var gun_barrel = {
+//				x: this.gun_machinegun_sprite.world.x + (this.gun_machinegun_sprite.width * 1.2) * scalefix * Math.cos(this.gun_machinegun_sprite.rotation),
+//				y: this.gun_machinegun_sprite.world.y + (this.gun_machinegun_sprite.width * 1.2) * Math.sin(this.gun_machinegun_sprite.rotation),
+//			};
+//		
+//		if (this.player_has_control && (this.fireButton.isDown || this.game.input.activePointer.leftButton.isDown)) {
+//			this.weapon.fire(gun_barrel, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
+//		}
+//	}
+	
+	if (this.player.weapon) this.player.weapon.update();
 
 	// update enemies
 
@@ -307,22 +306,14 @@ Level2.prototype.first_block_hit = function(player, block) {
 };
 
 
-Level2.prototype.machinegun_trigger_hit = function() {
-	//TODO: show weapon UI? just leave 1 weapon at a time?
-	this.game.add.tween(this.machinegun_pickup_trigger).to( {
-		y: this.machinegun_pickup_trigger.y - 80,
-		alpha: 0,
-	} , 400, Phaser.Easing.Linear.None, true);
+Level2.prototype.machinegun_trigger_hit = function(player, trigger) {
+	this.weapons.machinegun.pickup(trigger);
+	this.weapons.machinegun.equip();
+	
 	this.time.events.add(500, function() {
 		this.machinegun_pickup_trigger.destroy();
+		this.t_enemy_2.show();
 	}, this);
-	this.game.add.tween(this.machinegun_pickup_trigger.scale).to( {x: 1, y: 1} , 400, Phaser.Easing.Linear.None, true);
-	this.player_has_gun_machinegun = true;
-	this.player.addChild(this.gun_machinegun_sprite);
-	this.gun_machinegun_sprite.renderable = true;
-	this.weapon.damage = 25;
-	this.player.weapon = this.weapon;
 	
-	this.t_enemy_2.show();
 };
 

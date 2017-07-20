@@ -1,13 +1,14 @@
 Enemy = function (options) {
 	console.log("base enemy init");
-	this.game = options.game;
 	this.spawn_trigger = options.spawn_trigger;
 	this.ctx = options.ctx;
+	
+	this.game = this.ctx.game;
 	this.player = this.ctx.player;
 	
 	this.group = this.game.add.group();
 	
-	this.base_sprite = "tetris_t";
+	if (!this.base_sprite) console.log("PLEASE SET BASE SPRITE");
 	
 	this.body = this.game.add.sprite(0, 0, this.base_sprite);
 	this.body.anchor.set(0.5, 0);
@@ -98,9 +99,9 @@ Enemy.prototype.destroy = function() {
 
 
 Tetris_T_Enemy = function(options) {
+	this.base_sprite = "tetris_t";
 	return Enemy.call(this, options);
 	
-
 };
 
 Tetris_T_Enemy.prototype = Object.create(Enemy.prototype);
@@ -110,7 +111,7 @@ Tetris_T_Enemy.prototype.parent = Enemy.prototype;
 Tetris_T_Enemy.prototype.show = function() {
 	this.createTurrets();
 	this.createWeapons();
-	Enemy.prototype.show.call(this);
+	this.parent.show.call(this);
 	
 	// block slide in from top
 	this.group.position.set(this.player.x, -100);
@@ -137,7 +138,7 @@ Tetris_T_Enemy.prototype.update = function() {
 Tetris_T_Enemy.prototype.die = function() {
 	if (!this.alive) return; // we're already in the middle of dying, no need to die twice
 
-	Enemy.prototype.die.call(this);
+	this.parent.die.call(this);
 	
 	
 	this.turrets.forEach(function(turret) {
