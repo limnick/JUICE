@@ -17,7 +17,7 @@ Enemy = function (options) {
 	this.game.physics.enable(this.group);
 	this.group.setAll("body.allowGravity", false);
 	
-	this.spawn_enabled = true;
+	this.spawn_enabled = !!this.spawn_trigger; // set to true if we have a spawn_trigger set
 	this.can_shoot = true;
 	this.can_move = true;
 	this.alive = false;
@@ -120,8 +120,10 @@ Tetris_T_Enemy.prototype.show = function() {
 Tetris_T_Enemy.prototype.update = function() {
 	this.parent.update.call(this);
 	
-	if (this.weapon)
+	if (this.weapon) {
 		this.ctx.physics.arcade.overlap(this.player, this.weapon.bullets, this.playerHit, null, this);
+		this.ctx.physics.arcade.overlap(this.ctx.walls, this.weapon.bullets, this.wallHit, null, this);
+	}
 	
 	if (this.player.weapon) {
 		this.ctx.physics.arcade.overlap(this.player.weapon.bullets, this.group, this.onHit, null, this);
@@ -141,7 +143,7 @@ Tetris_T_Enemy.prototype.die = function() {
 	this.turrets.forEach(function(turret) {
 		this.game.physics.enable(turret);
 		turret.body.allowGravity = true;
-//		this.group.setAll("body.allowGravity", false);
+		turret.body.angularVelocity = (Math.random() * 600) - 300;
 	}, this);
 	
 	var enemy_sprite = this.ctx.ps_manager.createImageZone(this.base_sprite);
@@ -171,6 +173,11 @@ Tetris_T_Enemy.prototype.playerHit = function(player, bullet) {
 	this.player.damage(5);
 	bullet.kill();
 };
+
+Tetris_T_Enemy.prototype.wallHit = function(wall, bullet) {
+	bullet.kill();
+};
+
 
 Tetris_T_Enemy.prototype.createWeapons = function() {
 	this.weapon = this.ctx.add.weapon(80, "items");

@@ -66,6 +66,7 @@
           "info": {
             "editorName": "walls",
             "editorPublic": true,
+            "physicsGroup": true,
             "children": [
               {
                 "type": "tileSprite",
@@ -73,10 +74,22 @@
                 "asset": "2",
                 "info": {
                   "editorName": "mario_nes_tileset111",
-                  "x": 1072,
-                  "y": -192,
+                  "x": 1152,
+                  "y": 368,
                   "width": 32,
-                  "height": 224
+                  "height": 192
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "be1aa4cf-718c-4641-ad30-30c6c29a98b8",
+                "asset": "2",
+                "info": {
+                  "editorName": "mario_nes_tileset1111",
+                  "x": 1344,
+                  "y": 432,
+                  "width": 32,
+                  "height": 128
                 }
               },
               {
@@ -475,58 +488,10 @@
                 "info": {
                   "editorName": "enemy_spawn_trigger_1",
                   "editorPublic": true,
-                  "x": 815,
-                  "y": 522,
+                  "x": 1075,
+                  "y": 493,
                   "width": 64,
                   "height": 64
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "group",
-          "id": "54fd27f1-c3cc-40a6-9378-37dbb2b9ed06",
-          "info": {
-            "editorName": "tetris_t_enemy_group",
-            "editorPublic": true,
-            "x": 944,
-            "y": 96,
-            "physicsGroup": true,
-            "children": [
-              {
-                "type": "image",
-                "id": "32305277-b5ea-4ca5-badb-1c101afe465c",
-                "asset": "19",
-                "info": {
-                  "editorName": "tetris_t",
-                  "anchor.x": 0.5
-                }
-              },
-              {
-                "type": "image",
-                "id": "7827f92c-cab7-4e63-b923-5460693b00f6",
-                "asset": "20",
-                "info": {
-                  "editorName": "turret_left",
-                  "editorPublic": true,
-                  "x": -27,
-                  "y": 22,
-                  "anchor.x": 0.5,
-                  "anchor.y": 0.25
-                }
-              },
-              {
-                "type": "image",
-                "id": "545476be-da26-4d31-83e1-b04cc9755d8f",
-                "asset": "20",
-                "info": {
-                  "editorName": "turret_right",
-                  "editorPublic": true,
-                  "x": 27,
-                  "y": 22,
-                  "anchor.x": 0.5,
-                  "anchor.y": 0.25
                 }
               }
             ]
@@ -648,16 +613,6 @@
       "section": "level",
       "asset": "mario_nes_tileset",
       "sprite": "24"
-    },
-    "19": {
-      "file": "WebContent/assets/pack.json",
-      "section": "level",
-      "asset": "tetris_t"
-    },
-    "20": {
-      "file": "WebContent/assets/pack.json",
-      "section": "level",
-      "asset": "turret01"
     }
   }
 }

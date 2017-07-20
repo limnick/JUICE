@@ -80,6 +80,7 @@ Level2.prototype.create = function() {
 	// world
 
 	this.ground = scene.fFloor;
+	this.walls = scene.fWalls;
 	this.triggers = scene.fTriggers;
 	this.triggers_invis = scene.fTriggers_invis;
 	this.health_trigger = scene.fShow_health_trigger;
@@ -89,27 +90,10 @@ Level2.prototype.create = function() {
 	this.t_enemy_2 = new Tetris_T_Enemy({
 		ctx: this,
 		game: this.game,
-		spawn_trigger: scene.fEnemy_spawn_trigger_1,
+//		spawn_trigger: scene.fEnemy_spawn_trigger_1,
 	});
 	
 	this.enemies = [this.t_enemy_2,];
-	
-	this.t_enemy = scene.fTetris_t_enemy_group;
-	this.t_enemy.max_health = 100;
-	this.t_enemy.health = this.t_enemy.max_health;
-	this.t_enemy_t1 = scene.fTurret_left;
-	this.t_enemy_t2 = scene.fTurret_right;
-	this.t_enemy.setAll("body.allowGravity", false);
-	this.t_enemy.setAll("renderable", false);
-	
-	this.t_enemy_weapon = this.add.weapon(80, "items");
-	this.t_enemy_weapon.setBulletFrames(8, 10, true);
-	this.t_enemy_weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
-	this.t_enemy_weapon.bulletSpeed = 100;
-	this.t_enemy_weapon.bulletGravity.y = -800;
-	this.t_enemy_weapon.fireRate = 0;
-	this.t_enemy_weapon.multiFire = true;
-
 	
 	this.ps_manager.addData('spritedie', {
         lifespan: { min: 200, max: 600 },
@@ -118,16 +102,9 @@ Level2.prototype.create = function() {
         vy: { min: -1, max: 4 }
     });
 
-	
-
-//	this.enemies = scene.fEnemies;
-//	this.enemies.forEach(function(sprite) {
-//		sprite.play("walk");
-//	});
-
 	// init physics
 	
-	var immovables = [ this.ground, this.triggers, this.triggers_invis ];
+	var immovables = [ this.ground, this.walls, this.triggers, this.triggers_invis ];
 
 	for (var i = 0; i < immovables.length; i++) {
 		var g = immovables[i];
@@ -174,10 +151,10 @@ Level2.prototype.update = function() {
 	// update player velocity
 
 	this.physics.arcade.collide(this.player, this.ground);
+	this.physics.arcade.collide(this.player, this.walls);
 	this.physics.arcade.collide(this.player, this.first_block_trigger, this.first_block_hit, null, this);
 	this.physics.arcade.overlap(this.player, this.health_trigger, this.showHealthBars, null, this);
-//	this.physics.arcade.overlap(this.player, this.t_enemy_weapon.bullets, this.playerHit, null, this);
-//	this.physics.arcade.overlap(this.weapon.bullets, this.t_enemy, this.enemyHit, null, this);
+	
 	
 	if (!this.player_has_gun_machinegun) {
 		this.physics.arcade.collide(this.player, this.machinegun_pickup_trigger, this.machinegun_trigger_hit, null, this);
@@ -232,7 +209,6 @@ Level2.prototype.update = function() {
 	// update weapon
 
 	if (this.player_has_gun_machinegun) {
-		//console.log(this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, this.gun_machinegun_sprite.worldX, this.gun_machinegun_sprite.worldY);
 		var scalefix = (this.player.scale.x > 0) ? 1 : -1;
 		this.gun_machinegun_sprite.rotation = Phaser.Math.angleBetween(scalefix * this.gun_machinegun_sprite.world.x, this.gun_machinegun_sprite.world.y, 
 																	   scalefix * this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
@@ -248,13 +224,11 @@ Level2.prototype.update = function() {
 
 	// update enemies
 
-//	this.enemies.forEach(this.moveEnemy);
 	for (var i = 0; i < this.enemies.length; i++) {
 		var e = this.enemies[i];
 		e.update();
 	}
 
-//	this.physics.arcade.collide(this.player, this.lava, this.die, null, this);
 	if (this.health_bars_visible) {
 		this.life.updateCrop();
 	}
@@ -277,7 +251,6 @@ Level2.prototype.showHealthBars = function() {
 	bmd.ctx.fillStyle = '#00685e';
 	bmd.ctx.fill();
 	
-	//var bglife = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, bmd);
 	var bglife = this.game.add.sprite(400, 30, bmd);
 	bglife.fixedToCamera = true;
     bglife.anchor.set(0.5);
@@ -350,93 +323,6 @@ Level2.prototype.machinegun_trigger_hit = function() {
 	this.weapon.damage = 25;
 	this.player.weapon = this.weapon;
 	
-	
-//	this.showEnemy();
-	
+	this.t_enemy_2.show();
 };
 
-//Level2.prototype.showEnemy = function() {
-//	// move enemy above map so we can slide it in from the top
-//	this.t_enemy.y -= 300;
-//	
-//	this.game.add.tween(this.t_enemy).to( {y: this.t_enemy.y+300} , 1200, Phaser.Easing.Cubic.None, true);
-//	this.t_enemy.setAll("renderable", true);
-//	this.time.events.add(800, function() {
-//		this.game.time.events.loop(600, this.aimEnemyTurrets, this);
-//		this.game.time.events.loop(2000, this.moveEnemy, this);
-//	}, this);
-//	
-//	var healthbar = new Phaser.Sprite(this.game, 0, -10, "healthbar", 0);
-//	healthbar.scale.x = 20;
-//	healthbar.anchor.x = 0.5;
-//	this.t_enemy.healthbar = this.t_enemy.addChild(healthbar);
-//	
-//};
-//
-//Level2.prototype.updateEnemyHealthbar = function() {
-//	var health_pct = this.t_enemy.health / this.t_enemy.max_health;
-//	this.t_enemy.healthbar.scale.x = 20 * health_pct;
-//	this.t_enemy.healthbar.frame = Math.floor(10 - (health_pct * 10));
-//};
-//
-//Level2.prototype.moveEnemy = function() {
-//	this.game.add.tween(this.t_enemy).to( {x: this.player.world.x} , 2000, Phaser.Easing.Linear.None, true);
-//};
-//
-//Level2.prototype.aimEnemyTurrets = function() {
-//	var t1_rot = -1.5708 + Phaser.Math.angleBetween(this.t_enemy_t1.world.x, this.t_enemy_t1.world.y, this.player.world.x, this.player.world.y);
-//	var t2_rot = -1.5708 + Phaser.Math.angleBetween(this.t_enemy_t2.world.x, this.t_enemy_t2.world.y, this.player.world.x, this.player.world.y);
-//	
-//	this.game.add.tween(this.t_enemy_t1).to({rotation: t1_rot}, 200, Phaser.Easing.Linear.None, true);
-//	this.game.add.tween(this.t_enemy_t2).to({rotation: t2_rot}, 200, Phaser.Easing.Linear.None, true);
-//	
-//	this.time.events.add(200, function() {
-//		var turret_barrel_1 = {
-//			x: this.t_enemy_t1.world.x + (this.t_enemy_t1.height * 1.2) * -1 * Math.sin(this.t_enemy_t1.rotation),
-//			y: this.t_enemy_t1.world.y + (this.t_enemy_t1.height * 1.2) * Math.cos(this.t_enemy_t1.rotation),
-//		};
-//	
-//	
-//		var turret_barrel_2 = {
-//			x: this.t_enemy_t2.world.x + (this.t_enemy_t2.height * 1.2) * -1 * Math.sin(this.t_enemy_t2.rotation),
-//			y: this.t_enemy_t2.world.y + (this.t_enemy_t2.height * 1.2) * Math.cos(this.t_enemy_t2.rotation),
-//		};
-//	
-//		if (this.t_enemy.alive) {
-//			this.t_enemy_weapon.fire(turret_barrel_1, this.player.world.x, this.player.world.y);
-//			this.t_enemy_weapon.fire(turret_barrel_2, this.player.world.x, this.player.world.y);
-//		}
-//	}, this);
-//};
-//
-//Level2.prototype.playerHit = function(player, bullet) {
-//	this.player.damage(5);
-//	bullet.kill();
-//};
-//
-//Level2.prototype.enemyHit = function(bullet, enemy) {
-//	bullet.kill();
-//	if (enemy.parent == this.t_enemy) {
-//		this.t_enemy.health -= 50;
-//		this.updateEnemyHealthbar();
-//		if (this.t_enemy.health <= 0) {
-//			this.t_enemy.alive = false;
-//			var enemy_sprite = this.ps_manager.createImageZone(enemy.key);
-//			console.log("killing enemy with sprite key: ", enemy.key);
-//			this.enemydie_emitter = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.world.bounds.width, this.world.bounds.height);
-//			this.enemydie_emitter.addToWorld();
-//			
-//		    this.enemydie_emitter.emit('spritedie', enemy.world.x - (enemy.width / 2), enemy.world.y, { zone: enemy_sprite, full: true, setColor: true });
-//		    console.log(enemy.world.x, enemy.world.y);
-//		    this.t_enemy.destroy();
-//		    
-//		    this.time.events.add(2000, function() {
-//		    	this.ps_manager.removeEmitter(this.enemydie_emitter);
-//		    	this.enemydie_emitter.destroy();
-//			}, this);
-//		    
-//			
-//		}
-//		
-//	}
-//};
