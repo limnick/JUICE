@@ -374,8 +374,8 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 724,
-            "y": 483,
+            "x": 718,
+            "y": 493,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [
@@ -475,10 +475,10 @@
                 "info": {
                   "editorName": "enemy_spawn_trigger_1",
                   "editorPublic": true,
-                  "x": 710,
-                  "y": 524,
-                  "width": 32,
-                  "height": 32
+                  "x": 815,
+                  "y": 522,
+                  "width": 64,
+                  "height": 64
                 }
               }
             ]

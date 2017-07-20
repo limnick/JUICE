@@ -115,7 +115,7 @@ Level2.prototype.create = function() {
         lifespan: { min: 200, max: 600 },
         green: 255,
         vx: { min: -1, max: 1 },
-        vy: { min: 1, max: 4 }
+        vy: { min: -1, max: 4 }
     });
 
 	
@@ -176,8 +176,8 @@ Level2.prototype.update = function() {
 	this.physics.arcade.collide(this.player, this.ground);
 	this.physics.arcade.collide(this.player, this.first_block_trigger, this.first_block_hit, null, this);
 	this.physics.arcade.overlap(this.player, this.health_trigger, this.showHealthBars, null, this);
-	this.physics.arcade.overlap(this.player, this.t_enemy_weapon.bullets, this.playerHit, null, this);
-	this.physics.arcade.overlap(this.weapon.bullets, this.t_enemy, this.enemyHit, null, this);
+//	this.physics.arcade.overlap(this.player, this.t_enemy_weapon.bullets, this.playerHit, null, this);
+//	this.physics.arcade.overlap(this.weapon.bullets, this.t_enemy, this.enemyHit, null, this);
 	
 	if (!this.player_has_gun_machinegun) {
 		this.physics.arcade.collide(this.player, this.machinegun_pickup_trigger, this.machinegun_trigger_hit, null, this);
@@ -347,93 +347,96 @@ Level2.prototype.machinegun_trigger_hit = function() {
 	this.player_has_gun_machinegun = true;
 	this.player.addChild(this.gun_machinegun_sprite);
 	this.gun_machinegun_sprite.renderable = true;
+	this.weapon.damage = 25;
+	this.player.weapon = this.weapon;
 	
-	this.showEnemy();
 	
-};
-
-Level2.prototype.showEnemy = function() {
-	// move enemy above map so we can slide it in from the top
-	this.t_enemy.y -= 300;
-	
-	this.game.add.tween(this.t_enemy).to( {y: this.t_enemy.y+300} , 1200, Phaser.Easing.Cubic.None, true);
-	this.t_enemy.setAll("renderable", true);
-	this.time.events.add(800, function() {
-		this.game.time.events.loop(600, this.aimEnemyTurrets, this);
-		this.game.time.events.loop(2000, this.moveEnemy, this);
-	}, this);
-	
-	var healthbar = new Phaser.Sprite(this.game, 0, -10, "healthbar", 0);
-	healthbar.scale.x = 20;
-	healthbar.anchor.x = 0.5;
-	this.t_enemy.healthbar = this.t_enemy.addChild(healthbar);
+//	this.showEnemy();
 	
 };
 
-Level2.prototype.updateEnemyHealthbar = function() {
-	var health_pct = this.t_enemy.health / this.t_enemy.max_health;
-	this.t_enemy.healthbar.scale.x = 20 * health_pct;
-	this.t_enemy.healthbar.frame = Math.floor(10 - (health_pct * 10));
-};
-
-Level2.prototype.moveEnemy = function() {
-	this.game.add.tween(this.t_enemy).to( {x: this.player.world.x} , 2000, Phaser.Easing.Linear.None, true);
-};
-
-Level2.prototype.aimEnemyTurrets = function() {
-	var t1_rot = -1.5708 + Phaser.Math.angleBetween(this.t_enemy_t1.world.x, this.t_enemy_t1.world.y, this.player.world.x, this.player.world.y);
-	var t2_rot = -1.5708 + Phaser.Math.angleBetween(this.t_enemy_t2.world.x, this.t_enemy_t2.world.y, this.player.world.x, this.player.world.y);
-	
-	this.game.add.tween(this.t_enemy_t1).to({rotation: t1_rot}, 200, Phaser.Easing.Linear.None, true);
-	this.game.add.tween(this.t_enemy_t2).to({rotation: t2_rot}, 200, Phaser.Easing.Linear.None, true);
-	
-	this.time.events.add(200, function() {
-		var turret_barrel_1 = {
-			x: this.t_enemy_t1.world.x + (this.t_enemy_t1.height * 1.2) * -1 * Math.sin(this.t_enemy_t1.rotation),
-			y: this.t_enemy_t1.world.y + (this.t_enemy_t1.height * 1.2) * Math.cos(this.t_enemy_t1.rotation),
-		};
-	
-	
-		var turret_barrel_2 = {
-			x: this.t_enemy_t2.world.x + (this.t_enemy_t2.height * 1.2) * -1 * Math.sin(this.t_enemy_t2.rotation),
-			y: this.t_enemy_t2.world.y + (this.t_enemy_t2.height * 1.2) * Math.cos(this.t_enemy_t2.rotation),
-		};
-	
-		if (this.t_enemy.alive) {
-			this.t_enemy_weapon.fire(turret_barrel_1, this.player.world.x, this.player.world.y);
-			this.t_enemy_weapon.fire(turret_barrel_2, this.player.world.x, this.player.world.y);
-		}
-	}, this);
-};
-
-Level2.prototype.playerHit = function(player, bullet) {
-	this.player.damage(5);
-	bullet.kill();
-};
-
-Level2.prototype.enemyHit = function(bullet, enemy) {
-	bullet.kill();
-	if (enemy.parent == this.t_enemy) {
-		this.t_enemy.health -= 50;
-		this.updateEnemyHealthbar();
-		if (this.t_enemy.health <= 0) {
-			this.t_enemy.alive = false;
-			var enemy_sprite = this.ps_manager.createImageZone(enemy.key);
-			console.log("killing enemy with sprite key: ", enemy.key);
-			this.enemydie_emitter = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.world.bounds.width, this.world.bounds.height);
-			this.enemydie_emitter.addToWorld();
-			
-		    this.enemydie_emitter.emit('spritedie', enemy.world.x - (enemy.width / 2), enemy.world.y, { zone: enemy_sprite, full: true, setColor: true });
-		    console.log(enemy.world.x, enemy.world.y);
-		    this.t_enemy.destroy();
-		    
-		    this.time.events.add(2000, function() {
-		    	this.ps_manager.removeEmitter(this.enemydie_emitter);
-		    	this.enemydie_emitter.destroy();
-			}, this);
-		    
-			
-		}
-		
-	}
-};
+//Level2.prototype.showEnemy = function() {
+//	// move enemy above map so we can slide it in from the top
+//	this.t_enemy.y -= 300;
+//	
+//	this.game.add.tween(this.t_enemy).to( {y: this.t_enemy.y+300} , 1200, Phaser.Easing.Cubic.None, true);
+//	this.t_enemy.setAll("renderable", true);
+//	this.time.events.add(800, function() {
+//		this.game.time.events.loop(600, this.aimEnemyTurrets, this);
+//		this.game.time.events.loop(2000, this.moveEnemy, this);
+//	}, this);
+//	
+//	var healthbar = new Phaser.Sprite(this.game, 0, -10, "healthbar", 0);
+//	healthbar.scale.x = 20;
+//	healthbar.anchor.x = 0.5;
+//	this.t_enemy.healthbar = this.t_enemy.addChild(healthbar);
+//	
+//};
+//
+//Level2.prototype.updateEnemyHealthbar = function() {
+//	var health_pct = this.t_enemy.health / this.t_enemy.max_health;
+//	this.t_enemy.healthbar.scale.x = 20 * health_pct;
+//	this.t_enemy.healthbar.frame = Math.floor(10 - (health_pct * 10));
+//};
+//
+//Level2.prototype.moveEnemy = function() {
+//	this.game.add.tween(this.t_enemy).to( {x: this.player.world.x} , 2000, Phaser.Easing.Linear.None, true);
+//};
+//
+//Level2.prototype.aimEnemyTurrets = function() {
+//	var t1_rot = -1.5708 + Phaser.Math.angleBetween(this.t_enemy_t1.world.x, this.t_enemy_t1.world.y, this.player.world.x, this.player.world.y);
+//	var t2_rot = -1.5708 + Phaser.Math.angleBetween(this.t_enemy_t2.world.x, this.t_enemy_t2.world.y, this.player.world.x, this.player.world.y);
+//	
+//	this.game.add.tween(this.t_enemy_t1).to({rotation: t1_rot}, 200, Phaser.Easing.Linear.None, true);
+//	this.game.add.tween(this.t_enemy_t2).to({rotation: t2_rot}, 200, Phaser.Easing.Linear.None, true);
+//	
+//	this.time.events.add(200, function() {
+//		var turret_barrel_1 = {
+//			x: this.t_enemy_t1.world.x + (this.t_enemy_t1.height * 1.2) * -1 * Math.sin(this.t_enemy_t1.rotation),
+//			y: this.t_enemy_t1.world.y + (this.t_enemy_t1.height * 1.2) * Math.cos(this.t_enemy_t1.rotation),
+//		};
+//	
+//	
+//		var turret_barrel_2 = {
+//			x: this.t_enemy_t2.world.x + (this.t_enemy_t2.height * 1.2) * -1 * Math.sin(this.t_enemy_t2.rotation),
+//			y: this.t_enemy_t2.world.y + (this.t_enemy_t2.height * 1.2) * Math.cos(this.t_enemy_t2.rotation),
+//		};
+//	
+//		if (this.t_enemy.alive) {
+//			this.t_enemy_weapon.fire(turret_barrel_1, this.player.world.x, this.player.world.y);
+//			this.t_enemy_weapon.fire(turret_barrel_2, this.player.world.x, this.player.world.y);
+//		}
+//	}, this);
+//};
+//
+//Level2.prototype.playerHit = function(player, bullet) {
+//	this.player.damage(5);
+//	bullet.kill();
+//};
+//
+//Level2.prototype.enemyHit = function(bullet, enemy) {
+//	bullet.kill();
+//	if (enemy.parent == this.t_enemy) {
+//		this.t_enemy.health -= 50;
+//		this.updateEnemyHealthbar();
+//		if (this.t_enemy.health <= 0) {
+//			this.t_enemy.alive = false;
+//			var enemy_sprite = this.ps_manager.createImageZone(enemy.key);
+//			console.log("killing enemy with sprite key: ", enemy.key);
+//			this.enemydie_emitter = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.world.bounds.width, this.world.bounds.height);
+//			this.enemydie_emitter.addToWorld();
+//			
+//		    this.enemydie_emitter.emit('spritedie', enemy.world.x - (enemy.width / 2), enemy.world.y, { zone: enemy_sprite, full: true, setColor: true });
+//		    console.log(enemy.world.x, enemy.world.y);
+//		    this.t_enemy.destroy();
+//		    
+//		    this.time.events.add(2000, function() {
+//		    	this.ps_manager.removeEmitter(this.enemydie_emitter);
+//		    	this.enemydie_emitter.destroy();
+//			}, this);
+//		    
+//			
+//		}
+//		
+//	}
+//};
