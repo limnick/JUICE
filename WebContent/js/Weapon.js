@@ -6,8 +6,12 @@ Weapon = function (options) {
 	this.player = this.ctx.player;
 };
 
-Weapon.prototype.pickup = function() {
-
+Weapon.prototype.pickup = function(trigger) {
+	this.ctx.game.add.tween(trigger).to( {
+		y: trigger.y - 80,
+		alpha: 0,
+	} , 400, Phaser.Easing.Linear.None, true);
+	this.game.add.tween(trigger.scale).to( {x: 1, y: 1} , 400, Phaser.Easing.Linear.None, true);
 };
 
 Weapon.prototype.equip = function() {
@@ -16,6 +20,14 @@ Weapon.prototype.equip = function() {
 
 Weapon.prototype.unequip = function() {
 	
+};
+
+Weapon.prototype.update = function(blockers) {
+	this.ctx.physics.arcade.overlap(this.bullets, blockers, this.onBlockerHit, null, this);
+};
+
+Weapon.prototype.onBlockerHit = function(bullet, blocker) {
+	bullet.kill();
 };
 
 
@@ -28,16 +40,9 @@ Weapon_Machinegun.prototype = Object.create(Weapon.prototype);
 Weapon_Machinegun.prototype.constructor = Weapon;
 Weapon_Machinegun.prototype.parent = Weapon.prototype;
 
-Weapon_Machinegun.prototype.pickup = function(trigger) {
-	this.parent.pickup.call(this);
-
-	this.ctx.game.add.tween(trigger).to( {
-		y: trigger.y - 80,
-		alpha: 0,
-	} , 400, Phaser.Easing.Linear.None, true);
-	this.game.add.tween(trigger.scale).to( {x: 1, y: 1} , 400, Phaser.Easing.Linear.None, true);
-
-};
+//Weapon_Machinegun.prototype.pickup = function(trigger) {
+//	this.parent.pickup.call(this, trigger);
+//};
 
 Weapon_Machinegun.prototype.equip = function() {
 	this.parent.equip.call(this);
@@ -63,7 +68,9 @@ Weapon_Machinegun.prototype.equip = function() {
 	this.player.weapon = this;
 };
 
-Weapon_Machinegun.prototype.update = function() {
+Weapon_Machinegun.prototype.update = function(blockers) {
+	this.parent.update.call(this, blockers);
+	
 	var scalefix = (this.player.scale.x > 0) ? 1 : -1;
 	this.sprite.rotation = Phaser.Math.angleBetween(scalefix * this.sprite.world.x, this.sprite.world.y, 
 																   scalefix * this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
