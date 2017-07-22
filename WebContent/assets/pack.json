@@ -113,10 +113,22 @@
             "frameMax": -1,
             "margin": 0,
             "spacing": 0
+        },
+        {
+            "type": "image",
+            "key": "metalslug",
+            "url": "assets/sprites/backgrounds/metalslug.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "metalslug_fg",
+            "url": "assets/sprites/foregrounds/metalslug.png",
+            "overwrite": false
         }
     ],
     "meta": {
-        "generated": "1499807721415",
+        "generated": "1500699004519",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

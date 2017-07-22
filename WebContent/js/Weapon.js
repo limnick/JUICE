@@ -7,11 +7,13 @@ Weapon = function (options) {
 };
 
 Weapon.prototype.pickup = function(trigger) {
-	this.ctx.game.add.tween(trigger).to( {
-		y: trigger.y - 80,
-		alpha: 0,
-	} , 400, Phaser.Easing.Linear.None, true);
-	this.game.add.tween(trigger.scale).to( {x: 1, y: 1} , 400, Phaser.Easing.Linear.None, true);
+	if (trigger) {
+		this.ctx.game.add.tween(trigger).to( {
+			y: trigger.y - 80,
+			alpha: 0,
+		} , 400, Phaser.Easing.Linear.None, true);
+		this.game.add.tween(trigger.scale).to( {x: 1, y: 1} , 400, Phaser.Easing.Linear.None, true);
+	}
 };
 
 Weapon.prototype.equip = function() {
