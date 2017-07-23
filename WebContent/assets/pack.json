@@ -157,10 +157,30 @@
             "frameMax": -1,
             "margin": 0,
             "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "water_temple_outside",
+            "url": "assets/sprites/backgrounds/water_temple_outside_1x8.png",
+            "frameWidth": 800,
+            "frameHeight": 330,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "factory",
+            "url": "assets/sprites/backgrounds/factory_1x8.png",
+            "frameWidth": 752,
+            "frameHeight": 224,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
         }
     ],
     "meta": {
-        "generated": "1500781413691",
+        "generated": "1500800424878",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

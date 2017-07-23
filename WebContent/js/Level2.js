@@ -98,6 +98,11 @@ Level2.prototype.create = function() {
 	this.triggers_invis = scene.fTriggers_invis;
 	this.health_trigger = scene.fShow_health_trigger;
 	this.water_floor = scene.fWater_floor;
+	this.bg_anims = [scene.fWater_temple, scene.fWater_temple_outside, scene.fFactory, ];
+	
+	this.bg_anims.forEach(function(bg_anim){
+		bg_anim.animations.play("idle");
+	}, this);
 
 	// enemies
 	
