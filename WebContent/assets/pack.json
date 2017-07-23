@@ -125,10 +125,42 @@
             "key": "metalslug_fg",
             "url": "assets/sprites/foregrounds/metalslug.png",
             "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "bulletbill_lg",
+            "url": "assets/sprites/enemies/mario_01.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "bulletbill_sm",
+            "url": "assets/sprites/enemies/mario_03.png",
+            "overwrite": false
+        },
+        {
+            "type": "spritesheet",
+            "key": "explosion_sm",
+            "url": "assets/sprites/explosions/explosion_sm.png",
+            "frameWidth": 103,
+            "frameHeight": 97,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "water_temple",
+            "url": "assets/sprites/backgrounds/water_temple_1x8.png",
+            "frameWidth": 1024,
+            "frameHeight": 384,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
         }
     ],
     "meta": {
-        "generated": "1500699004519",
+        "generated": "1500781413691",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

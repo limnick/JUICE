@@ -50,6 +50,11 @@ Level2.prototype.init = function() {
         vy: { min: .1, max: .8 }
     });
 	
+	this.spawnList = [
+        {x: 1200, spawned: false, klass: BomberEnemy, enemy: null},
+        {x: 2000, spawned: false, klass: BomberEnemy, enemy: null},
+    ];
+	
 	this.first_block_gag_triggered = false;
 	this.first_block_gag_finished = true;
 	this.player_has_control = true;
@@ -138,19 +143,20 @@ Level2.prototype.create = function() {
 	
 	// particle emitters
 	this.bloodParticleGravity = 0.2;
-	this.emitter_blood_big = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL);
+	var bloodParticleGravityP = new Phaser.Point(0, 0);
+	this.emitter_blood_big = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, bloodParticleGravityP);
 	this.emitter_blood_big.renderer.pixelSize = 5;
 	this.emitter_blood_big.force.y = this.bloodParticleGravity;
 	this.emitter_blood_big.addToWorld(this.emitter_group);
 	
-	this.emitter_blood_sm = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL);
+	this.emitter_blood_sm = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, bloodParticleGravityP);
 	this.emitter_blood_sm.renderer.pixelSize = 2;
 	this.emitter_blood_sm.force.y = this.bloodParticleGravity;
 	this.emitter_blood_sm.addToWorld(this.emitter_group);
 	
 	this.emitter_splash = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL);
 	this.emitter_splash.renderer.pixelSize = 2;
-	this.emitter_blood_sm.force.y = 0.0;
+	this.emitter_splash.force.y = 0.0;
 	this.emitter_splash.addToWorld(this.emitter_group);
 	
 	// first block gag
@@ -171,9 +177,6 @@ Level2.prototype.update = function() {
 	
 	// world bounds track player location
 	this.world.setBounds(Math.max(0, this.player.x - 400), -200, 1000, 800);
-//	this.emitter_splash.renderer.display.position.set(this.camera.world.x, this.camera.world.y);
-	//this.emitter_splash.renderer.display.position.set()
-	//debugger;
 
 	// update player velocity
 	this.physics.arcade.overlap(this.player, this.water_floor, this.triggerSplash, null, this);
@@ -252,6 +255,18 @@ Level2.prototype.update = function() {
 		var e = this.enemies[i];
 		e.update();
 	}
+		
+	for (var i = 0; i < this.spawnList.length; i++) {
+		spawnMetadata = this.spawnList[i];
+		if (spawnMetadata.spawned) {
+			spawnMetadata.enemy.update();
+		} else if (this.player.x >= spawnMetadata.x && !spawnMetadata.spawned) {
+			spawnMetadata.enemy = new spawnMetadata.klass({ctx: this,});
+			spawnMetadata.spawned = true;
+			spawnMetadata.enemy.show();
+		}
+		this.spawnList[i] = spawnMetadata;
+	}
 
 	if (this.health_bars_visible) {
 		this.life.updateCrop();
@@ -260,7 +275,7 @@ Level2.prototype.update = function() {
 
 Level2.prototype.render = function() {
 //	if (this.enemydie_emitter) this.enemydie_emitter.debug(432, 522);
-	this.emitter_splash.debug(432, 522);
+//	this.emitter_splash.debug(432, 522);
 };
 
 

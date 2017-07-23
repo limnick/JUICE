@@ -48,8 +48,8 @@
                 "id": "f9aa1753-a560-4a51-80e5-72b2cc8c3e1e",
                 "info": {
                   "editorName": "Cloud311",
-                  "x": 2586,
-                  "y": 102,
+                  "x": 2744,
+                  "y": 186,
                   "editorClosed": true,
                   "children": [
                     {
@@ -521,8 +521,8 @@
                 "id": "0c4b9352-deb2-48eb-b0e9-1c7fb274e7d2",
                 "info": {
                   "editorName": "Cloud2",
-                  "x": 2048,
-                  "y": 160,
+                  "x": 2012,
+                  "y": 211,
                   "editorClosed": true,
                   "children": [
                     {
@@ -686,11 +686,76 @@
               },
               {
                 "type": "group",
+                "id": "c2377f7a-44c9-49d1-94d4-2a033b4e8c94",
+                "info": {
+                  "editorName": "Cloud111",
+                  "x": 3340,
+                  "y": 236,
+                  "editorClosed": true,
+                  "children": [
+                    {
+                      "type": "spritesheet",
+                      "id": "6f4aa8a5-a9be-4d30-bad4-d3caaad32761",
+                      "asset": "2",
+                      "info": {
+                        "editorName": "mario_nes_tileset1131",
+                        "x": 32
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "33364115-08df-48a3-a4ce-512acad5186e",
+                      "asset": "3",
+                      "info": {"editorName": "mario_nes_tileset1221"}
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "700803eb-28d4-45da-96fc-4141f387bef3",
+                      "asset": "4",
+                      "info": {
+                        "editorName": "mario_nes_tileset1321",
+                        "x": 64
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "20672789-56ee-46d6-a6d9-d50a0b0976f3",
+                      "asset": "5",
+                      "info": {
+                        "editorName": "mario_nes_tileset1421",
+                        "y": 32
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "8d17db41-67e2-4180-afcd-0d9de057f4be",
+                      "asset": "6",
+                      "info": {
+                        "editorName": "mario_nes_tileset1521",
+                        "x": 32,
+                        "y": 32
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "3d41f997-c083-4d01-8c2a-ad3555181aaa",
+                      "asset": "7",
+                      "info": {
+                        "editorName": "mario_nes_tileset1621",
+                        "x": 64,
+                        "y": 32
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "group",
                 "id": "53faddd6-3978-41d2-b669-d76d211f1d09",
                 "info": {
                   "editorName": "Cloud11",
-                  "x": 1373,
-                  "y": 65,
+                  "x": 1416,
+                  "y": 160,
                   "editorClosed": true,
                   "children": [
                     {
@@ -778,8 +843,8 @@
                 "asset": "14",
                 "info": {
                   "editorName": "mario_nes_tileset33221",
-                  "x": 5063,
-                  "y": 378,
+                  "x": 5065,
+                  "y": 390,
                   "width": 160,
                   "height": 32
                 }
@@ -802,8 +867,8 @@
                 "asset": "14",
                 "info": {
                   "editorName": "mario_nes_tileset32",
-                  "x": 5215,
-                  "y": 384,
+                  "x": 5220,
+                  "y": 408,
                   "rotation": 0.005235987755982988,
                   "width": 1435,
                   "height": 32
@@ -828,7 +893,7 @@
                 "info": {
                   "editorName": "mario_nes_tileset331",
                   "x": 5986,
-                  "y": 412,
+                  "y": 417,
                   "width": 32,
                   "height": 320
                 }
@@ -1211,7 +1276,7 @@
                 "asset": "15",
                 "info": {
                   "editorName": "mario_nes_tileset11131",
-                  "x": 3679,
+                  "x": 3680,
                   "y": 464,
                   "width": 128,
                   "height": 96
@@ -1224,7 +1289,7 @@
                 "info": {
                   "editorName": "mario_nes_tileset1113",
                   "x": 3808,
-                  "y": 372,
+                  "y": 368,
                   "width": 128,
                   "height": 192
                 }
@@ -1297,71 +1362,138 @@
           "info": {
             "editorName": "blocking_objects",
             "editorPublic": true,
-            "children": [{
-              "type": "group",
-              "id": "58d064c5-315d-40ca-b686-dbe4db4a7834",
-              "info": {
-                "editorName": "pipe",
-                "x": 1266,
-                "y": 464,
-                "editorClosed": true,
-                "children": [
-                  {
-                    "type": "spritesheet",
-                    "id": "a61e3ee3-be18-49eb-8bbb-b8842301c5df",
-                    "asset": "17",
-                    "info": {
-                      "editorName": "mario_nes_tileset18",
-                      "x": 32
+            "children": [
+              {
+                "type": "group",
+                "id": "9c725727-7b72-43b8-8429-62b83b026f1d",
+                "info": {
+                  "editorName": "pipe1",
+                  "x": 3096,
+                  "y": 464,
+                  "editorClosed": true,
+                  "children": [
+                    {
+                      "type": "spritesheet",
+                      "id": "79076d49-e3d7-4d1b-aa32-921461410a03",
+                      "asset": "17",
+                      "info": {
+                        "editorName": "mario_nes_tileset181",
+                        "x": 32
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "717fe3d3-9a99-4750-b55c-785787ca5659",
+                      "asset": "18",
+                      "info": {
+                        "editorName": "mario_nes_tileset172",
+                        "x": 32,
+                        "y": 32
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "9756ebd2-6da3-4a74-8fdd-224b81571ffe",
+                      "asset": "19",
+                      "info": {"editorName": "mario_nes_tileset191"}
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "88018a19-f03a-42d9-88ad-d642c65c7d36",
+                      "asset": "20",
+                      "info": {
+                        "editorName": "mario_nes_tileset202",
+                        "y": 32
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "9ad04305-1681-440b-9566-2d1ca9101bef",
+                      "asset": "20",
+                      "info": {
+                        "editorName": "mario_nes_tileset2011",
+                        "y": 64
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "b795446c-17c4-46ee-91f6-d621e3848dad",
+                      "asset": "18",
+                      "info": {
+                        "editorName": "mario_nes_tileset1711",
+                        "x": 32,
+                        "y": 64
+                      }
                     }
-                  },
-                  {
-                    "type": "spritesheet",
-                    "id": "d1018f5c-0cab-4e79-85b4-c0a91c7ac117",
-                    "asset": "18",
-                    "info": {
-                      "editorName": "mario_nes_tileset17",
-                      "x": 32,
-                      "y": 32
+                  ]
+                }
+              },
+              {
+                "type": "group",
+                "id": "58d064c5-315d-40ca-b686-dbe4db4a7834",
+                "info": {
+                  "editorName": "pipe",
+                  "x": 1266,
+                  "y": 464,
+                  "editorClosed": true,
+                  "children": [
+                    {
+                      "type": "spritesheet",
+                      "id": "a61e3ee3-be18-49eb-8bbb-b8842301c5df",
+                      "asset": "17",
+                      "info": {
+                        "editorName": "mario_nes_tileset18",
+                        "x": 32
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "d1018f5c-0cab-4e79-85b4-c0a91c7ac117",
+                      "asset": "18",
+                      "info": {
+                        "editorName": "mario_nes_tileset17",
+                        "x": 32,
+                        "y": 32
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "5df802ac-c280-46f0-ab32-a52d7d793436",
+                      "asset": "19",
+                      "info": {"editorName": "mario_nes_tileset19"}
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "0d3083e3-baf2-4d37-8abf-ba96c13fe527",
+                      "asset": "20",
+                      "info": {
+                        "editorName": "mario_nes_tileset20",
+                        "y": 32
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "7cc7f0b0-928e-4c90-a2c7-7e84c4dbef7e",
+                      "asset": "20",
+                      "info": {
+                        "editorName": "mario_nes_tileset201",
+                        "y": 64
+                      }
+                    },
+                    {
+                      "type": "spritesheet",
+                      "id": "061e04a3-fb49-4ea7-a6ad-179289011771",
+                      "asset": "18",
+                      "info": {
+                        "editorName": "mario_nes_tileset171",
+                        "x": 32,
+                        "y": 64
+                      }
                     }
-                  },
-                  {
-                    "type": "spritesheet",
-                    "id": "5df802ac-c280-46f0-ab32-a52d7d793436",
-                    "asset": "19",
-                    "info": {"editorName": "mario_nes_tileset19"}
-                  },
-                  {
-                    "type": "spritesheet",
-                    "id": "0d3083e3-baf2-4d37-8abf-ba96c13fe527",
-                    "asset": "20",
-                    "info": {
-                      "editorName": "mario_nes_tileset20",
-                      "y": 32
-                    }
-                  },
-                  {
-                    "type": "spritesheet",
-                    "id": "7cc7f0b0-928e-4c90-a2c7-7e84c4dbef7e",
-                    "asset": "20",
-                    "info": {
-                      "editorName": "mario_nes_tileset201",
-                      "y": 64
-                    }
-                  },
-                  {
-                    "type": "spritesheet",
-                    "id": "061e04a3-fb49-4ea7-a6ad-179289011771",
-                    "asset": "18",
-                    "info": {
-                      "editorName": "mario_nes_tileset171",
-                      "x": 32,
-                      "y": 64
-                    }
-                  }
-                ]
+                  ]
+                }
               }
-            }]
+            ]
           }
         },
         {
@@ -1371,8 +1503,8 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 11563,
-            "y": 466,
+            "x": 258,
+            "y": 488,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [
@@ -1516,6 +1648,18 @@
             "editorName": "UI",
             "editorPublic": true,
             "children": []
+          }
+        },
+        {
+          "type": "spritesheet",
+          "id": "5d1f48cb-de90-4982-b4c5-f2b3b9fb143a",
+          "asset": "25",
+          "info": {
+            "editorName": "water_temple",
+            "x": 16208,
+            "y": -119,
+            "scale.x": 2,
+            "scale.y": 2
           }
         }
       ]
@@ -1668,6 +1812,12 @@
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "metalslug_fg"
+    },
+    "25": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "water_temple",
+      "sprite": "0"
     }
   }
 }

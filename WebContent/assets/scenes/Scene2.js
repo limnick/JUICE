@@ -22,7 +22,7 @@ function Scene2(aGame, aParent) {
 	metalslug.scale.setTo(4.0, 4.0);
 
 	var Cloud311 = this.game.add.group(background);
-	Cloud311.position.setTo(2586, 102);
+	Cloud311.position.setTo(2744, 186);
 
 	this.game.add.sprite(32, 0, 'mario_nes_tileset', 661, Cloud311);
 
@@ -127,7 +127,7 @@ function Scene2(aGame, aParent) {
 	this.game.add.sprite(64, 32, 'mario_nes_tileset', 695, Cloud1);
 
 	var Cloud2 = this.game.add.group(background);
-	Cloud2.position.setTo(2048, 160);
+	Cloud2.position.setTo(2012, 211);
 
 	this.game.add.sprite(32, 0, 'mario_nes_tileset', 661, Cloud2);
 
@@ -164,8 +164,23 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(96, 32, 'mario_nes_tileset', 695, Cloud21);
 
+	var Cloud111 = this.game.add.group(background);
+	Cloud111.position.setTo(3340, 236);
+
+	this.game.add.sprite(32, 0, 'mario_nes_tileset', 661, Cloud111);
+
+	this.game.add.sprite(0, 0, 'mario_nes_tileset', 660, Cloud111);
+
+	this.game.add.sprite(64, 0, 'mario_nes_tileset', 662, Cloud111);
+
+	this.game.add.sprite(0, 32, 'mario_nes_tileset', 693, Cloud111);
+
+	this.game.add.sprite(32, 32, 'mario_nes_tileset', 694, Cloud111);
+
+	this.game.add.sprite(64, 32, 'mario_nes_tileset', 695, Cloud111);
+
 	var Cloud11 = this.game.add.group(background);
-	Cloud11.position.setTo(1373, 65);
+	Cloud11.position.setTo(1416, 160);
 
 	this.game.add.sprite(32, 0, 'mario_nes_tileset', 661, Cloud11);
 
@@ -183,16 +198,16 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.tileSprite(-32, 96, 32, 464, 'mario_nes_tileset', 894, floor);
 
-	this.game.add.tileSprite(5063, 378, 160, 32, 'mario_nes_tileset', 894, floor);
+	this.game.add.tileSprite(5065, 390, 160, 32, 'mario_nes_tileset', 894, floor);
 
 	this.game.add.tileSprite(3936, 372, 1152, 32, 'mario_nes_tileset', 894, floor);
 
-	var mario_nes_tileset32 = this.game.add.tileSprite(5215, 384, 1435, 32, 'mario_nes_tileset', 894, floor);
+	var mario_nes_tileset32 = this.game.add.tileSprite(5220, 408, 1435, 32, 'mario_nes_tileset', 894, floor);
 	mario_nes_tileset32.angle = 0.3;
 
 	this.game.add.tileSprite(5373, 542, 1280, 32, 'mario_nes_tileset', 894, floor);
 
-	this.game.add.tileSprite(5986, 412, 32, 320, 'mario_nes_tileset', 894, floor);
+	this.game.add.tileSprite(5986, 417, 32, 320, 'mario_nes_tileset', 894, floor);
 
 	this.game.add.tileSprite(6652, 542, 1000, 32, 'mario_nes_tileset', 894, floor);
 
@@ -256,9 +271,9 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.tileSprite(2425, 368, 32, 192, 'mario_nes_tileset', 1, walls);
 
-	this.game.add.tileSprite(3679, 464, 128, 96, 'mario_nes_tileset', 1, walls);
+	this.game.add.tileSprite(3680, 464, 128, 96, 'mario_nes_tileset', 1, walls);
 
-	this.game.add.tileSprite(3808, 372, 128, 192, 'mario_nes_tileset', 1, walls);
+	this.game.add.tileSprite(3808, 368, 128, 192, 'mario_nes_tileset', 1, walls);
 
 	this.game.add.tileSprite(2224, 432, 32, 128, 'mario_nes_tileset', 1, walls);
 
@@ -271,6 +286,21 @@ function Scene2(aGame, aParent) {
 	this.game.add.tileSprite(946, 323, 160, 32, 'mario_nes_tileset', 1, walls);
 
 	var blocking_objects = this.game.add.group(this);
+
+	var pipe1 = this.game.add.group(blocking_objects);
+	pipe1.position.setTo(3096, 464);
+
+	this.game.add.sprite(32, 0, 'mario_nes_tileset', 265, pipe1);
+
+	this.game.add.sprite(32, 32, 'mario_nes_tileset', 298, pipe1);
+
+	this.game.add.sprite(0, 0, 'mario_nes_tileset', 264, pipe1);
+
+	this.game.add.sprite(0, 32, 'mario_nes_tileset', 297, pipe1);
+
+	this.game.add.sprite(0, 64, 'mario_nes_tileset', 297, pipe1);
+
+	this.game.add.sprite(32, 64, 'mario_nes_tileset', 298, pipe1);
 
 	var pipe = this.game.add.group(blocking_objects);
 	pipe.position.setTo(1266, 464);
@@ -287,7 +317,7 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(32, 64, 'mario_nes_tileset', 298, pipe);
 
-	var player = this.game.add.sprite(11563, 466, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(258, 488, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
@@ -317,6 +347,9 @@ function Scene2(aGame, aParent) {
 	metalslug_fg.scale.setTo(4.0, 4.0);
 
 	var UI = this.game.add.group(this);
+
+	var water_temple = this.game.add.sprite(16208, -119, 'water_temple', 0, this);
+	water_temple.scale.setTo(2.0, 2.0);
 
 	 // public fields
 

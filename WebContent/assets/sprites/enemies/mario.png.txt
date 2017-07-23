@@ -1,0 +1,1 @@
+mario_01.png.png 4 4, mario_02.png.png 76 26, mario_03.png.png 74 49, mario_04.png.png 14 77, mario_05.png.png 49 78.
