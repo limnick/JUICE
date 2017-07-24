@@ -281,7 +281,7 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.tileSprite(4142, 293, 32, 16, 'mario_nes_tileset', 894, floor);
 
-	this.game.add.tileSprite(16233, 517, 5000, 32, 'mario_nes_tileset', 894, floor);
+	this.game.add.tileSprite(16233, 517, 7000, 32, 'mario_nes_tileset', 894, floor);
 
 	var walls = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 
@@ -333,7 +333,7 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(32, 64, 'mario_nes_tileset', 298, pipe);
 
-	var player = this.game.add.sprite(18136, 482, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(2137, 476, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);

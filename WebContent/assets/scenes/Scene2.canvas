@@ -1352,7 +1352,7 @@
                   "editorName": "mario_nes_tileset3322211112122",
                   "x": 16233,
                   "y": 517,
-                  "width": 5000,
+                  "width": 7000,
                   "height": 32
                 }
               }
@@ -1612,8 +1612,8 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 18136,
-            "y": 482,
+            "x": 2137,
+            "y": 476,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [

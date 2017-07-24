@@ -51,8 +51,11 @@ Level2.prototype.init = function() {
     });
 	
 	this.spawnList = [
-        {x: 1200, spawned: false, klass: BomberEnemy, enemy: null},
-        {x: 2000, spawned: false, klass: BomberEnemy, enemy: null},
+        {x: 1200, spawned: false, klass: BomberEnemy, args: {}, enemy: null},
+        {x: 2000, spawned: false, klass: BomberEnemy, args: {}, enemy: null},
+        {x: 1000, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: 1640, y: 532}} , enemy: null},
+        {x: 2200, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: 2850, y: 532}} , enemy: null},
+        {x: 2000, spawned: false, klass: WalkerEnemy2, args: {spawn_position: {x: 2253, y: 404}} , enemy: null},
     ];
 	
 	this.first_block_gag_triggered = false;
@@ -217,8 +220,10 @@ Level2.prototype.update = function() {
 	var standing = this.player.body.touching.down;
 
 	if (this.cheatButton.isDown) {
-//		this.weapons.machinegun.equip();
-		this.emitter_blood_sm.emit('blood', (this.player.body.x + (this.player.body.width / 2)) - this.camera.position.x, this.player.body.y, { total: 7, repeat: 5, frequency: 1 });
+		if (!this.player.weapon) {
+			this.weapons.machinegun.equip();
+		}
+//		this.emitter_blood_sm.emit('blood', (this.player.body.x + (this.player.body.width / 2)) - this.camera.position.x, this.player.body.y, { total: 7, repeat: 5, frequency: 1 });
 	}
 	
 	if (!this.first_block_gag_finished) {
@@ -266,7 +271,8 @@ Level2.prototype.update = function() {
 		if (spawnMetadata.spawned) {
 			spawnMetadata.enemy.update();
 		} else if (this.player.x >= spawnMetadata.x && !spawnMetadata.spawned) {
-			spawnMetadata.enemy = new spawnMetadata.klass({ctx: this,});
+			spawnMetadata.args.ctx = this;
+			spawnMetadata.enemy = new spawnMetadata.klass(spawnMetadata.args);
 			spawnMetadata.spawned = true;
 			spawnMetadata.enemy.show();
 		}

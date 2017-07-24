@@ -11,6 +11,7 @@ Enemy = function (options) {
 	
 	this.body = this.game.add.sprite(0, 0, this.base_sprite);
 	this.body.anchor.set(0.5, 0);
+	
 	this.group.add(this.body);
 	this.group.setAll("renderable", false);
 	
@@ -111,6 +112,7 @@ Enemy.prototype.update = function() {
 Enemy.prototype.die = function() {
 	this.can_shoot = false;
 	this.can_move = false;
+	this.updateEnemyHealthbar();
 };
 
 Enemy.prototype.destroy = function() {
@@ -118,6 +120,153 @@ Enemy.prototype.destroy = function() {
 	this.healthbar.destroy();
 };
 
+
+
+WalkerEnemy = function(options) {
+	this.base_sprite = "digdug";
+	this.spawn_position = options.spawn_position;
+	console.log("walker init");
+	
+	
+	return Enemy.call(this, options);	
+};
+
+WalkerEnemy.prototype = Object.create(Enemy.prototype);
+WalkerEnemy.prototype.constructor = Enemy;
+WalkerEnemy.prototype.parent = Enemy.prototype;
+
+
+WalkerEnemy.prototype.show = function() {
+	console.log("walker show");
+	this.initCycle();
+	this.createWeapons();
+	this.body.scale.set(2, 2);
+	this.body.animations.add("walk", null, 6);
+	Enemy.prototype.show.call(this);
+	
+	// block spawn in place
+	this.group.position.set(this.spawn_position.x, this.spawn_position.y);
+};
+
+WalkerEnemy.prototype.update = function() {
+	this.handleCycle();
+	Enemy.prototype.update.call(this);
+	
+};
+
+WalkerEnemy.prototype.die = function() {
+	if (!this.alive) return; // we're already in the middle of dying, no need to die twice
+
+	Enemy.prototype.die.call(this);
+	
+	var enemy_sprite = this.ctx.ps_manager.createImageZone(this.base_sprite);
+	this.enemydie_emitter = this.ctx.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.ctx.world.bounds.width, this.ctx.world.bounds.height);
+	this.enemydie_emitter.addToWorld();
+	
+    this.enemydie_emitter.emit('spritedie', this.body.world.x - (this.body.width / 2), this.body.world.y, { zone: enemy_sprite, full: true, setColor: true });
+    this.body.destroy();
+    this.alive = false;
+    
+    this.ctx.time.events.add(2000, function() {
+    	this.ctx.ps_manager.removeEmitter(this.enemydie_emitter);
+    	this.enemydie_emitter.destroy();
+    	
+    	this.destroy();
+
+	}, this);
+    
+};
+
+WalkerEnemy.prototype.playerHit = function(player, bullet) {
+	this.player.damage(5);
+	bullet.kill();
+};
+
+WalkerEnemy.prototype.wallHit = function(wall, bullet) {
+	bullet.kill();
+};
+
+
+WalkerEnemy.prototype.createWeapons = function() {
+	this.weapon = this.ctx.add.weapon(80, "items");
+	this.weapon.setBulletFrames(8, 10, true);
+	this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
+	this.weapon.bulletSpeed = 100;
+	this.weapon.bulletGravity.y = -800;
+	this.weapon.fireRate = 0;
+	this.weapon.multiFire = true;
+	this.weaponDamage = 5;
+};
+
+WalkerEnemy.prototype.doMove = function() {};
+
+WalkerEnemy.prototype.walkLeft = function() {
+	this.body.scale.x = -2;
+	this.body.animations.play("walk");
+	this.group.x -= 1;
+};
+
+WalkerEnemy.prototype.walkRight = function() {
+	this.body.scale.x = 2;
+	this.body.animations.play("walk");
+	this.group.x += 1;
+};
+
+WalkerEnemy.prototype.stand = function() {
+	this.body.animations.stop();
+};
+
+WalkerEnemy.prototype.doShoot = function() {
+//	this.weapon.fire(turret_barrel_1, this.player.world.x, this.player.world.y);
+};
+
+WalkerEnemy.prototype.initCycle = function() {
+	this.cycle_funcs = [
+    	{time: 4000, func: this.walkLeft, },
+    	{time: 1000, func: this.stand, },
+    	{time: 4000, func: this.walkRight, },
+    	{time: 1000, func: this.stand, },
+   	];
+	this.cycle_funcs_len = this.cycle_funcs.length;
+	this.cycle_phase = -1;
+	this.cycle_timer = 500;
+	this.cycle_func = null;
+};
+
+WalkerEnemy.prototype.handleCycle = function() {
+	var tickDelta = (this.lastTick) ? this.game.time.now - this.lastTick : 0;
+
+	this.cycle_timer -= tickDelta;
+	if (this.cycle_timer <= 0) {
+		this.cycle_phase = (this.cycle_phase + 1) % this.cycle_funcs_len;
+		this.cycle_func = this.cycle_funcs[this.cycle_phase].func;
+		this.cycle_timer = this.cycle_funcs[this.cycle_phase].time;
+//		console.log("cycle change triggered", this.cycle_func, this.cycle_phase, this.cycle_timer);
+	}
+	
+	if (this.cycle_func) this.cycle_func.call(this);
+};
+
+WalkerEnemy2 = function(options) {
+	return WalkerEnemy.call(this, options);
+};
+
+WalkerEnemy2.prototype = Object.create(WalkerEnemy.prototype);
+WalkerEnemy2.prototype.constructor = WalkerEnemy;
+WalkerEnemy2.prototype.parent = WalkerEnemy.prototype;
+
+WalkerEnemy2.prototype.initCycle = function() {
+	this.cycle_funcs = [
+    	{time: 500, func: this.walkLeft, },
+    	{time: 1000, func: this.stand, },
+    	{time: 500, func: this.walkRight, },
+    	{time: 1000, func: this.stand, },
+   	];
+	this.cycle_funcs_len = this.cycle_funcs.length;
+	this.cycle_phase = -1;
+	this.cycle_timer = 500;
+	this.cycle_func = null;
+};
 
 ShootingEnemy = function(options) {
 	this.base_sprite = "tetris_t";
