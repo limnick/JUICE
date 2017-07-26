@@ -351,8 +351,6 @@ function Scene2(aGame, aParent) {
 
 	var triggers_invis = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 
-	var show_health_trigger = this.game.add.tileSprite(672, 64, 800, 500, 'mario_nes_tileset', 894, triggers_invis);
-
 	var enemy_spawn_trigger_1 = this.game.add.tileSprite(1075, 493, 64, 64, 'mario_nes_tileset', 894, triggers_invis);
 
 	var EmitterGroup = this.game.add.group(this);
@@ -378,7 +376,6 @@ function Scene2(aGame, aParent) {
 	this.fGun_machinegun = gun_machinegun;
 	this.fFirst_block_trigger = first_block_trigger;
 	this.fTriggers_invis = triggers_invis;
-	this.fShow_health_trigger = show_health_trigger;
 	this.fEnemy_spawn_trigger_1 = enemy_spawn_trigger_1;
 	this.fEmitterGroup = EmitterGroup;
 	this.fUI = UI;

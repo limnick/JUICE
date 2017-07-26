@@ -1692,34 +1692,19 @@
             "editorPublic": true,
             "editorShow": false,
             "physicsGroup": true,
-            "children": [
-              {
-                "type": "tileSprite",
-                "id": "42e0c90c-6360-46e5-bba3-e2a9039c1a4f",
-                "asset": "17",
-                "info": {
-                  "editorName": "show_health_trigger",
-                  "editorPublic": true,
-                  "x": 672,
-                  "y": 64,
-                  "width": 800,
-                  "height": 500
-                }
-              },
-              {
-                "type": "tileSprite",
-                "id": "fb00d690-6b26-464a-bbee-4a188f412910",
-                "asset": "17",
-                "info": {
-                  "editorName": "enemy_spawn_trigger_1",
-                  "editorPublic": true,
-                  "x": 1075,
-                  "y": 493,
-                  "width": 64,
-                  "height": 64
-                }
+            "children": [{
+              "type": "tileSprite",
+              "id": "fb00d690-6b26-464a-bbee-4a188f412910",
+              "asset": "17",
+              "info": {
+                "editorName": "enemy_spawn_trigger_1",
+                "editorPublic": true,
+                "x": 1075,
+                "y": 493,
+                "width": 64,
+                "height": 64
               }
-            ]
+            }]
           }
         },
         {

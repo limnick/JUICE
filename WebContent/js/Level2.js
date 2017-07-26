@@ -58,6 +58,10 @@ Level2.prototype.init = function() {
         {x: 2000, spawned: false, klass: WalkerEnemy2, args: {spawn_position: {x: 2253, y: 404}} , enemy: null},
     ];
 	
+	this.funcTriggers = [
+        {x: 700, func: this.showHealthBars},
+	];
+	
 	this.first_block_gag_triggered = false;
 	this.first_block_gag_finished = true;
 	this.player_has_control = true;
@@ -87,6 +91,7 @@ Level2.prototype.create = function() {
 		machinegun: new Weapon_Machinegun({ctx: this}),
 		laser: new Weapon_Laser({ctx: this}),
 	};
+	this.player.weapons_available = [];
 
 	// weapon pickup
 	
@@ -100,9 +105,10 @@ Level2.prototype.create = function() {
 	this.blocking_objects = scene.fBlocking_objects;
 	this.triggers = scene.fTriggers;
 	this.triggers_invis = scene.fTriggers_invis;
-	this.health_trigger = scene.fShow_health_trigger;
 	this.water_floor = scene.fWater_floor;
 	this.bg_anims = [scene.fWater_temple, scene.fWater_temple_outside, scene.fFactory, ];
+	
+	this.ui.fixedToCamera = true;
 	
 	this.bg_anims.forEach(function(bg_anim){
 		bg_anim.animations.play("idle");
@@ -143,8 +149,12 @@ Level2.prototype.create = function() {
 		left: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
 		right: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
 	};
-	this.fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-	this.cheatButton = this.input.keyboard.addKey(Phaser.KeyCode.Z);
+	
+	this.buttons = {
+		fire: this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR),
+		cheat: this.input.keyboard.addKey(Phaser.KeyCode.Z),
+		next_weapon: this.input.keyboard.addKey(Phaser.KeyCode.Q),
+	};
 	
 	this.emitter_group = scene.fEmitterGroup;
 	this.world.addChild(this.emitter_group);
@@ -193,7 +203,6 @@ Level2.prototype.update = function() {
 	this.physics.arcade.collide(this.player, this.walls);
 	this.physics.arcade.collide(this.player, this.blocking_objects.children);
 	this.physics.arcade.collide(this.player, this.first_block_trigger, this.first_block_hit, null, this);
-	this.physics.arcade.overlap(this.player, this.health_trigger, this.showHealthBars, null, this);
 	
 
 	
@@ -220,11 +229,18 @@ Level2.prototype.update = function() {
 
 	var standing = this.player.body.touching.down;
 
-	if (this.cheatButton.isDown) {
+	if (this.buttons.cheat.isDown) {
 		if (!this.player.weapon) {
-			this.weapons.laser.equip();
+			this.weapons.machinegun.pickup();
+			this.weapons.laser.pickup();
 		}
 //		this.emitter_blood_sm.emit('blood', (this.player.body.x + (this.player.body.width / 2)) - this.camera.position.x, this.player.body.y, { total: 7, repeat: 5, frequency: 1 });
+	}
+	
+	if (this.buttons.next_weapon.isDown && !this.next_weapon_lock) {
+		this.nextWeapon();
+	} else if (this.buttons.next_weapon.isUp && this.next_weapon_lock) {
+		this.next_weapon_lock = false;
 	}
 	
 	if (!this.first_block_gag_finished) {
@@ -279,6 +295,17 @@ Level2.prototype.update = function() {
 		}
 		this.spawnList[i] = spawnMetadata;
 	}
+	
+	for (var i = 0; i < this.funcTriggers.length; i++) {
+		funcTrigger = this.funcTriggers[i];
+		if (funcTrigger.triggered) { continue; }
+		
+		if (this.player.x >= funcTrigger.x) {
+			funcTrigger.triggered = true;
+			funcTrigger.func.call(this);
+		}
+		this.funcTriggers[i] = funcTrigger;
+	}
 
 	if (this.health_bars_visible) {
 		this.life.updateCrop();
@@ -290,12 +317,18 @@ Level2.prototype.render = function() {
 //	this.emitter_splash.debug(432, 522);
 };
 
+Level2.prototype.nextWeapon = function() {
+	this.player.weapon.unequip();
+	var cur_index = this.player.weapons_available.indexOf(this.player.weapon.weapon_key);
+	var next_weapon_key = this.player.weapons_available[(cur_index + 1) % this.player.weapons_available.length];
+	this.weapons[next_weapon_key].equip();
+	this.next_weapon_lock = true;
+};
 
 Level2.prototype.showHealthBars = function() {
 	if (this.health_bars_visible) { return; }
 
 	this.health_bars_visible = true;
-	this.health_trigger.destroy();
 	
 	var bmd = this.game.add.bitmapData(300, 40);
 	bmd.ctx.beginPath();
@@ -304,7 +337,6 @@ Level2.prototype.showHealthBars = function() {
 	bmd.ctx.fill();
 	
 	var bglife = this.game.add.sprite(400, 30, bmd);
-	bglife.fixedToCamera = true;
     bglife.anchor.set(0.5);
     this.ui.add(bglife);
     
@@ -317,7 +349,6 @@ Level2.prototype.showHealthBars = function() {
 	this.widthLife = new Phaser.Rectangle(0, 0, bmd.width, bmd.height);
 	this.totalLife = this.player.maxHealth;
 	this.life = this.game.add.sprite(400 - bglife.width/2 + 5, 30, bmd);
-	this.life.fixedToCamera = true;
 	this.life.anchor.y = 0.5;
 	this.life.cropEnabled = true;
 	this.life.crop(this.widthLife);
