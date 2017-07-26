@@ -84,7 +84,8 @@ Level2.prototype.create = function() {
 	// weapon
 	
 	this.weapons = {
-		'machinegun': new Weapon_Machinegun({ctx: this}),
+		machinegun: new Weapon_Machinegun({ctx: this}),
+		laser: new Weapon_Laser({ctx: this}),
 	};
 
 	// weapon pickup
@@ -221,7 +222,7 @@ Level2.prototype.update = function() {
 
 	if (this.cheatButton.isDown) {
 		if (!this.player.weapon) {
-			this.weapons.machinegun.equip();
+			this.weapons.laser.equip();
 		}
 //		this.emitter_blood_sm.emit('blood', (this.player.body.x + (this.player.body.width / 2)) - this.camera.position.x, this.player.body.y, { total: 7, repeat: 5, frequency: 1 });
 	}

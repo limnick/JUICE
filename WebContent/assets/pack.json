@@ -187,10 +187,30 @@
             "frameMax": -1,
             "margin": 0,
             "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "gun_laser",
+            "url": "assets/sprites/weapons/lasercannon.png",
+            "frameWidth": 73,
+            "frameHeight": 30,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "laser_beam",
+            "url": "assets/sprites/weapons/laser_beam.png",
+            "frameWidth": 30,
+            "frameHeight": 30,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
         }
     ],
     "meta": {
-        "generated": "1500885073006",
+        "generated": "1501030984802",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

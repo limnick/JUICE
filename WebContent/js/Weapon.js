@@ -33,6 +33,7 @@ Weapon.prototype.onBlockerHit = function(bullet, blocker) {
 };
 
 
+//------------------------------------------- MACHINE GUN ---------------------------------------
 
 Weapon_Machinegun = function(options) {
 	return Weapon.call(this, options);
@@ -48,7 +49,8 @@ Weapon_Machinegun.prototype.parent = Weapon.prototype;
 
 Weapon_Machinegun.prototype.equip = function() {
 	this.parent.equip.call(this);
-	//TODO: show weapon UI? just leave 1 weapon at a time?
+	
+	//TODO: show weapon UI
 	
 	this.sprite = this.game.add.sprite(0, 0, "gun_machinegun");
 	this.sprite.scale.setTo(0.3, 0.3);
@@ -91,3 +93,94 @@ Weapon_Machinegun.prototype.unequip = function() {
 	
 	this.sprite.destroy();
 };
+
+
+
+//------------------------------------------- LASER ---------------------------------------
+
+Weapon_Laser = function(options) {
+	return Weapon.call(this, options);
+};
+
+Weapon_Laser.prototype = Object.create(Weapon.prototype);
+Weapon_Laser.prototype.constructor = Weapon;
+Weapon_Laser.prototype.parent = Weapon.prototype;
+
+
+Weapon_Laser.prototype.equip = function() {
+	this.parent.equip.call(this);
+	
+	this.sprite = this.game.add.sprite(0, 0, "gun_laser");
+	this.sprite.scale.setTo(0.6, 0.6);
+	this.sprite.anchor.setTo(0, 0.3);
+
+	this.player.addChild(this.sprite);
+	
+	this.weapon = this.ctx.add.weapon(30, "laser_beam");
+	this.weapon.setBulletFrames(2, 2, true);
+	this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
+	this.weapon.bulletSpeed = 4000;
+	this.weapon.bulletGravity.y = -800;
+	this.weapon.fireRate = 100;
+	this.weapon.charge = 0;
+	this.weapon.chargeRate = 2;
+	
+	this.bullets = this.weapon.bullets;
+	
+	this.damage = 250;
+	
+	this.player.weapon = this;
+};
+
+Weapon_Laser.prototype.update = function(blockers) {
+	this.parent.update.call(this, blockers);
+	
+	var scalefix = (this.player.scale.x > 0) ? 1 : -1;
+	this.sprite.rotation = Phaser.Math.angleBetween(scalefix * this.sprite.world.x, this.sprite.world.y, 
+																   scalefix * this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
+	var gun_barrel = {
+			x: this.sprite.world.x + (this.sprite.width * 1.2) * scalefix * Math.cos(this.sprite.rotation),
+			y: this.sprite.world.y + (this.sprite.width * 1.2) * Math.sin(this.sprite.rotation),
+		};
+	
+	if (this.ctx.player_has_control && (this.ctx.fireButton.isDown || this.game.input.activePointer.leftButton.isDown)) {
+		if (this.weapon.charge == 0) {
+			//TODO: start charging noise audio here
+		}
+		
+		this.weapon.charge += this.weapon.chargeRate;
+		
+		if (this.weapon.charge >= 100) {
+			var beam_sprite_base = this.game.add.sprite(this.sprite.width + 10, -20, "laser_beam", 0);
+			beam_sprite_base.scale.set(1 / this.sprite.scale.x, 1 / this.sprite.scale.y);
+			var beam_sprite_body = this.game.add.sprite(30, 0, "laser_beam", 1);
+			beam_sprite_body.scale.set(30, 1);
+			this.sprite.addChild(beam_sprite_base);
+			beam_sprite_base.addChild(beam_sprite_body);
+			this.weapon.fire(gun_barrel, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
+			this.weapon.charge = 0;
+			this.game.add.tween(beam_sprite_base).to( {alpha: 0} , 600, Phaser.Easing.Linear.None, true);
+			
+		}
+		//TODO: set sprite to show charge here
+		
+	} else {
+		this.weapon.charge = 0;
+		//TODO: stop charging noise audio here
+	}
+};
+
+Weapon_Laser.prototype.unequip = function() {
+	this.parent.unequip.call(this);
+	
+	this.sprite.destroy();
+};
+
+
+
+//------------------------------------------- Tesla Cannon ---------------------------------------
+// tracks to nearest enemy within X units and creates a lightning effect while draining health, could drain faster when closer to player
+
+//------------------------------------------- Davey Crocket ---------------------------------------
+// mini nuke with screen desaturation effect
+
