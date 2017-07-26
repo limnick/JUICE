@@ -27,12 +27,13 @@ Enemy = function (options) {
 	this.health = this.max_health;
 	
 	this.move_timer_default = this.move_timer_default || 2000;
-	this.move_timer = 0;
+	this.move_timer = this.move_timer_default;
 	
 	this.shoot_timer_default = this.shoot_timer_default || 800;
 	this.shoot_timer = 0;
 	
 	this.turrets = [];
+	this.tweens = [];
 };
 
 Enemy.prototype.show = function() {
@@ -103,16 +104,66 @@ Enemy.prototype.update = function() {
 	}
 	
 	if (this.health <= 0) {
-		this.die();
+		this.die.call(this, this.player.weapon.weapon_key);
 	}
 	
 	this.tick.call(this);
 };
 
-Enemy.prototype.die = function() {
+Enemy.prototype.die = function(weapon_key) {
+	if (!this.alive) return; // already dead
+	
 	this.can_shoot = false;
 	this.can_move = false;
 	this.updateEnemyHealthbar();
+	this.alive = false;
+	
+	this.tweens.forEach(function(tween) {
+		tween.stop();
+		this.game.tweens.remove(tween);
+	}, this);
+	
+	//cleanup turrets
+	if (this.turrets) {
+		this.turrets.forEach(function(turret) {
+			this.game.physics.enable(turret);
+			turret.body.allowGravity = true;
+			turret.body.angularVelocity = (Math.random() * 600) - 300;
+		}, this);
+		
+	    this.ctx.time.events.add(2000, function() {
+	    	this.turrets.forEach(function(turret) {
+	    		turret.destroy();
+	    	}, this);
+		}, this);
+	}
+	
+	if (weapon_key == 'machinegun') {
+		console.log(this.group.position.x + 50, this.group.position.y + 800);
+		this.game.add.tween(this.group.position).to({
+			x: this.group.position.x + 50,
+			y: this.group.position.y + 2000}, 2600, Phaser.Easing.Elastic.None, true);
+	    
+	    this.ctx.time.events.add(3000, function() {
+	    	this.body.destroy();
+	    	this.destroy();
+		}, this);
+	} else if (weapon_key == 'laser') {
+		var enemy_sprite_zone = this.ctx.ps_manager.createImageZone(this.base_sprite);
+		this.enemydie_emitter = this.ctx.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.ctx.world.bounds.width, this.ctx.world.bounds.height);
+		this.enemydie_emitter.addToWorld(this.ctx.emitter_group);
+		
+	    this.enemydie_emitter.emit('spritedie', this.body.world.x - (Math.abs(this.body.width) / 2) - this.ctx.camera.position.x, this.body.world.y - this.ctx.camera.position.y, { zone: enemy_sprite_zone, full: true, setColor: true });
+	    this.body.destroy();
+	    
+	    this.ctx.time.events.add(2000, function() {
+	    	this.ctx.ps_manager.removeEmitter(this.enemydie_emitter);
+	    	this.enemydie_emitter.destroy();
+	    	
+	    	this.destroy();
+	
+		}, this);
+	}
 };
 
 Enemy.prototype.destroy = function() {
@@ -154,28 +205,11 @@ WalkerEnemy.prototype.update = function() {
 	
 };
 
-WalkerEnemy.prototype.die = function() {
-	if (!this.alive) return; // we're already in the middle of dying, no need to die twice
-
-	Enemy.prototype.die.call(this);
-	
-	var enemy_sprite = this.ctx.ps_manager.createImageZone(this.base_sprite);
-	this.enemydie_emitter = this.ctx.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.ctx.world.bounds.width, this.ctx.world.bounds.height);
-	this.enemydie_emitter.addToWorld();
-	
-    this.enemydie_emitter.emit('spritedie', this.body.world.x - (this.body.width / 2), this.body.world.y, { zone: enemy_sprite, full: true, setColor: true });
-    this.body.destroy();
-    this.alive = false;
-    
-    this.ctx.time.events.add(2000, function() {
-    	this.ctx.ps_manager.removeEmitter(this.enemydie_emitter);
-    	this.enemydie_emitter.destroy();
-    	
-    	this.destroy();
-
-	}, this);
-    
-};
+//WalkerEnemy.prototype.die = function() {
+//	if (!this.alive) return; // we're already in the middle of dying, no need to die twice
+//
+//	Enemy.prototype.die.call(this);
+//};
 
 WalkerEnemy.prototype.playerHit = function(player, bullet) {
 	this.player.damage(5);
@@ -195,7 +229,7 @@ WalkerEnemy.prototype.createWeapons = function() {
 	this.weapon.bulletGravity.y = -800;
 	this.weapon.fireRate = 0;
 	this.weapon.multiFire = true;
-	this.weaponDamage = 5;
+	this.weapon.damage = 5;
 };
 
 WalkerEnemy.prototype.doMove = function() {};
@@ -285,49 +319,24 @@ ShootingEnemy.prototype.show = function() {
 	
 	// block slide in from top
 	this.group.position.set(this.player.x, -100);
-	this.game.add.tween(this.group).to( {y: 100} , 1200, Phaser.Easing.Cubic.None, true);
+	this.tweens.push(this.game.add.tween(this.group.position).to( {y: 100} , 1200, Phaser.Easing.Cubic.None, true));
 };
 
 ShootingEnemy.prototype.update = function() {
 	Enemy.prototype.update.call(this);
 };
 
-ShootingEnemy.prototype.die = function() {
-	if (!this.alive) return; // we're already in the middle of dying, no need to die twice
-
-	Enemy.prototype.die.call(this);
-	
-	
-	this.turrets.forEach(function(turret) {
-		this.game.physics.enable(turret);
-		turret.body.allowGravity = true;
-		turret.body.angularVelocity = (Math.random() * 600) - 300;
-	}, this);
-	
-	var enemy_sprite = this.ctx.ps_manager.createImageZone(this.base_sprite);
-	this.enemydie_emitter = this.ctx.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.ctx.world.bounds.width, this.ctx.world.bounds.height);
-	this.enemydie_emitter.addToWorld();
-	
-    this.enemydie_emitter.emit('spritedie', this.body.world.x - (this.body.width / 2), this.body.world.y, { zone: enemy_sprite, full: true, setColor: true });
-    this.body.destroy();
-    this.alive = false;
-    
-    this.ctx.time.events.add(2000, function() {
-    	this.ctx.ps_manager.removeEmitter(this.enemydie_emitter);
-    	this.enemydie_emitter.destroy();
-
-    	this.turrets.forEach(function(turret) {
-    		turret.destroy();
-    	}, this);
-    	
-    	this.destroy();
-
-	}, this);
-    
-};
+//ShootingEnemy.prototype.die = function() {
+//	if (!this.alive) return; // we're already in the middle of dying, no need to die twice
+//
+//	Enemy.prototype.die.call(this, this.player.weapon.weapon_key);
+//	
+//
+//    
+//};
 
 ShootingEnemy.prototype.playerHit = function(player, bullet) {
-	this.player.damage(5);
+	this.player.damage(this.weapon.damage);
 	bullet.kill();
 };
 
@@ -344,7 +353,7 @@ ShootingEnemy.prototype.createWeapons = function() {
 	this.weapon.bulletGravity.y = -800;
 	this.weapon.fireRate = 0;
 	this.weapon.multiFire = true;
-	this.weaponDamage = 5;
+	this.weapon.damage = 5;
 };
 
 ShootingEnemy.prototype.createTurrets = function() {
@@ -362,7 +371,7 @@ ShootingEnemy.prototype.createTurrets = function() {
 };
 
 ShootingEnemy.prototype.doMove = function() {
-	this.game.add.tween(this.group).to( {x: this.player.world.x} , 2000, Phaser.Easing.Linear.None, true);
+	this.tweens.push(this.game.add.tween(this.group.position).to( {x: this.player.world.x} , 2000, Phaser.Easing.Linear.None, true));
 };
 
 ShootingEnemy.prototype.doShoot = function() {
@@ -397,28 +406,8 @@ Tetris_T_Enemy.prototype.show = function() {
 	
 	// block slide in from top
 	this.group.position.set(this.player.x, -100);
-	this.game.add.tween(this.group).to( {y: 100} , 1200, Phaser.Easing.Cubic.None, true);
+	this.tweens.push(this.game.add.tween(this.group.position).to( {y: 100} , 1200, Phaser.Easing.Cubic.None, true));
 };
-
-Tetris_T_Enemy.prototype.update = function() {
-	this.parent.update.call(this);
-};
-
-Tetris_T_Enemy.prototype.die = function() {
-	if (!this.alive) return; // we're already in the middle of dying, no need to die twice
-
-	this.parent.die.call(this);    
-};
-
-Tetris_T_Enemy.prototype.playerHit = function(player, bullet) {
-	this.player.damage(this.weaponDamage);
-	bullet.kill();
-};
-
-Tetris_T_Enemy.prototype.wallHit = function(wall, bullet) {
-	bullet.kill();
-};
-
 
 Tetris_T_Enemy.prototype.createWeapons = function() {
 	this.weapon = this.ctx.add.weapon(80, "items");
@@ -428,6 +417,7 @@ Tetris_T_Enemy.prototype.createWeapons = function() {
 	this.weapon.bulletGravity.y = -800;
 	this.weapon.fireRate = 0;
 	this.weapon.multiFire = true;
+	this.weapon.damage = 5;
 };
 
 Tetris_T_Enemy.prototype.createTurrets = function() {
@@ -445,7 +435,7 @@ Tetris_T_Enemy.prototype.createTurrets = function() {
 };
 
 Tetris_T_Enemy.prototype.doMove = function() {
-	this.game.add.tween(this.group).to( {x: this.player.world.x} , 2000, Phaser.Easing.Linear.None, true);
+	this.tweens.push(this.game.add.tween(this.group.position).to( {x: this.player.world.x} , 2000, Phaser.Easing.Linear.None, true));
 };
 
 Tetris_T_Enemy.prototype.doShoot = function() {
@@ -470,7 +460,6 @@ BomberEnemy = function(options) {
 	this.shoot_timer_default = 1000;
 	this.move_timer_default = 2000;
 	this.max_health = 500;
-	this.weaponDamage = 10;
 	
 	this.height_offset = 400;
 	
@@ -498,7 +487,7 @@ BomberEnemy.prototype.update = function() {
 };
 
 BomberEnemy.prototype.doMove = function() {
-	this.game.add.tween(this.group.position).to({y: this.player.y - this.height_offset}, 1600, Phaser.Easing.Linear.None, true);
+	this.tweens.push(this.game.add.tween(this.group.position).to({y: this.player.y - this.height_offset}, 1600, Phaser.Easing.Linear.None, true));
 };
 
 
@@ -514,6 +503,7 @@ BomberEnemy.prototype.createWeapons = function() {
 	this.weapon.bulletRotateToVelocity = true;
 	this.weapon.fireRate = 0;
 	this.weapon.multiFire = true;
+	this.weapon.damage = 10;
 };
 
 BomberEnemy.prototype.onBulletHit = function(bullet) {
@@ -525,7 +515,7 @@ BomberEnemy.prototype.onBulletHit = function(bullet) {
 };
 
 BomberEnemy.prototype.playerHit = function(player, bullet) {
-	this.player.damage(this.weaponDamage);
+	this.player.damage(this.weapon.damage);
 	this.onBulletHit(bullet);
 };
 
@@ -533,17 +523,17 @@ BomberEnemy.prototype.wallHit = function(wall, bullet) {
 	this.onBulletHit(bullet);
 };
 
-BomberEnemy.prototype.die = function() {
-	if (!this.alive) return; // we're already in the middle of dying, no need to die twice
-
-	Enemy.prototype.die.call(this);
-	
-	// drop below camera
-	this.game.add.tween(this.group.position).to({y: this.player.y + this.height_offset*2}, 2600, Phaser.Easing.Elastic.None, true);
-    this.alive = false;
-    
-    this.ctx.time.events.add(4000, function() {
-    	this.destroy();
-	}, this);
-    
-};
+//BomberEnemy.prototype.die = function() {
+//	if (!this.alive) return; // we're already in the middle of dying, no need to die twice
+//
+//	Enemy.prototype.die.call(this);
+//	
+//	// drop below camera
+//	this.game.add.tween(this.group.position).to({y: this.player.y + this.height_offset*2}, 2600, Phaser.Easing.Elastic.None, true);
+//
+//    
+//    this.ctx.time.events.add(4000, function() {
+//    	this.destroy();
+//	}, this);
+//    
+//};

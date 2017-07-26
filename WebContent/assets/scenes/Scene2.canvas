@@ -1612,8 +1612,8 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 2137,
-            "y": 476,
+            "x": 840,
+            "y": 473,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [

@@ -55,7 +55,7 @@ Level2.prototype.init = function() {
         {x: 2000, spawned: false, klass: BomberEnemy, args: {}, enemy: null},
         {x: 1000, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: 1640, y: 532}} , enemy: null},
         {x: 2200, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: 2850, y: 532}} , enemy: null},
-        {x: 2000, spawned: false, klass: WalkerEnemy2, args: {spawn_position: {x: 2253, y: 404}} , enemy: null},
+        {x: 1200, spawned: false, klass: WalkerEnemy2, args: {spawn_position: {x: 2253, y: 404}} , enemy: null},
     ];
 	
 	this.funcTriggers = [
@@ -230,10 +230,8 @@ Level2.prototype.update = function() {
 	var standing = this.player.body.touching.down;
 
 	if (this.buttons.cheat.isDown) {
-		if (!this.player.weapon) {
-			this.weapons.machinegun.pickup();
-			this.weapons.laser.pickup();
-		}
+		this.weapons.machinegun.pickup();
+		this.weapons.laser.pickup();
 //		this.emitter_blood_sm.emit('blood', (this.player.body.x + (this.player.body.width / 2)) - this.camera.position.x, this.player.body.y, { total: 7, repeat: 5, frequency: 1 });
 	}
 	
@@ -318,6 +316,8 @@ Level2.prototype.render = function() {
 };
 
 Level2.prototype.nextWeapon = function() {
+	if (!this.player.weapon || this.player.weapons_available.length == 0) { return; }
+	
 	this.player.weapon.unequip();
 	var cur_index = this.player.weapons_available.indexOf(this.player.weapon.weapon_key);
 	var next_weapon_key = this.player.weapons_available[(cur_index + 1) % this.player.weapons_available.length];
@@ -394,7 +394,6 @@ Level2.prototype.first_block_hit = function(player, block) {
 
 Level2.prototype.machinegun_trigger_hit = function(player, trigger) {
 	this.weapons.machinegun.pickup(trigger);
-	this.weapons.machinegun.equip();
 	
 	this.time.events.add(500, function() {
 		this.machinegun_pickup_trigger.destroy();

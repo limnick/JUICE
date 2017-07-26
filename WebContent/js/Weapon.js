@@ -71,16 +71,16 @@ Weapon_Machinegun.prototype.equip = function() {
 
 	this.player.addChild(this.sprite);
 	
-	this.weapon = this.ctx.add.weapon(30, "items");
-	this.weapon.setBulletFrames(8, 10, true);
-	this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
-	this.weapon.bulletSpeed = 400;
-	this.weapon.bulletGravity.y = -800;
-	this.weapon.fireRate = 100;
-	
-	this.bullets = this.weapon.bullets;
-	
-	this.damage = 25;
+	if (!this.weapon) {
+		this.weapon = this.ctx.add.weapon(30, "items");
+		this.weapon.setBulletFrames(8, 10, true);
+		this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
+		this.weapon.bulletSpeed = 400;
+		this.weapon.bulletGravity.y = -800;
+		this.weapon.fireRate = 100;
+		this.bullets = this.weapon.bullets;
+		this.damage = 25;
+	}
 	
 	this.player.weapon = this;
 };
@@ -131,22 +131,24 @@ Weapon_Laser.prototype.equip = function() {
 
 	this.player.addChild(this.sprite);
 	
-	this.weapon = this.ctx.add.weapon(30, "laser_beam");
-	this.weapon.setBulletFrames(2, 2, true);
-	this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
-	this.weapon.bulletSpeed = 5000;
-	this.weapon.bulletGravity.y = -800;
-	this.weapon.fireRate = 100;
-	this.weapon.charge = 0;
-	this.weapon.chargeRate = 2;
-	
-	
-	//TODO: get bullets onto emitter layer
-//	this.ctx.emitter_group.addChild(this.weapon.bullets);
-	
-	this.bullets = this.weapon.bullets;
-	
-	this.damage = 250;
+	if (!this.weapon) {
+		this.weapon = this.ctx.add.weapon(30, "laser_beam");
+		this.weapon.setBulletFrames(2, 2, true);
+		this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
+		this.weapon.bulletSpeed = 5000;
+		this.weapon.bulletGravity.y = -800;
+		this.weapon.fireRate = 100;
+		this.weapon.charge = 0;
+		this.weapon.chargeRate = 2;
+		
+		
+		//TODO: get bullets onto emitter layer
+	//	this.ctx.emitter_group.addChild(this.weapon.bullets);
+		
+		this.bullets = this.weapon.bullets;
+		
+		this.damage = 250;
+	}
 	
 	this.player.weapon = this;
 };
