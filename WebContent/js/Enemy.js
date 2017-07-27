@@ -155,7 +155,8 @@ Enemy.prototype.die = function(weapon_key) {
 	    	this.destroy();
 		}, this);
 	} else if (weapon_key == 'laser') {
-		var enemy_sprite_zone = this.ctx.ps_manager.createImageZone(this.base_sprite);
+		var tmpSprite =  new Phaser.Sprite(this.game, 0, 0, this.base_sprite, 0);
+		var enemy_sprite_zone = this.ctx.ps_manager.createImageZone(tmpSprite);
 		this.enemydie_emitter = this.ctx.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.ctx.world.bounds.width, this.ctx.world.bounds.height);
 		this.enemydie_emitter.addToWorld(this.ctx.emitter_group);
 		

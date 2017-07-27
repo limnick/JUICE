@@ -1611,8 +1611,8 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 800,
-            "y": 496,
+            "x": 2100,
+            "y": 317,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [
@@ -1671,6 +1671,184 @@
         },
         {
           "type": "group",
+          "id": "46cc7624-148d-4fb0-b884-968ef751cf25",
+          "info": {
+            "editorName": "triggers_walker_enemy",
+            "editorPublic": true,
+            "children": [
+              {
+                "type": "tileSprite",
+                "id": "1a585c08-c5d4-4edc-9c38-8b429dd2000e",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger1",
+                  "x": 6600,
+                  "y": 542,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "532585d0-4a81-483e-a273-77b349504158",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger2",
+                  "x": 5752,
+                  "y": 405,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "c74b11ac-6455-49a3-8a6b-07a345aa37f4",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger3",
+                  "x": 2850,
+                  "y": 560,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "4f1fed06-4951-4dc4-8673-0e48ce3dc407",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger31",
+                  "x": 1640,
+                  "y": 560,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "3985c4e8-a373-43e7-b1a1-c43e4ea04827",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger11",
+                  "x": 8130,
+                  "y": 207,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "12dce14e-9620-4dcd-a48e-9d70ef7d86d3",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger111",
+                  "x": 8922,
+                  "y": 542,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "45c45e3f-98f7-47ae-9f00-f2592c6af5d3",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger12",
+                  "x": 9919,
+                  "y": 212,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "106545cb-f741-4952-95a1-9d53002850fd",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger121",
+                  "x": 12487,
+                  "y": 243,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "5e46d9ca-9f8a-4b51-a757-e4ccdba0581c",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger1211",
+                  "x": 14014,
+                  "y": 53,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "20abbf68-8973-43f2-87c8-7a67f9343d90",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger12111",
+                  "x": 14465,
+                  "y": 516,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "eab594eb-9d0e-4862-9d5a-93b936b3223f",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger121111",
+                  "x": 15666,
+                  "y": 516,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "e3d14798-e320-4246-aa9e-656d2a8976e6",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger",
+                  "x": 5127,
+                  "y": 373,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "group",
           "id": "6facd854-bd89-4681-a3a5-1e1039d1a1a1",
           "info": {
             "editorName": "EmitterGroup",
@@ -1689,7 +1867,7 @@
               {
                 "type": "image",
                 "id": "4321db90-a47e-47c5-bcf6-77e6fc755224",
-                "asset": "25",
+                "asset": "26",
                 "info": {
                   "editorName": "gun_machinegun",
                   "editorPublic": true,
@@ -1704,7 +1882,7 @@
               {
                 "type": "spritesheet",
                 "id": "74de1d7c-f59c-40ad-a40a-99ee28af5858",
-                "asset": "26",
+                "asset": "27",
                 "info": {
                   "editorName": "gun_laser",
                   "editorPublic": true,
@@ -1719,7 +1897,7 @@
               {
                 "type": "spritesheet",
                 "id": "e4f040a0-47fc-4249-9b8f-f8868297b6c3",
-                "asset": "27",
+                "asset": "28",
                 "info": {
                   "editorName": "first_block_trigger",
                   "editorPublic": true,
@@ -1738,7 +1916,7 @@
             "children": [{
               "type": "image",
               "id": "5aed2b79-28eb-43ed-b8be-d2c7daa82f6e",
-              "asset": "28",
+              "asset": "29",
               "info": {
                 "editorName": "metalslug_fg",
                 "x": 3935,
@@ -1914,21 +2092,27 @@
     "25": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
-      "asset": "gun_machinegun"
+      "asset": "mario_nes_tileset",
+      "sprite": "651"
     },
     "26": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "gun_machinegun"
+    },
+    "27": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "gun_laser",
       "sprite": "0"
     },
-    "27": {
+    "28": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "mario_nes_tileset",
       "sprite": "24"
     },
-    "28": {
+    "29": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "metalslug_fg"

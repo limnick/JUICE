@@ -63,10 +63,9 @@ Level2.prototype.init = function() {
 	this.spawnList = [
         {x: 1200, spawned: false, klass: BomberEnemy, args: {}, enemy: null},
         {x: 2000, spawned: false, klass: BomberEnemy, args: {}, enemy: null},
-        {x: 1000, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: 1640, y: 560}} , enemy: null},
-        {x: 2200, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: 2850, y: 560}} , enemy: null},
         {x: 1200, spawned: false, klass: WalkerEnemy2, args: {spawn_position: {x: 2255, y: 434}} , enemy: null},
     ];
+	
 	
 	this.funcTriggers = [
         {x: 700, func: this.showHealthBars},
@@ -135,6 +134,11 @@ Level2.prototype.create = function() {
 	this.b_enemy_2 = new BomberEnemy({ctx: this,});
 	
 	this.enemies = [this.t_enemy_2, this.b_enemy_1, this.b_enemy_2, ];
+	
+	scene.fTriggers_walker_enemy.forEach(function(enemy_trigger){
+		this.spawnList.push({x: enemy_trigger.world.x - 1000, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: enemy_trigger.world.x, y: enemy_trigger.world.y}} , enemy: null});
+		enemy_trigger.renderable = false;
+	}, this);
 
 	// init physics
 	

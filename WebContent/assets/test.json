@@ -1,0 +1,329 @@
+{
+  "frames": {
+    "water_temple_1x8": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 2,
+        "y": 90,
+        "w": 1024,
+        "h": 3072
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1024,
+        "h": 3072
+      },
+      "sourceSize": {
+        "w": 1024,
+        "h": 3072
+      }
+    },
+    "water_temple_outside_1x8": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 1028,
+        "y": 522,
+        "w": 800,
+        "h": 2640
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 800,
+        "h": 2640
+      },
+      "sourceSize": {
+        "w": 800,
+        "h": 2640
+      }
+    },
+    "dig_dug_sprite": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 2886,
+        "y": 3095,
+        "w": 30,
+        "h": 14
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 30,
+        "h": 14
+      },
+      "sourceSize": {
+        "w": 30,
+        "h": 14
+      }
+    },
+    "joust_bird": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 64,
+        "h": 24
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 24
+      }
+    },
+    "marge_simpson": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 1028,
+        "y": 444,
+        "w": 329,
+        "h": 76
+      },
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 0,
+        "w": 329,
+        "h": 76
+      },
+      "sourceSize": {
+        "w": 336,
+        "h": 77
+      }
+    },
+    "mario_mole": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 448,
+        "y": 56,
+        "w": 64,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 32
+      }
+    },
+    "robolady": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 1359,
+        "y": 494,
+        "w": 54,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 54,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 56,
+        "h": 26
+      }
+    },
+    "explosion_sm": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 2,
+        "y": 3164,
+        "w": 4168,
+        "h": 92
+      },
+      "spriteSourceSize": {
+        "x": 21,
+        "y": 3,
+        "w": 4168,
+        "h": 92
+      },
+      "sourceSize": {
+        "w": 4841,
+        "h": 97
+      }
+    },
+    "guns_04": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 2886,
+        "y": 3111,
+        "w": 79,
+        "h": 51
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 79,
+        "h": 51
+      },
+      "sourceSize": {
+        "w": 79,
+        "h": 51
+      }
+    },
+    "mario_nes_small": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 2,
+        "y": 56,
+        "w": 444,
+        "h": 32
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 444,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 444,
+        "h": 32
+      }
+    },
+    "mario_nes_tileset": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 1830,
+        "y": 2266,
+        "w": 1054,
+        "h": 896
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1054,
+        "h": 896
+      },
+      "sourceSize": {
+        "w": 1056,
+        "h": 896
+      }
+    },
+    "turret01": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 1904,
+        "y": 2233,
+        "w": 16,
+        "h": 31
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 16,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 16,
+        "h": 31
+      }
+    },
+    "turret02": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 1830,
+        "y": 2162,
+        "w": 30,
+        "h": 41
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 30,
+        "h": 41
+      },
+      "sourceSize": {
+        "w": 30,
+        "h": 41
+      }
+    },
+    "turret03": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 1028,
+        "y": 389,
+        "w": 30,
+        "h": 53
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 30,
+        "h": 53
+      },
+      "sourceSize": {
+        "w": 30,
+        "h": 53
+      }
+    },
+    "laser_beam": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 2,
+        "y": 28,
+        "w": 90,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 1,
+        "w": 90,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 90,
+        "h": 30
+      }
+    },
+    "lasercannon": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 1830,
+        "y": 2205,
+        "w": 72,
+        "h": 59
+      },
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 0,
+        "w": 72,
+        "h": 59
+      },
+      "sourceSize": {
+        "w": 73,
+        "h": 60
+      }
+    }
+  },
+  "meta": {
+    "app": "Phaser Editor",
+    "version": "1",
+    "image": "test.png"
+  }
+}

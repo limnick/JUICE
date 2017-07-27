@@ -247,10 +247,17 @@
             "frameMax": -1,
             "margin": 0,
             "spacing": 0
+        },
+        {
+            "type": "atlas",
+            "key": "atlas",
+            "textureURL": "assets/test.png",
+            "atlasURL": "assets/test.json",
+            "format": "TEXTURE_ATLAS_JSON_HASH"
         }
     ],
     "meta": {
-        "generated": "1501129735365",
+        "generated": "1501131014651",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",
