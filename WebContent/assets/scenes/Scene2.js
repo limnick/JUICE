@@ -332,13 +332,19 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(32, 64, 'mario_nes_tileset', 298, pipe);
 
-	var player = this.game.add.sprite(6203, 497, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(800, 496, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
 	player.animations.add('stay', [1], 60, false);
 	player.animations.add('die', [5], 60, false);
 	this.game.physics.arcade.enable(player);
+
+	var triggers_invis = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
+
+	var enemy_spawn_trigger_1 = this.game.add.tileSprite(1075, 493, 64, 64, 'mario_nes_tileset', 894, triggers_invis);
+
+	var EmitterGroup = this.game.add.group(this);
 
 	var triggers = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 
@@ -351,12 +357,6 @@ function Scene2(aGame, aParent) {
 	gun_laser.anchor.setTo(0.5, 1.0);
 
 	var first_block_trigger = this.game.add.sprite(496, 384, 'mario_nes_tileset', 24, triggers);
-
-	var triggers_invis = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
-
-	var enemy_spawn_trigger_1 = this.game.add.tileSprite(1075, 493, 64, 64, 'mario_nes_tileset', 894, triggers_invis);
-
-	var EmitterGroup = this.game.add.group(this);
 
 	var foreground = this.game.add.group(this);
 
@@ -375,13 +375,13 @@ function Scene2(aGame, aParent) {
 	this.fWalls = walls;
 	this.fBlocking_objects = blocking_objects;
 	this.fPlayer = player;
+	this.fTriggers_invis = triggers_invis;
+	this.fEnemy_spawn_trigger_1 = enemy_spawn_trigger_1;
+	this.fEmitterGroup = EmitterGroup;
 	this.fTriggers = triggers;
 	this.fGun_machinegun = gun_machinegun;
 	this.fGun_laser = gun_laser;
 	this.fFirst_block_trigger = first_block_trigger;
-	this.fTriggers_invis = triggers_invis;
-	this.fEnemy_spawn_trigger_1 = enemy_spawn_trigger_1;
-	this.fEmitterGroup = EmitterGroup;
 	this.fUI = UI;
 
 	/* --- post-init-begin --- */

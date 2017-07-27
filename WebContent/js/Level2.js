@@ -50,6 +50,16 @@ Level2.prototype.init = function() {
         vy: { min: .1, max: .8 }
     });
 	
+	this.ps_manager.addData('shimmer', {
+        lifespan: { min: 200, max: 300 },
+        red: { min: 230, max: 255 },
+        green: { min: 210, max: 230 },
+        blue: { min: 0, max: 20 },
+        vx: { min: -3, max: 3 },
+        vy: { min: -1, max: -3 },
+        alpha: { initial: 0, value: 2, control: [ { x: 0, y: 1 }, { x: 3, y: 0 } ] },
+    });
+	
 	this.spawnList = [
         {x: 1200, spawned: false, klass: BomberEnemy, args: {}, enemy: null},
         {x: 2000, spawned: false, klass: BomberEnemy, args: {}, enemy: null},
@@ -97,6 +107,8 @@ Level2.prototype.create = function() {
 	
 	this.machinegun_pickup_trigger = scene.fGun_machinegun;
 	this.lasergun_pickup_trigger = scene.fGun_laser;
+	
+	this.weapon_triggers = [this.machinegun_pickup_trigger, this.lasergun_pickup_trigger,];
 	
 	// world
 
@@ -182,6 +194,11 @@ Level2.prototype.create = function() {
 	this.emitter_splash.force.y = 0.0;
 	this.emitter_splash.addToWorld(this.emitter_group);
 	
+	this.emitter_shimmer = this.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL);
+	this.emitter_shimmer.renderer.pixelSize = 2;
+	this.emitter_shimmer.force.y = 0.0;
+	this.emitter_shimmer.addToWorld(this.emitter_group);
+		
 	// first block gag
 	this.first_block_trigger = scene.fFirst_block_trigger;
 };
@@ -209,8 +226,17 @@ Level2.prototype.update = function() {
 	this.physics.arcade.collide(this.player, this.first_block_trigger, this.first_block_hit, null, this);
 	
 
-	if(this.machinegun_pickup_trigger) this.physics.arcade.overlap(this.player, this.machinegun_pickup_trigger, this.machinegun_trigger_hit, null, this);
-	if(this.lasergun_pickup_trigger) this.physics.arcade.overlap(this.player, this.lasergun_pickup_trigger, this.lasergun_trigger_hit, null, this);
+	//call emit for each weapon trigger with its x/y location
+	var shimmer_settings = { total: 4, repeat: 0, frequency: 0 };
+	
+	if(this.machinegun_pickup_trigger.alive) {
+		this.physics.arcade.overlap(this.player, this.machinegun_pickup_trigger, this.machinegun_trigger_hit, null, this);
+		this.emitter_shimmer.emit('shimmer', this.machinegun_pickup_trigger.x - this.camera.position.x, this.machinegun_pickup_trigger.y, shimmer_settings);
+	}
+	if(this.lasergun_pickup_trigger.alive) {
+		this.physics.arcade.overlap(this.player, this.lasergun_pickup_trigger, this.lasergun_trigger_hit, null, this);
+		this.emitter_shimmer.emit('shimmer', this.lasergun_pickup_trigger.x - this.camera.position.x, this.lasergun_pickup_trigger.y, shimmer_settings);
+	}
 
 	var vel = 0;
 	
@@ -310,6 +336,7 @@ Level2.prototype.update = function() {
 	if (this.health_bars_visible) {
 		this.life.updateCrop();
 	}
+	
 };
 
 Level2.prototype.render = function() {

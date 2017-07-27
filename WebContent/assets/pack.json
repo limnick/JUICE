@@ -217,10 +217,40 @@
             "frameMax": -1,
             "margin": 0,
             "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "joust_bird",
+            "url": "assets/sprites/enemies/joust_bird.png",
+            "frameWidth": 16,
+            "frameHeight": 24,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "robolady",
+            "url": "assets/sprites/enemies/robolady.png",
+            "frameWidth": 14,
+            "frameHeight": 26,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "marge",
+            "url": "assets/sprites/enemies/marge_simpson.png",
+            "frameWidth": 42,
+            "frameHeight": 77,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
         }
     ],
     "meta": {
-        "generated": "1501111540835",
+        "generated": "1501129735365",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

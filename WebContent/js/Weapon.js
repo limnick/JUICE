@@ -195,17 +195,18 @@ Weapon_Laser.prototype.update = function(blockers) {
 			this.sprite.addChild(beam_sprite_base);
 			beam_sprite_base.addChild(beam_sprite_body);
 			this.weapon.fire(gun_barrel, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
+			
 			this.weapon.charge = 0;
 			this.game.add.tween(beam_sprite_base).to( {alpha: 0} , 600, Phaser.Easing.Linear.None, true);
 			this.sprite.frame = 0;
 			
 		}
-		//TODO: set sprite to show charge here
 		
 	} else {
 		this.weapon.charge = 0;
 		this.sprite.frame = 0;
-		//TODO: stop charging noise audio here
+		//TODO: stop charging audio here
+		//TODO: play wind down audio here
 	}
 };
 

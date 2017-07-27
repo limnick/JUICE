@@ -1611,8 +1611,8 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 6203,
-            "y": 497,
+            "x": 800,
+            "y": 496,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [
@@ -1643,6 +1643,39 @@
               }
             ],
             "body": {"type": "ARCADE_RECT"}
+          }
+        },
+        {
+          "type": "group",
+          "id": "07641550-63c6-445b-a400-1eede32d532b",
+          "info": {
+            "editorName": "triggers_invis",
+            "editorPick": false,
+            "editorPublic": true,
+            "editorShow": false,
+            "physicsGroup": true,
+            "children": [{
+              "type": "tileSprite",
+              "id": "fb00d690-6b26-464a-bbee-4a188f412910",
+              "asset": "17",
+              "info": {
+                "editorName": "enemy_spawn_trigger_1",
+                "editorPublic": true,
+                "x": 1075,
+                "y": 493,
+                "width": 64,
+                "height": 64
+              }
+            }]
+          }
+        },
+        {
+          "type": "group",
+          "id": "6facd854-bd89-4681-a3a5-1e1039d1a1a1",
+          "info": {
+            "editorName": "EmitterGroup",
+            "editorPublic": true,
+            "children": []
           }
         },
         {
@@ -1695,39 +1728,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "group",
-          "id": "07641550-63c6-445b-a400-1eede32d532b",
-          "info": {
-            "editorName": "triggers_invis",
-            "editorPick": false,
-            "editorPublic": true,
-            "editorShow": false,
-            "physicsGroup": true,
-            "children": [{
-              "type": "tileSprite",
-              "id": "fb00d690-6b26-464a-bbee-4a188f412910",
-              "asset": "17",
-              "info": {
-                "editorName": "enemy_spawn_trigger_1",
-                "editorPublic": true,
-                "x": 1075,
-                "y": 493,
-                "width": 64,
-                "height": 64
-              }
-            }]
-          }
-        },
-        {
-          "type": "group",
-          "id": "6facd854-bd89-4681-a3a5-1e1039d1a1a1",
-          "info": {
-            "editorName": "EmitterGroup",
-            "editorPublic": true,
-            "children": []
           }
         },
         {

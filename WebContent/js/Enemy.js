@@ -1,6 +1,6 @@
 Array.prototype.randomElement = function () {
-    return this[Math.floor(Math.random() * this.length)]
-}
+    return this[Math.floor(Math.random() * this.length)];
+};
 
 Enemy = function (options) {
 	this.spawn_trigger = options.spawn_trigger;
@@ -103,6 +103,8 @@ Enemy.prototype.update = function() {
 		this.ctx.physics.arcade.overlap(this.ctx.ground, this.weapon.bullets, this.wallHit, null, this);
 	}
 	
+	this.ctx.physics.arcade.overlap(this.player, this.group, this.spriteHit, null, this);
+	
 	if (this.player.weapon) {
 		this.ctx.physics.arcade.overlap(this.player.weapon.bullets, this.group, this.onHit, null, this);
 	}
@@ -170,6 +172,13 @@ Enemy.prototype.die = function(weapon_key) {
 	}
 };
 
+Enemy.prototype.spriteHit = function() {
+	if (!this.lastTouchDamageTime || (this.game.time.now - this.lastTouchDamageTime) > 2000) {
+		this.lastTouchDamageTime = this.game.time.now;
+		this.player.damage(10);
+	}
+};
+
 Enemy.prototype.destroy = function() {
 	this.group.destroy();
 	this.healthbar.destroy();
@@ -179,6 +188,9 @@ Enemy.prototype.destroy = function() {
 walker_types = [
 	{sprite: "digdug", scale: {x: 2, y: 2}},
 	{sprite: "mario_mole", scale: {x: 1, y: 1}},
+	{sprite: "joust_bird", scale: {x: 3, y: 3}},
+	{sprite: "robolady", scale: {x: 2, y: 2}},
+	{sprite: "marge", scale: {x: 1.5, y: 1.5}},
 ];
 
 WalkerEnemy = function(options) {
@@ -197,6 +209,7 @@ WalkerEnemy.prototype.parent = Enemy.prototype;
 
 
 WalkerEnemy.prototype.show = function() {
+	if (this.alive) { return; }
 	console.log("walker show");
 	this.initCycle();
 	this.createWeapons();
@@ -322,6 +335,7 @@ ShootingEnemy.prototype.constructor = Enemy;
 ShootingEnemy.prototype.parent = Enemy.prototype;
 
 ShootingEnemy.prototype.show = function() {
+	if (this.alive) { return; }
 	this.createTurrets();
 	this.createWeapons();
 	Enemy.prototype.show.call(this);
@@ -411,6 +425,7 @@ Tetris_T_Enemy.prototype.constructor = ShootingEnemy;
 Tetris_T_Enemy.prototype.parent = ShootingEnemy.prototype;
 
 Tetris_T_Enemy.prototype.show = function() {
+	if (this.alive) { return; }
 	this.parent.show.call(this);
 	
 	// block slide in from top
@@ -480,6 +495,7 @@ BomberEnemy.prototype.constructor = Enemy;
 BomberEnemy.prototype.parent = Enemy.prototype;
 
 BomberEnemy.prototype.show = function() {
+	if (this.alive) { return; }
 	this.createWeapons();
 	
 	this.bomberMoveSpeed = Math.floor(Math.random() * 3) + 3;
