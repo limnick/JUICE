@@ -1,3 +1,7 @@
+Array.prototype.randomElement = function () {
+    return this[Math.floor(Math.random() * this.length)]
+}
+
 Enemy = function (options) {
 	this.spawn_trigger = options.spawn_trigger;
 	this.ctx = options.ctx;
@@ -10,7 +14,7 @@ Enemy = function (options) {
 	if (!this.base_sprite) console.log("PLEASE SET BASE SPRITE");
 	
 	this.body = this.game.add.sprite(0, 0, this.base_sprite);
-	this.body.anchor.set(0.5, 0);
+	this.body.anchor.set(0.5, 1);
 	
 	this.group.add(this.body);
 	this.group.setAll("renderable", false);
@@ -37,22 +41,22 @@ Enemy = function (options) {
 };
 
 Enemy.prototype.show = function() {
+	if (this.alive) { return; }
+	
 	this.group.setAll("renderable", true);
 	this.spawn_enabled = false;
 	
-	var healthbar = new Phaser.Sprite(this.game, 0, -10, "healthbar", 0);
+	var healthbar = new Phaser.Sprite(this.game, 0, -10 - this.body.height, "healthbar", 0);
 	healthbar.scale.x = 20;
 	healthbar.anchor.x = 0.5;
 	this.healthbar = this.group.addChild(healthbar);
-	
-//	this.ctx.time.events.add(800, function() {
-//		this.game.time.events.loop(100, this.tick, this);
-//	}, this);
 	
 	this.alive = true;
 };
 
 Enemy.prototype.tick = function() {
+	if (!this.alive) { return; }
+	
 	// update timers
 	var tickDelta = (this.lastTick) ? this.game.time.now - this.lastTick : 0;
 	this.move_timer -= tickDelta;
@@ -68,9 +72,7 @@ Enemy.prototype.tick = function() {
 		this.shoot_timer = this.shoot_timer_default;
 	}
 	
-	if (this.alive) {
-		this.updateEnemyHealthbar();
-	}
+	this.updateEnemyHealthbar();
 
 	this.lastTick = this.game.time.now;
 };
@@ -91,6 +93,8 @@ Enemy.prototype.updateEnemyHealthbar = function() {
 };
 
 Enemy.prototype.update = function() {
+	if (!this.alive) { return; }
+	
 	if (this.spawn_enabled) this.ctx.physics.arcade.overlap(this.player, this.spawn_trigger, this.show, null, this);
 	
 	if (this.weapon) {
@@ -153,7 +157,7 @@ Enemy.prototype.die = function(weapon_key) {
 		this.enemydie_emitter = this.ctx.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.ctx.world.bounds.width, this.ctx.world.bounds.height);
 		this.enemydie_emitter.addToWorld(this.ctx.emitter_group);
 		
-	    this.enemydie_emitter.emit('spritedie', this.body.world.x - (Math.abs(this.body.width) / 2) - this.ctx.camera.position.x, this.body.world.y - this.ctx.camera.position.y, { zone: enemy_sprite_zone, full: true, setColor: true });
+	    this.enemydie_emitter.emit('spritedie', this.body.world.x - (Math.abs(this.body.width) / 2) - this.ctx.camera.position.x, this.body.world.y - this.body.height - this.ctx.camera.position.y, { zone: enemy_sprite_zone, full: true, setColor: true });
 	    this.body.destroy();
 	    
 	    this.ctx.time.events.add(2000, function() {
@@ -172,9 +176,14 @@ Enemy.prototype.destroy = function() {
 };
 
 
+walker_types = [
+	{sprite: "digdug", scale: {x: 2, y: 2}},
+	{sprite: "mario_mole", scale: {x: 1, y: 1}},
+];
 
 WalkerEnemy = function(options) {
-	this.base_sprite = "digdug";
+	this.meta_info = walker_types.randomElement();
+	this.base_sprite = this.meta_info.sprite;
 	this.spawn_position = options.spawn_position;
 	console.log("walker init");
 	
@@ -191,7 +200,7 @@ WalkerEnemy.prototype.show = function() {
 	console.log("walker show");
 	this.initCycle();
 	this.createWeapons();
-	this.body.scale.set(2, 2);
+	this.body.scale.set(this.meta_info.scale.x, this.meta_info.scale.y);
 	this.body.animations.add("walk", null, 6);
 	Enemy.prototype.show.call(this);
 	
@@ -235,13 +244,13 @@ WalkerEnemy.prototype.createWeapons = function() {
 WalkerEnemy.prototype.doMove = function() {};
 
 WalkerEnemy.prototype.walkLeft = function() {
-	this.body.scale.x = -2;
+	this.body.scale.x = -this.meta_info.scale.x;
 	this.body.animations.play("walk");
 	this.group.x -= 1;
 };
 
 WalkerEnemy.prototype.walkRight = function() {
-	this.body.scale.x = 2;
+	this.body.scale.x = this.meta_info.scale.x;
 	this.body.animations.play("walk");
 	this.group.x += 1;
 };
@@ -358,8 +367,8 @@ ShootingEnemy.prototype.createWeapons = function() {
 
 ShootingEnemy.prototype.createTurrets = function() {
 	var turretData = [
-	  {x: -27, y: 22, ax: 0.5, ay: 0.25, sprite: "turret01"},
-	  {x: 27, y: 22, ax: 0.5, ay: 0.25, sprite: "turret01"},
+	  {x: -27, y: 0, ax: 0.5, ay: 0.25, sprite: "turret01"},
+	  {x: 27, y: -22, ax: 0.5, ay: 0.25, sprite: "turret01"},
 	];
 	turretData.forEach(function(turret_data){
 		var turret = this.game.add.sprite(0, 0, turret_data.sprite);
@@ -406,7 +415,7 @@ Tetris_T_Enemy.prototype.show = function() {
 	
 	// block slide in from top
 	this.group.position.set(this.player.x, -100);
-	this.tweens.push(this.game.add.tween(this.group.position).to( {y: 100} , 1200, Phaser.Easing.Cubic.None, true));
+	this.tweens.push(this.game.add.tween(this.group.position).to( {y: 150} , 1200, Phaser.Easing.Cubic.None, true));
 };
 
 Tetris_T_Enemy.prototype.createWeapons = function() {
@@ -422,8 +431,8 @@ Tetris_T_Enemy.prototype.createWeapons = function() {
 
 Tetris_T_Enemy.prototype.createTurrets = function() {
 	var turretData = [
-	  {x: -27, y: 22, ax: 0.5, ay: 0.25, sprite: "turret01"},
-	  {x: 27, y: 22, ax: 0.5, ay: 0.25, sprite: "turret01"},
+	  {x: -27, y: -32, ax: 0.5, ay: 0.25, sprite: "turret01"},
+	  {x: 27, y: -32, ax: 0.5, ay: 0.25, sprite: "turret01"},
 	];
 	turretData.forEach(function(turret_data){
 		var turret = this.game.add.sprite(0, 0, turret_data.sprite);
@@ -473,6 +482,8 @@ BomberEnemy.prototype.parent = Enemy.prototype;
 BomberEnemy.prototype.show = function() {
 	this.createWeapons();
 	
+	this.bomberMoveSpeed = Math.floor(Math.random() * 3) + 3;
+	
 	Enemy.prototype.show.call(this);
 	
 	// spawn left of player off camera
@@ -483,7 +494,7 @@ BomberEnemy.prototype.update = function() {
 	Enemy.prototype.update.call(this);
 	
 	// travel right slowly
-	this.group.position.x += 2.5;
+	this.group.position.x += this.bomberMoveSpeed;
 };
 
 BomberEnemy.prototype.doMove = function() {

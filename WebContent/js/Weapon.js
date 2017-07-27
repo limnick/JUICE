@@ -10,10 +10,15 @@ Weapon = function (options) {
 Weapon.prototype.pickup = function(trigger) {
 	if (trigger) {
 		this.ctx.game.add.tween(trigger).to( {
-			y: trigger.y - 80,
+			y: trigger.y - 100,
 			alpha: 0,
 		} , 400, Phaser.Easing.Linear.None, true);
-		this.game.add.tween(trigger.scale).to( {x: 1, y: 1} , 400, Phaser.Easing.Linear.None, true);
+		this.game.add.tween(trigger.scale).to( {x: trigger.scale.x * 2.0, y: trigger.scale.y * 2.0} , 400, Phaser.Easing.Linear.None, true);
+		
+		this.trigger = trigger;
+		this.ctx.time.events.add(1000, function() {
+			this.trigger.destroy();
+		}, this);
 	}
 	
 	if (!this.player.weapons_available.includes(this.weapon_key)) {
@@ -23,16 +28,24 @@ Weapon.prototype.pickup = function(trigger) {
 	if (!this.player.weapon) {
 		this.equip();
 	}
+	
+	
 };
 
 Weapon.prototype.equip = function() {
 	var fontStyle = { font: "25px Arial", fill: "#ffffff", align: "left" };
 	this.weapon_label = this.game.add.text(10, 10, this.weapon_name, fontStyle);
+	
+	
+	var fontStyle = { font: "25px Arial", fill: "#000000", align: "left" };
+	this.weapon_label_o = this.game.add.text(12, 12, this.weapon_name, fontStyle);
+	this.ctx.ui.addChild(this.weapon_label_o);
 	this.ctx.ui.addChild(this.weapon_label);
 };
 
 Weapon.prototype.unequip = function() {
 	this.weapon_label.destroy();
+	this.weapon_label_o.destroy();
 };
 
 Weapon.prototype.update = function(blockers) {

@@ -210,12 +210,11 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.tileSprite(-32, 96, 32, 464, 'mario_nes_tileset', 894, floor);
 
-	this.game.add.tileSprite(5065, 390, 160, 32, 'mario_nes_tileset', 894, floor);
+	this.game.add.tileSprite(5515, 386, 160, 32, 'mario_nes_tileset', 894, floor);
 
-	this.game.add.tileSprite(3936, 372, 1152, 32, 'mario_nes_tileset', 894, floor);
+	this.game.add.tileSprite(3936, 372, 1600, 32, 'mario_nes_tileset', 894, floor);
 
-	var mario_nes_tileset32 = this.game.add.tileSprite(5220, 408, 1435, 32, 'mario_nes_tileset', 894, floor);
-	mario_nes_tileset32.angle = 0.3;
+	this.game.add.tileSprite(5664, 405, 960, 32, 'mario_nes_tileset', 894, floor);
 
 	this.game.add.tileSprite(5373, 542, 1280, 32, 'mario_nes_tileset', 894, floor);
 
@@ -333,7 +332,7 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(32, 64, 'mario_nes_tileset', 298, pipe);
 
-	var player = this.game.add.sprite(840, 473, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(6203, 497, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
@@ -346,6 +345,10 @@ function Scene2(aGame, aParent) {
 	var gun_machinegun = this.game.add.sprite(848, 560, 'gun_machinegun', null, triggers);
 	gun_machinegun.scale.setTo(0.5, 0.5);
 	gun_machinegun.anchor.setTo(0.5, 1.0);
+
+	var gun_laser = this.game.add.sprite(6051, 537, 'gun_laser', 0, triggers);
+	gun_laser.scale.setTo(0.7, 0.7);
+	gun_laser.anchor.setTo(0.5, 1.0);
 
 	var first_block_trigger = this.game.add.sprite(496, 384, 'mario_nes_tileset', 24, triggers);
 
@@ -374,6 +377,7 @@ function Scene2(aGame, aParent) {
 	this.fPlayer = player;
 	this.fTriggers = triggers;
 	this.fGun_machinegun = gun_machinegun;
+	this.fGun_laser = gun_laser;
 	this.fFirst_block_trigger = first_block_trigger;
 	this.fTriggers_invis = triggers_invis;
 	this.fEnemy_spawn_trigger_1 = enemy_spawn_trigger_1;

@@ -53,9 +53,9 @@ Level2.prototype.init = function() {
 	this.spawnList = [
         {x: 1200, spawned: false, klass: BomberEnemy, args: {}, enemy: null},
         {x: 2000, spawned: false, klass: BomberEnemy, args: {}, enemy: null},
-        {x: 1000, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: 1640, y: 532}} , enemy: null},
-        {x: 2200, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: 2850, y: 532}} , enemy: null},
-        {x: 1200, spawned: false, klass: WalkerEnemy2, args: {spawn_position: {x: 2253, y: 404}} , enemy: null},
+        {x: 1000, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: 1640, y: 560}} , enemy: null},
+        {x: 2200, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: 2850, y: 560}} , enemy: null},
+        {x: 1200, spawned: false, klass: WalkerEnemy2, args: {spawn_position: {x: 2255, y: 434}} , enemy: null},
     ];
 	
 	this.funcTriggers = [
@@ -96,6 +96,7 @@ Level2.prototype.create = function() {
 	// weapon pickup
 	
 	this.machinegun_pickup_trigger = scene.fGun_machinegun;
+	this.lasergun_pickup_trigger = scene.fGun_laser;
 	
 	// world
 
@@ -118,7 +119,10 @@ Level2.prototype.create = function() {
 	
 	this.t_enemy_2 = new Tetris_T_Enemy({ctx: this,});
 	
-	this.enemies = [this.t_enemy_2,];
+	this.b_enemy_1 = new BomberEnemy({ctx: this,});
+	this.b_enemy_2 = new BomberEnemy({ctx: this,});
+	
+	this.enemies = [this.t_enemy_2, this.b_enemy_1, this.b_enemy_2, ];
 
 	// init physics
 	
@@ -205,11 +209,8 @@ Level2.prototype.update = function() {
 	this.physics.arcade.collide(this.player, this.first_block_trigger, this.first_block_hit, null, this);
 	
 
-	
-	
-	if (!this.player.weapon) {
-		this.physics.arcade.overlap(this.player, this.machinegun_pickup_trigger, this.machinegun_trigger_hit, null, this);
-	}
+	if(this.machinegun_pickup_trigger) this.physics.arcade.overlap(this.player, this.machinegun_pickup_trigger, this.machinegun_trigger_hit, null, this);
+	if(this.lasergun_pickup_trigger) this.physics.arcade.overlap(this.player, this.lasergun_pickup_trigger, this.lasergun_trigger_hit, null, this);
 
 	var vel = 0;
 	
@@ -285,7 +286,8 @@ Level2.prototype.update = function() {
 		spawnMetadata = this.spawnList[i];
 		if (spawnMetadata.spawned) {
 			spawnMetadata.enemy.update();
-		} else if (this.player.x >= spawnMetadata.x && !spawnMetadata.spawned) {
+		} else if (this.player.x >= spawnMetadata.x && this.player.x < spawnMetadata.x + 1000 && !spawnMetadata.spawned) {
+			console.log("spawning enemy");
 			spawnMetadata.args.ctx = this;
 			spawnMetadata.enemy = new spawnMetadata.klass(spawnMetadata.args);
 			spawnMetadata.spawned = true;
@@ -396,9 +398,18 @@ Level2.prototype.machinegun_trigger_hit = function(player, trigger) {
 	this.weapons.machinegun.pickup(trigger);
 	
 	this.time.events.add(500, function() {
-		this.machinegun_pickup_trigger.destroy();
 		this.t_enemy_2.show();
 	}, this);
-	
+};
+
+
+Level2.prototype.lasergun_trigger_hit = function(player, trigger) {
+	this.weapons.laser.pickup(trigger);
+	this.time.events.add(200, function() {
+		this.b_enemy_1.show();
+	}, this);
+	this.time.events.add(800, function() {
+		this.b_enemy_2.show();
+	}, this);
 };
 

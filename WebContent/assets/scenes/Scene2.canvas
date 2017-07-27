@@ -928,8 +928,8 @@
                 "asset": "17",
                 "info": {
                   "editorName": "mario_nes_tileset33221",
-                  "x": 5065,
-                  "y": 390,
+                  "x": 5515,
+                  "y": 386,
                   "width": 160,
                   "height": 32
                 }
@@ -942,7 +942,7 @@
                   "editorName": "mario_nes_tileset3",
                   "x": 3936,
                   "y": 372,
-                  "width": 1152,
+                  "width": 1600,
                   "height": 32
                 }
               },
@@ -952,10 +952,9 @@
                 "asset": "17",
                 "info": {
                   "editorName": "mario_nes_tileset32",
-                  "x": 5220,
-                  "y": 408,
-                  "rotation": 0.005235987755982988,
-                  "width": 1435,
+                  "x": 5664,
+                  "y": 405,
+                  "width": 960,
                   "height": 32
                 }
               },
@@ -1612,8 +1611,8 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 840,
-            "y": 473,
+            "x": 6203,
+            "y": 497,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [
@@ -1671,8 +1670,23 @@
               },
               {
                 "type": "spritesheet",
-                "id": "e4f040a0-47fc-4249-9b8f-f8868297b6c3",
+                "id": "74de1d7c-f59c-40ad-a40a-99ee28af5858",
                 "asset": "26",
+                "info": {
+                  "editorName": "gun_laser",
+                  "editorPublic": true,
+                  "x": 6051,
+                  "y": 537,
+                  "scale.x": 0.7,
+                  "scale.y": 0.7,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "e4f040a0-47fc-4249-9b8f-f8868297b6c3",
+                "asset": "27",
                 "info": {
                   "editorName": "first_block_trigger",
                   "editorPublic": true,
@@ -1724,7 +1738,7 @@
             "children": [{
               "type": "image",
               "id": "5aed2b79-28eb-43ed-b8be-d2c7daa82f6e",
-              "asset": "27",
+              "asset": "28",
               "info": {
                 "editorName": "metalslug_fg",
                 "x": 3935,
@@ -1905,10 +1919,16 @@
     "26": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
+      "asset": "gun_laser",
+      "sprite": "0"
+    },
+    "27": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
       "asset": "mario_nes_tileset",
       "sprite": "24"
     },
-    "27": {
+    "28": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "metalslug_fg"
