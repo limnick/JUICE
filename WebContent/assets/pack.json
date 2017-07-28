@@ -290,10 +290,22 @@
                 "assets/audio/snatcher.ogg"
             ],
             "autoDecode": true
+        },
+        {
+            "type": "image",
+            "key": "gun_rocket",
+            "url": "assets/sprites/guns/rocketlauncher.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "gun_tesla",
+            "url": "assets/sprites/guns/tesla_cannon.png",
+            "overwrite": false
         }
     ],
     "meta": {
-        "generated": "1501203915070",
+        "generated": "1501220499161",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

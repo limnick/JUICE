@@ -43,6 +43,7 @@ Enemy = function (options) {
 Enemy.prototype.show = function() {
 	if (this.alive) { return; }
 	
+	this.ctx.enemy_layer.addChild(this.group);
 	this.group.setAll("renderable", true);
 	this.spawn_enabled = false;
 	
@@ -169,6 +170,16 @@ Enemy.prototype.die = function(weapon_key) {
 	    	
 	    	this.destroy();
 	
+		}, this);
+	} else {
+		//catchall enemy death
+		this.game.add.tween(this.group.position).to({
+			x: this.group.position.x + 50,
+			y: this.group.position.y + 2000}, 2600, Phaser.Easing.Elastic.None, true);
+	    
+	    this.ctx.time.events.add(3000, function() {
+	    	this.body.destroy();
+	    	this.destroy();
 		}, this);
 	}
 };

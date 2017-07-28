@@ -332,13 +332,17 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(32, 64, 'mario_nes_tileset', 298, pipe);
 
-	var player = this.game.add.sprite(3000, 469, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(4655, 252, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
 	player.animations.add('stay', [1], 60, false);
 	player.animations.add('die', [5], 60, false);
 	this.game.physics.arcade.enable(player);
+
+	var enemies = this.game.add.group(this);
+
+	var bullets = this.game.add.group(this);
 
 	var triggers_invis = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 
@@ -349,7 +353,7 @@ function Scene2(aGame, aParent) {
 	var walker_enemy_trigger1 = this.game.add.tileSprite(6600, 542, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
 	walker_enemy_trigger1.anchor.setTo(0.5, 1.0);
 
-	var walker_enemy_trigger2 = this.game.add.tileSprite(5752, 405, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	var walker_enemy_trigger2 = this.game.add.tileSprite(5939, 405, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
 	walker_enemy_trigger2.anchor.setTo(0.5, 1.0);
 
 	var walker_enemy_trigger3 = this.game.add.tileSprite(2850, 560, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
@@ -379,7 +383,22 @@ function Scene2(aGame, aParent) {
 	var walker_enemy_trigger121111 = this.game.add.tileSprite(15666, 516, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
 	walker_enemy_trigger121111.anchor.setTo(0.5, 1.0);
 
-	var walker_enemy_trigger = this.game.add.tileSprite(5127, 373, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	var walker_enemy_trigger4 = this.game.add.tileSprite(4398, 372, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	walker_enemy_trigger4.anchor.setTo(0.5, 1.0);
+
+	var walker_enemy_trigger112 = this.game.add.tileSprite(8506, 542, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	walker_enemy_trigger112.anchor.setTo(0.5, 1.0);
+
+	var walker_enemy_trigger1121 = this.game.add.tileSprite(9768, 542, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	walker_enemy_trigger1121.anchor.setTo(0.5, 1.0);
+
+	var walker_enemy_trigger32 = this.game.add.tileSprite(3514, 560, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	walker_enemy_trigger32.anchor.setTo(0.5, 1.0);
+
+	var walker_enemy_trigger33 = this.game.add.tileSprite(3394, 560, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	walker_enemy_trigger33.anchor.setTo(0.5, 1.0);
+
+	var walker_enemy_trigger = this.game.add.tileSprite(5168, 372, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
 	walker_enemy_trigger.anchor.setTo(0.5, 1.0);
 
 	var EmitterGroup = this.game.add.group(this);
@@ -413,6 +432,8 @@ function Scene2(aGame, aParent) {
 	this.fWalls = walls;
 	this.fBlocking_objects = blocking_objects;
 	this.fPlayer = player;
+	this.fEnemies = enemies;
+	this.fBullets = bullets;
 	this.fTriggers_invis = triggers_invis;
 	this.fEnemy_spawn_trigger_1 = enemy_spawn_trigger_1;
 	this.fTriggers_walker_enemy = triggers_walker_enemy;

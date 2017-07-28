@@ -19,12 +19,13 @@ Level2.prototype.init = function() {
 	this.world.setBounds(0, -200, 1000, 800);
 	
 	this.bgm_metadata = [
-        {x: -400, name: "mario_clean"},
-	    {x: 1400, name: "mario_1"},
-	    {x: 3000, name: "mario_2"},
-	    {x: 3900, name: "snatcher", restart: true},
+        {x: -100, width: 10, name: "mario_clean"},
+	    {x: 1400, width: 300, name: "mario_1"},
+	    {x: 2600, width: 300, name: "mario_2"},
+	    {x: 3900, width: 600, name: "snatcher", restart: true},
     ];
 	this.bgm_transition_width = 300;
+	this.bgm_volume = 0.1;
 	
 	this.PLAYER_SPEED = 200;
 	this.JUMP_SPEED = 600;
@@ -95,11 +96,6 @@ Level2.prototype.create = function() {
 	var scene = new Scene2(this.game);
 	this.game.stage.smoothed = false;
 	
-	// audio
-	this.sfx = {};
-	this.sfx.bgm = this.game.sound.add('mario_clean', 1, true);
-	this.sfx.bgm.play("", 0, 1, false);
-	
 	// player
 
 	this.player = scene.fPlayer;
@@ -112,6 +108,7 @@ Level2.prototype.create = function() {
 	this.weapons = {
 		machinegun: new Weapon_Machinegun({ctx: this}),
 		laser: new Weapon_Laser({ctx: this}),
+		rocket: new Weapon_Rocket({ctx: this}),
 	};
 	this.player.weapons_available = [];
 
@@ -124,6 +121,8 @@ Level2.prototype.create = function() {
 	
 	// world
 
+	this.enemy_layer = scene.fEnemies;
+	this.bullet_layer = scene.fBullets;
 	this.ui = scene.fUI;
 	this.ground = scene.fFloor;
 	this.walls = scene.fWalls;
@@ -218,6 +217,25 @@ Level2.prototype.create = function() {
 		
 	// first block gag
 	this.first_block_trigger = scene.fFirst_block_trigger;
+	
+	// audio
+	this.sfx = {};
+
+	for (var i = 0; i < this.bgm_metadata.length; i++) {
+		var mdata = this.bgm_metadata[i];
+		var mdata_prev = this.bgm_metadata[i-1];
+		if (this.player.x < mdata.x) {
+			this.sfx.bgm = this.game.sound.add(mdata_prev.name, this.bgm_volume, true);
+			this.sfx.bgm.play("", 0, this.bgm_volume, false);
+			break;
+		}
+		
+		if (i == this.bgm_metadata.length - 1) {
+			// if we get here without breaking out, we are at the last trigger
+			this.sfx.bgm = this.game.sound.add(mdata.name, this.bgm_volume, true);
+			this.sfx.bgm.play("", 0, this.bgm_volume, false);
+		}
+	}
 };
 
 Level2.prototype.triggerSplash = function() {
@@ -276,6 +294,7 @@ Level2.prototype.update = function() {
 	if (this.buttons.cheat.isDown) {
 		this.weapons.machinegun.pickup();
 		this.weapons.laser.pickup();
+		this.weapons.rocket.pickup();
 //		this.emitter_blood_sm.emit('blood', (this.player.body.x + (this.player.body.width / 2)) - this.camera.position.x, this.player.body.y, { total: 7, repeat: 5, frequency: 1 });
 	}
 	
@@ -318,8 +337,8 @@ Level2.prototype.update = function() {
 		var mdata = this.bgm_metadata[i];
 		var tbox = {
 				left: mdata.x,
-				center: mdata.x + (this.bgm_transition_width/2),
-				right: mdata.x + this.bgm_transition_width,
+				center: mdata.x + (mdata.width/2),
+				right: mdata.x + mdata.width,
 		};
 		if (this.player.x >= mdata.x && this.player.x < tbox.right) {
 			//player inside of transition box
@@ -352,13 +371,15 @@ Level2.prototype.update = function() {
 			var fadePct = 0.0;
 			//transitioning audio
 			if (this.bgm_transition_direction == 'right') {
-				fadePct = (this.player.x - tbox.left) / this.bgm_transition_width;
+				console.log(this.bgm_transition_direction, this.player.x, tbox.left, mdata.width, this.bgm_mdata_new.width);
+				fadePct = (this.player.x - tbox.left) / mdata.width;
 			} else if (this.bgm_transition_direction == 'left') {
-				fadePct = (tbox.right - this.player.x) / this.bgm_transition_width;
+				console.log(this.bgm_transition_direction, this.player.x, tbox.left, mdata.width, this.bgm_mdata_new.width, this.bgm_mdata_new.x);
+				fadePct = (tbox.right - this.player.x) / mdata.width;
 			}
-			this.sfx.bgm_fading.volume = fadePct;
-			this.sfx.bgm.volume = 1.0 - fadePct;
-//			console.log("fading up audio: ", this.bgm_mdata_new.name, " [", fadePct, "] index: ", this.bgm_transition_index, this.bgm_transition_direction);
+			this.sfx.bgm_fading.volume = fadePct * this.bgm_volume;
+			this.sfx.bgm.volume = (1 - fadePct) * this.bgm_volume;
+			console.log("fading up audio: ", this.bgm_mdata_new.name, " [", fadePct, "] index: ", this.bgm_transition_index, this.bgm_transition_direction);
 		} else {
 			if (this.bgm_transition_index == i) {
 				console.log('audio transition ended', i);
@@ -372,7 +393,7 @@ Level2.prototype.update = function() {
 					this.sfx.bgm.destroy();
 					
 					this.sfx.bgm = this.sfx.bgm_fading;
-					this.sfx.bgm.volume = 1;
+					this.sfx.bgm.volume = this.bgm_volume;
 				}
 				this.bgm_transition_direction = null;
 				this.bgm_mdata_new = null;
@@ -381,7 +402,7 @@ Level2.prototype.update = function() {
 		}
 	}
 	
-	if (!this.sfx.bgm.isPlaying) { this.sfx.bgm.play('', 0); }
+	if (!this.sfx.bgm.isPlaying) { this.sfx.bgm.play('', 0, this.bgm_volume); }
 	
 //	this.sfx.bgm = this.game.sound.add('mario_clean', 1, true);
 //	this.sfx.bgm.play("", 0, 1, true);

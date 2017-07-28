@@ -1611,8 +1611,8 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 3000,
-            "y": 469,
+            "x": 4655,
+            "y": 252,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [
@@ -1643,6 +1643,24 @@
               }
             ],
             "body": {"type": "ARCADE_RECT"}
+          }
+        },
+        {
+          "type": "group",
+          "id": "346906f4-9e6a-4464-a302-973241451501",
+          "info": {
+            "editorName": "enemies",
+            "editorPublic": true,
+            "children": []
+          }
+        },
+        {
+          "type": "group",
+          "id": "708244c8-55a9-4115-8cf2-09bd7c49d1ba",
+          "info": {
+            "editorName": "bullets",
+            "editorPublic": true,
+            "children": []
           }
         },
         {
@@ -1696,7 +1714,7 @@
                 "asset": "25",
                 "info": {
                   "editorName": "walker_enemy_trigger2",
-                  "x": 5752,
+                  "x": 5939,
                   "y": 405,
                   "anchor.x": 0.5,
                   "anchor.y": 1,
@@ -1832,12 +1850,82 @@
               },
               {
                 "type": "tileSprite",
+                "id": "409e12a3-a916-4ac8-adbb-d780a3306383",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger4",
+                  "x": 4398,
+                  "y": 372,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "a529b3f8-9f78-48f3-91c5-513d0582d3b1",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger112",
+                  "x": 8506,
+                  "y": 542,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "2b2fdb03-1732-48c7-9ce8-db3a9b961688",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger1121",
+                  "x": 9768,
+                  "y": 542,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "2e0c1cdf-a0ea-48d3-ac79-372bbd0f3fa7",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger32",
+                  "x": 3514,
+                  "y": 560,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "95c86a64-65ce-4ca1-b749-b25e4f322209",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger33",
+                  "x": 3394,
+                  "y": 560,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
                 "id": "e3d14798-e320-4246-aa9e-656d2a8976e6",
                 "asset": "25",
                 "info": {
                   "editorName": "walker_enemy_trigger",
-                  "x": 5127,
-                  "y": 373,
+                  "x": 5168,
+                  "y": 372,
                   "anchor.x": 0.5,
                   "anchor.y": 1,
                   "width": 32,
