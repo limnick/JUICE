@@ -281,10 +281,19 @@
                 "assets/audio/mario_2.ogg"
             ],
             "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "snatcher",
+            "urls": [
+                "assets/audio/snatcher.mp3",
+                "assets/audio/snatcher.ogg"
+            ],
+            "autoDecode": true
         }
     ],
     "meta": {
-        "generated": "1501198471795",
+        "generated": "1501203915070",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

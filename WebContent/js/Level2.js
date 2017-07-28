@@ -22,6 +22,7 @@ Level2.prototype.init = function() {
         {x: -400, name: "mario_clean"},
 	    {x: 1400, name: "mario_1"},
 	    {x: 3000, name: "mario_2"},
+	    {x: 3900, name: "snatcher", restart: true},
     ];
 	this.bgm_transition_width = 300;
 	
@@ -334,9 +335,17 @@ Level2.prototype.update = function() {
 					this.bgm_transition_direction = 'left';
 				}
 				
-				console.log("starting new audio",  this.sfx.bgm.position + this.sfx.bgm.currentTime / 1000);
+				var position = 0;
+				if (!this.bgm_mdata_new.restart) {
+					position = this.sfx.bgm.position + this.sfx.bgm.currentTime / 1000;
+				}
+				
+				console.log("starting new audio",  position);
+				
+				
 				this.sfx.bgm_fading = this.game.sound.add(this.bgm_mdata_new.name, 0, true);
-				this.sfx.bgm_fading.restart("", this.sfx.bgm.position + this.sfx.bgm.currentTime / 1000, 0, false);
+				
+				this.sfx.bgm_fading.restart("", position, 0, false);
 				this.bgm_transition_index = i;
 			}
 			
@@ -350,7 +359,6 @@ Level2.prototype.update = function() {
 			this.sfx.bgm_fading.volume = fadePct;
 			this.sfx.bgm.volume = 1.0 - fadePct;
 //			console.log("fading up audio: ", this.bgm_mdata_new.name, " [", fadePct, "] index: ", this.bgm_transition_index, this.bgm_transition_direction);
-			
 		} else {
 			if (this.bgm_transition_index == i) {
 				console.log('audio transition ended', i);
@@ -372,6 +380,8 @@ Level2.prototype.update = function() {
 			}
 		}
 	}
+	
+	if (!this.sfx.bgm.isPlaying) { this.sfx.bgm.play('', 0); }
 	
 //	this.sfx.bgm = this.game.sound.add('mario_clean', 1, true);
 //	this.sfx.bgm.play("", 0, 1, true);
