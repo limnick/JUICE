@@ -94,15 +94,15 @@ Enemy.prototype.updateEnemyHealthbar = function() {
 };
 
 Enemy.prototype.update = function() {
-	if (!this.alive) { return; }
-	
-	if (this.spawn_enabled) this.ctx.physics.arcade.overlap(this.player, this.spawn_trigger, this.show, null, this);
-	
 	if (this.weapon) {
 		this.ctx.physics.arcade.overlap(this.player, this.weapon.bullets, this.playerHit, null, this);
 		this.ctx.physics.arcade.overlap(this.ctx.walls, this.weapon.bullets, this.wallHit, null, this);
 		this.ctx.physics.arcade.overlap(this.ctx.ground, this.weapon.bullets, this.wallHit, null, this);
 	}
+	
+	if (!this.alive) { return; }
+	
+	if (this.spawn_enabled) this.ctx.physics.arcade.overlap(this.player, this.spawn_trigger, this.show, null, this);
 	
 	this.ctx.physics.arcade.overlap(this.player, this.group, this.spriteHit, null, this);
 	
@@ -153,7 +153,7 @@ Enemy.prototype.die = function(weapon_key) {
 	    
 	    this.ctx.time.events.add(3000, function() {
 	    	this.body.destroy();
-	    	this.destroy();
+	    	this.destroyAfterBullets();
 		}, this);
 	} else if (weapon_key == 'laser') {
 		var tmpSprite =  new Phaser.Sprite(this.game, 0, 0, this.base_sprite, 0);
@@ -168,7 +168,7 @@ Enemy.prototype.die = function(weapon_key) {
 	    	this.ctx.ps_manager.removeEmitter(this.enemydie_emitter);
 	    	this.enemydie_emitter.destroy();
 	    	
-	    	this.destroy();
+	    	this.destroyAfterBullets();
 	
 		}, this);
 	} else {
@@ -179,7 +179,17 @@ Enemy.prototype.die = function(weapon_key) {
 	    
 	    this.ctx.time.events.add(3000, function() {
 	    	this.body.destroy();
-	    	this.destroy();
+	    	this.destroyAfterBullets();
+		}, this);
+	}
+};
+
+Enemy.prototype.destroyAfterBullets = function() {
+	if (this.weapon.bullets.countLiving() == 0) {
+		this.destroy();
+	} else {
+		this.ctx.time.events.add(1000, function() {
+	    	this.destroyAfterBullets();
 		}, this);
 	}
 };
@@ -187,6 +197,7 @@ Enemy.prototype.die = function(weapon_key) {
 Enemy.prototype.spriteHit = function() {
 	if (!this.lastTouchDamageTime || (this.game.time.now - this.lastTouchDamageTime) > 2000) {
 		this.lastTouchDamageTime = this.game.time.now;
+		this.game.camera.shake(0.005, 300);
 		this.player.damage(10);
 	}
 };
@@ -372,6 +383,7 @@ ShootingEnemy.prototype.update = function() {
 
 ShootingEnemy.prototype.playerHit = function(player, bullet) {
 	this.player.damage(this.weapon.damage);
+	this.game.camera.shake(0.005, 100);
 	bullet.kill();
 };
 
@@ -497,7 +509,7 @@ BomberEnemy = function(options) {
 	this.move_timer_default = 2000;
 	this.max_health = 500;
 	
-	this.height_offset = 400;
+	this.height_offset = 200;
 	
 	return Enemy.call(this, options);
 };
@@ -510,7 +522,7 @@ BomberEnemy.prototype.show = function() {
 	if (this.alive) { return; }
 	this.createWeapons();
 	
-	this.bomberMoveSpeed = Math.floor(Math.random() * 3) + 3;
+	this.bomberMoveSpeed = Math.floor(Math.random() * 3) + 2;
 	
 	Enemy.prototype.show.call(this);
 	
@@ -551,6 +563,7 @@ BomberEnemy.prototype.onBulletHit = function(bullet) {
 	explosion.animations.add('blowup', null, 60);
 	explosion.animations.play('blowup');
 	bullet.kill();
+	this.game.camera.shake(0.005, 100);
 };
 
 BomberEnemy.prototype.playerHit = function(player, bullet) {

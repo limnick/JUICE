@@ -177,10 +177,6 @@ Weapon_Laser.prototype.update = function(blockers) {
 			y: this.sprite.world.y + (this.sprite.width * 1.2) * Math.sin(this.sprite.rotation),
 		};
 	
-	var gun_barrel_projectile = {
-			x: this.sprite.world.x + 0 + (this.sprite.width * 1.2) * scalefix * Math.cos(this.sprite.rotation),
-			y: this.sprite.world.y - 0 + (this.sprite.width * 1.2) * Math.sin(this.sprite.rotation),
-		};
 //	console.log(this.sprite.rotation, this.sprite.width, this.sprite.height, "x: ", gun_barrel_projectile.x, Math.cos(this.sprite.rotation), "y: ", gun_barrel_projectile.y, Math.sin(this.sprite.rotation));
 	
 	if (this.ctx.player_has_control && (this.ctx.buttons.fire.isDown || this.game.input.activePointer.leftButton.isDown)) {
@@ -196,30 +192,14 @@ Weapon_Laser.prototype.update = function(blockers) {
 			var beam_sprite_base = this.game.add.sprite(0, 0, "laser_beam", 0);
 			this.ctx.bullet_layer.addChild(beam_sprite_base);
 			beam_sprite_base.anchor.set(0, 0.5);
-//			beam_sprite_base.scale.set(scalefix * beam_sprite_base.scale.x, beam_sprite_base.scale.y);
-			beam_sprite_base.position.set(gun_barrel_projectile.x, gun_barrel_projectile.y);
+			beam_sprite_base.position.set(gun_barrel.x, gun_barrel.y);
 			
-			beam_sprite_base.rotation = Phaser.Math.angleBetween(gun_barrel_projectile.x, gun_barrel_projectile.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY); //this.sprite.rotation + ((this.player.scale.x > 0) ? 0 : Math.PI);
+			beam_sprite_base.rotation = Phaser.Math.angleBetween(gun_barrel.x, gun_barrel.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
 			var beam_sprite_body = this.game.add.sprite(30, 0, "laser_beam", 1);
 			beam_sprite_body.scale.set(30, 1);
 			beam_sprite_body.anchor.set(0, 0.5);
 			beam_sprite_base.addChild(beam_sprite_body);
-			this.weapon.fire(gun_barrel_projectile, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
-			
-////			var beam_sprite_base = this.game.add.sprite(this.sprite.width + 10, - 20, "laser_beam", 0);
-//			var beam_sprite_base = this.game.add.sprite(0, 0, "laser_beam", 0);
-////			beam_sprite_base.scale.set(1 / this.sprite.scale.x, 1 / this.sprite.scale.y);
-//			beam_sprite_base.anchor.set(0, 0);
-//			
-////			beam_sprite_base.position.set(this.sprite.world.x + (Math.cos(this.sprite.rotation) * (this.sprite.width + 10)), this.sprite.world.y  + (Math.sin(this.sprite.rotation) * -20));
-//			beam_sprite_base.position.set(gun_barrel_projectile.x, gun_barrel_projectile.y);
-//			beam_sprite_base.rotation = this.sprite.rotation;
-//			var beam_sprite_body = this.game.add.sprite(30, 0, "laser_beam", 1);
-//			beam_sprite_body.scale.set(30, 1);
-//			beam_sprite_body.anchor.set(0, 0);
-////			this.sprite.addChild(beam_sprite_base);
-//			beam_sprite_base.addChild(beam_sprite_body);
-//			this.weapon.fire(gun_barrel_projectile, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
+			this.weapon.fire(gun_barrel, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
 			
 			this.weapon.charge = 0;
 			this.game.add.tween(beam_sprite_base).to( {alpha: 0} , 600, Phaser.Easing.Linear.None, true);

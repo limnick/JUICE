@@ -129,6 +129,7 @@ Level2.prototype.create = function() {
 	this.blocking_objects = scene.fBlocking_objects;
 	this.triggers = scene.fTriggers;
 	this.triggers_invis = scene.fTriggers_invis;
+	this.floor_fall_trigger = scene.fFloor_fall_trigger;
 	this.water_floor = scene.fWater_floor;
 	this.bg_anims = [scene.fWater_temple, scene.fWater_temple_outside, scene.fFactory, ];
 	
@@ -260,6 +261,7 @@ Level2.prototype.update = function() {
 	this.physics.arcade.collide(this.player, this.blocking_objects.children);
 	this.physics.arcade.collide(this.player, this.first_block_trigger, this.first_block_hit, null, this);
 	
+	this.physics.arcade.overlap(this.player, this.floor_fall_trigger, this.floor_fall, null, this);
 
 	//call emit for each weapon trigger with its x/y location
 	var shimmer_settings = { total: 4, repeat: 0, frequency: 0 };
@@ -371,15 +373,13 @@ Level2.prototype.update = function() {
 			var fadePct = 0.0;
 			//transitioning audio
 			if (this.bgm_transition_direction == 'right') {
-				console.log(this.bgm_transition_direction, this.player.x, tbox.left, mdata.width, this.bgm_mdata_new.width);
 				fadePct = (this.player.x - tbox.left) / mdata.width;
 			} else if (this.bgm_transition_direction == 'left') {
-				console.log(this.bgm_transition_direction, this.player.x, tbox.left, mdata.width, this.bgm_mdata_new.width, this.bgm_mdata_new.x);
 				fadePct = (tbox.right - this.player.x) / mdata.width;
 			}
 			this.sfx.bgm_fading.volume = fadePct * this.bgm_volume;
 			this.sfx.bgm.volume = (1 - fadePct) * this.bgm_volume;
-			console.log("fading up audio: ", this.bgm_mdata_new.name, " [", fadePct, "] index: ", this.bgm_transition_index, this.bgm_transition_direction);
+//			console.log("fading up audio: ", this.bgm_mdata_new.name, " [", fadePct, "] index: ", this.bgm_transition_index, this.bgm_transition_direction);
 		} else {
 			if (this.bgm_transition_index == i) {
 				console.log('audio transition ended', i);
@@ -531,6 +531,9 @@ Level2.prototype.first_block_hit = function(player, block) {
 	}
 };
 
+Level2.prototype.floor_fall = function(player, trigger) {
+	this.player.y = 10;
+};
 
 Level2.prototype.machinegun_trigger_hit = function(player, trigger) {
 	this.weapons.machinegun.pickup(trigger);

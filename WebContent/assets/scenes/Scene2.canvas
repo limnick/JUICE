@@ -1611,8 +1611,8 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 4655,
-            "y": 252,
+            "x": 1840,
+            "y": 519,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [
@@ -1672,19 +1672,34 @@
             "editorPublic": true,
             "editorShow": false,
             "physicsGroup": true,
-            "children": [{
-              "type": "tileSprite",
-              "id": "fb00d690-6b26-464a-bbee-4a188f412910",
-              "asset": "17",
-              "info": {
-                "editorName": "enemy_spawn_trigger_1",
-                "editorPublic": true,
-                "x": 1075,
-                "y": 493,
-                "width": 64,
-                "height": 64
+            "children": [
+              {
+                "type": "tileSprite",
+                "id": "fb00d690-6b26-464a-bbee-4a188f412910",
+                "asset": "17",
+                "info": {
+                  "editorName": "enemy_spawn_trigger_1",
+                  "editorPublic": true,
+                  "x": 1075,
+                  "y": 493,
+                  "width": 64,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "bc0564e7-a8d0-4c2d-b882-9cfc73783e00",
+                "asset": "17",
+                "info": {
+                  "editorName": "floor_fall_trigger",
+                  "editorPublic": true,
+                  "x": 1905,
+                  "y": 567,
+                  "width": 128,
+                  "height": 64
+                }
               }
-            }]
+            ]
           }
         },
         {
