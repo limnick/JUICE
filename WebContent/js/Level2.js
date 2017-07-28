@@ -18,6 +18,13 @@ Level2.prototype.init = function() {
 	this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	this.world.setBounds(0, -200, 1000, 800);
 	
+	this.bgm_metadata = [
+        {x: -400, name: "mario_clean"},
+	    {x: 1400, name: "mario_1"},
+	    {x: 3000, name: "mario_2"},
+    ];
+	this.bgm_transition_width = 300;
+	
 	this.PLAYER_SPEED = 200;
 	this.JUMP_SPEED = 600;
 	// needed for smooth scrolling
@@ -86,6 +93,11 @@ Level2.prototype.create = function() {
 	this.physics.arcade.gravity.y = 800;
 	var scene = new Scene2(this.game);
 	this.game.stage.smoothed = false;
+	
+	// audio
+	this.sfx = {};
+	this.sfx.bgm = this.game.sound.add('mario_clean', 1, true);
+	this.sfx.bgm.play("", 0, 1, false);
 	
 	// player
 
@@ -299,6 +311,70 @@ Level2.prototype.update = function() {
 			this.player.play("jump");
 		}
 	}
+	
+	// update background audio
+	for (var i = 0; i < this.bgm_metadata.length; i++) {
+		var mdata = this.bgm_metadata[i];
+		var tbox = {
+				left: mdata.x,
+				center: mdata.x + (this.bgm_transition_width/2),
+				right: mdata.x + this.bgm_transition_width,
+		};
+		if (this.player.x >= mdata.x && this.player.x < tbox.right) {
+			//player inside of transition box
+			if (!this.bgm_transition_index) {
+				// figure out which side we're on so we know what's playing
+				if (this.player.x < tbox.center) {
+					// player entered on left, get mdata for right
+					this.bgm_mdata_new = mdata;
+					this.bgm_transition_direction = 'right';
+				} else {
+					// player entered on right, get mdata for left
+					this.bgm_mdata_new = this.bgm_metadata[i-1];
+					this.bgm_transition_direction = 'left';
+				}
+				
+				console.log("starting new audio",  this.sfx.bgm.position + this.sfx.bgm.currentTime / 1000);
+				this.sfx.bgm_fading = this.game.sound.add(this.bgm_mdata_new.name, 0, true);
+				this.sfx.bgm_fading.restart("", this.sfx.bgm.position + this.sfx.bgm.currentTime / 1000, 0, false);
+				this.bgm_transition_index = i;
+			}
+			
+			var fadePct = 0.0;
+			//transitioning audio
+			if (this.bgm_transition_direction == 'right') {
+				fadePct = (this.player.x - tbox.left) / this.bgm_transition_width;
+			} else if (this.bgm_transition_direction == 'left') {
+				fadePct = (tbox.right - this.player.x) / this.bgm_transition_width;
+			}
+			this.sfx.bgm_fading.volume = fadePct;
+			this.sfx.bgm.volume = 1.0 - fadePct;
+//			console.log("fading up audio: ", this.bgm_mdata_new.name, " [", fadePct, "] index: ", this.bgm_transition_index, this.bgm_transition_direction);
+			
+		} else {
+			if (this.bgm_transition_index == i) {
+				console.log('audio transition ended', i);
+				//player outside of current box, end current transition
+				if ((this.bgm_transition_direction == 'right' && this.player.x < tbox.left) ||
+						(this.bgm_transition_direction == 'left' && this.player.x > tbox.right)) {
+					this.sfx.bgm_fading.stop();
+					this.sfx.bgm_fading.destroy();
+				} else {
+					this.sfx.bgm.stop();
+					this.sfx.bgm.destroy();
+					
+					this.sfx.bgm = this.sfx.bgm_fading;
+					this.sfx.bgm.volume = 1;
+				}
+				this.bgm_transition_direction = null;
+				this.bgm_mdata_new = null;
+				this.bgm_transition_index = null;
+			}
+		}
+	}
+	
+//	this.sfx.bgm = this.game.sound.add('mario_clean', 1, true);
+//	this.sfx.bgm.play("", 0, 1, true);
 
 	// update weapon
 	

@@ -254,10 +254,37 @@
             "textureURL": "assets/test.png",
             "atlasURL": "assets/test.json",
             "format": "TEXTURE_ATLAS_JSON_HASH"
+        },
+        {
+            "type": "audio",
+            "key": "mario_1",
+            "urls": [
+                "assets/audio/mario_1.mp3",
+                "assets/audio/mario_1.ogg"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "mario_clean",
+            "urls": [
+                "assets/audio/mario_clean.mp3",
+                "assets/audio/mario_clean.ogg"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "mario_2",
+            "urls": [
+                "assets/audio/mario_2.mp3",
+                "assets/audio/mario_2.ogg"
+            ],
+            "autoDecode": true
         }
     ],
     "meta": {
-        "generated": "1501131014651",
+        "generated": "1501198471795",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",
