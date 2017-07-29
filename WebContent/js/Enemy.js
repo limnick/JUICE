@@ -14,6 +14,7 @@ Enemy = function (options) {
 	if (!this.base_sprite) console.log("PLEASE SET BASE SPRITE");
 	
 	this.body = this.game.add.sprite(0, 0, this.base_sprite);
+	this.body.klass = this;
 	this.body.anchor.set(0.5, 1);
 	
 	this.group.add(this.body);
@@ -81,10 +82,15 @@ Enemy.prototype.tick = function() {
 Enemy.prototype.doMove = function() {};
 Enemy.prototype.doShoot = function() {};
 
-Enemy.prototype.onHit = function(bullet, enemy) {
-	bullet.kill();
-	this.health -= this.player.weapon.damage;
+Enemy.prototype.takeDamage = function(damage) {
+	this.health -= damage;
 	if (this.health < 0) this.health = 0;
+};
+
+Enemy.prototype.onHit = function(bullet, enemy) {
+	this.takeDamage(this.player.weapon.damage);
+	if (this.player.weapon.hit_effect_callback) { this.player.weapon.hit_effect_callback.call(this.player.weapon, bullet, enemy); }
+	bullet.kill();
 };
 
 Enemy.prototype.updateEnemyHealthbar = function() {

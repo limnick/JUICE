@@ -232,7 +232,6 @@ Weapon_Laser.prototype.unequip = function() {
 
 //------------------------------------------ Rocket Launcher -------------------------------------
 // shoots small and slow rockets that explode on impact for medium damage
-// TODO: add splash damage
 
 Weapon_Rocket = function(options) {
 	this.weapon_name = "ROCKET";
@@ -258,17 +257,23 @@ Weapon_Rocket.prototype.equip = function() {
 	this.player.addChild(this.sprite);
 	
 	if (!this.weapon) {
-		this.weapon = this.ctx.add.weapon(30, "items");
+		this.weapon = this.ctx.add.weapon(30, "missile02");
+
+		this.weapon.addBulletAnimation("shoot", [0,1,2], 20, true);
+//		this.weapon.bulletAnimation = "shoot";
+		this.weapon.bulletAngleOffset = 90;
 		this.weapon.setBulletFrames(8, 10, true);
 		this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
 		this.weapon.bulletSpeed = 400;
 		this.weapon.bulletGravity.y = -800;
-		this.weapon.fireRate = 100;
+		this.weapon.fireRate = 500;
+		this.weapon.splashRadius = 50;
+		this.weapon.splashDmg = 25;
 		
 		this.bullets = this.weapon.bullets;
 		this.ctx.bullet_layer.addChild(this.weapon.bullets);
 		
-		this.damage = 25;
+		this.damage = 75;
 	}
 	
 	this.player.weapon = this;
@@ -276,6 +281,11 @@ Weapon_Rocket.prototype.equip = function() {
 
 Weapon_Rocket.prototype.update = function(blockers) {
 	this.parent.update.call(this, blockers);
+	this.bullets.forEachAlive(function(bullet){
+		//accelerate each tick
+		bullet.body.velocity.x = bullet.body.velocity.x * 1.04;
+		bullet.body.velocity.y = bullet.body.velocity.y * 1.04;
+	}, this);
 	
 	var scalefix = (this.player.scale.x > 0) ? 1 : -1;
 	this.sprite.rotation = Phaser.Math.angleBetween(scalefix * this.sprite.world.x, this.sprite.world.y, 
@@ -288,12 +298,49 @@ Weapon_Rocket.prototype.update = function(blockers) {
 	if (this.ctx.player_has_control && (this.ctx.buttons.fire.isDown || this.game.input.activePointer.leftButton.isDown)) {
 		this.weapon.fire(gun_barrel, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
 	}
+	
+	
 };
 
 Weapon_Rocket.prototype.unequip = function() {
 	this.parent.unequip.call(this);
 	
 	this.sprite.destroy();
+};
+
+Weapon_Rocket.prototype.handleSplashDamage = function(bullet) {
+	var splash_ball = this.game.add.sprite(bullet.world.x - this.weapon.splashRadius, bullet.world.y - this.weapon.splashRadius, 'missile01');
+	this.game.physics.arcade.enable(splash_ball);
+	splash_ball.renderable = false;
+	splash_ball.body.immovable = true;
+	splash_ball.body.allowGravity = false;
+	splash_ball.body.setCircle(this.weapon.splashRadius);
+	this.ctx.physics.arcade.overlap(splash_ball, this.ctx.enemy_layer.children, this.splashHit, null, this);
+	splash_ball.destroy();
+	
+};
+
+Weapon_Rocket.prototype.splashHit = function(splashball, enemy) {
+	enemy.klass.takeDamage(this.weapon.splashDmg);
+};
+
+Weapon_Rocket.prototype.onBlockerHit = function(bullet, blocker) {
+	var explosion = this.game.add.sprite(bullet.x, bullet.y, 'explosion_sm');
+	explosion.anchor.set(0.5, 0.5);
+	explosion.animations.add('blowup', null, 60);
+	explosion.animations.play('blowup');
+	this.handleSplashDamage(bullet);
+	bullet.kill();
+	this.game.camera.shake(0.005, 100);
+};
+
+Weapon_Rocket.prototype.hit_effect_callback = function(bullet, blocker) {
+	var explosion = this.game.add.sprite(bullet.x, bullet.y, 'explosion_sm');
+	explosion.anchor.set(0.5, 0.5);
+	explosion.animations.add('blowup', null, 60);
+	explosion.animations.play('blowup');
+	this.game.camera.shake(0.005, 100);
+	this.handleSplashDamage(bullet);
 };
 
 //------------------------------------------- Tesla Cannon ---------------------------------------

@@ -453,6 +453,10 @@ Level2.prototype.update = function() {
 Level2.prototype.render = function() {
 //	if (this.enemydie_emitter) this.enemydie_emitter.debug(432, 522);
 //	this.emitter_splash.debug(432, 522);
+//	if (this.player.weapon && this.player.weapon.splash_ball) {
+//		this.game.debug.body(this.player.weapon.splash_ball);
+//		this.game.debug.bodyInfo(this.player.weapon.splash_ball, 32, 32);
+//	}
 };
 
 Level2.prototype.nextWeapon = function() {

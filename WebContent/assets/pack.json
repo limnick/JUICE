@@ -302,10 +302,26 @@
             "key": "gun_tesla",
             "url": "assets/sprites/guns/tesla_cannon.png",
             "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "missile01",
+            "url": "assets/sprites/bullets/missile01.png",
+            "overwrite": false
+        },
+        {
+            "type": "spritesheet",
+            "key": "missile02",
+            "url": "assets/sprites/bullets/missile02.png",
+            "frameWidth": 12,
+            "frameHeight": 46,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
         }
     ],
     "meta": {
-        "generated": "1501220499161",
+        "generated": "1501290075314",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",
