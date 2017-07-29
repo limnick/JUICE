@@ -109,6 +109,7 @@ Level2.prototype.create = function() {
 		machinegun: new Weapon_Machinegun({ctx: this}),
 		laser: new Weapon_Laser({ctx: this}),
 		rocket: new Weapon_Rocket({ctx: this}),
+		tesla: new Weapon_Tesla({ctx: this}),
 	};
 	this.player.weapons_available = [];
 
@@ -297,6 +298,7 @@ Level2.prototype.update = function() {
 		this.weapons.machinegun.pickup();
 		this.weapons.laser.pickup();
 		this.weapons.rocket.pickup();
+		this.weapons.tesla.pickup();
 //		this.emitter_blood_sm.emit('blood', (this.player.body.x + (this.player.body.width / 2)) - this.camera.position.x, this.player.body.y, { total: 7, repeat: 5, frequency: 1 });
 	}
 	

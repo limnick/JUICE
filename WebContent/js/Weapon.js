@@ -346,6 +346,115 @@ Weapon_Rocket.prototype.hit_effect_callback = function(bullet, blocker) {
 //------------------------------------------- Tesla Cannon ---------------------------------------
 // tracks to nearest enemy within X units and creates a lightning effect while draining health, could drain faster when closer to player
 
+Weapon_Tesla = function(options) {
+	this.weapon_name = "TESLA GUN";
+	this.weapon_key = "tesla";
+	return Weapon.call(this, options);
+};
+
+Weapon_Tesla.prototype = Object.create(Weapon.prototype);
+Weapon_Tesla.prototype.constructor = Weapon;
+Weapon_Tesla.prototype.parent = Weapon.prototype;
+
+
+Weapon_Tesla.prototype.equip = function() {
+	this.parent.equip.call(this);
+	
+	this.sprite = this.game.add.sprite(0, 0, "gun_tesla");
+	this.sprite.scale.setTo(1, 1);
+	this.sprite.anchor.setTo(0, 0.2);
+
+	this.player.addChild(this.sprite);
+	
+	this.arcRange = 300;
+	this.arcDamage = 50;
+	
+	this.charge = 100;
+	this.chargeRate = 1;
+	
+//	if (!this.weapon) {
+//		this.weapon = this.ctx.add.weapon(30, "missile02");
+//
+//		this.weapon.addBulletAnimation("shoot", [0,1,2], 20, true);
+////		this.weapon.bulletAnimation = "shoot";
+//		this.weapon.bulletAngleOffset = 90;
+//		this.weapon.setBulletFrames(8, 10, true);
+//		this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
+//		this.weapon.bulletSpeed = 400;
+//		this.weapon.bulletGravity.y = -800;
+//		this.weapon.fireRate = 500;
+//		this.weapon.splashRadius = 50;
+//		this.weapon.splashDmg = 25;
+//		
+//		this.bullets = this.weapon.bullets;
+//		this.ctx.bullet_layer.addChild(this.weapon.bullets);
+//		
+//		this.damage = 75;
+//	}
+	
+	this.player.weapon = this;
+};
+
+Weapon_Tesla.prototype.update = function(blockers) {
+	this.parent.update.call(this, blockers);
+	
+	var scalefix = (this.player.scale.x > 0) ? 1 : -1;
+	this.sprite.rotation = Phaser.Math.angleBetween(scalefix * this.sprite.world.x, this.sprite.world.y, 
+																   scalefix * this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
+	this.gun_barrel = {
+			x: this.sprite.world.x + (this.sprite.width * 1.2) * scalefix * Math.cos(this.sprite.rotation),
+			y: this.sprite.world.y + (this.sprite.width * 1.2) * Math.sin(this.sprite.rotation),
+		};
+	
+	if (this.charge == 0) {
+		//TODO: start charging noise audio here
+	}
+	
+	if (this.charge < 100) {
+		this.charge += this.chargeRate;
+	} else {
+		//TODO: stop charging audio here
+		
+	}
+	
+	if (this.ctx.player_has_control && (this.ctx.buttons.fire.isDown || this.game.input.activePointer.leftButton.isDown)) {
+		if (this.charge >= 100) {
+			// search for enemies within X units
+			var splash_ball = this.game.add.sprite(this.gun_barrel.x - this.arcRange, this.gun_barrel.y - this.arcRange, 'missile01');
+			splash_ball.anchor.set(0.5, 0.5);
+			this.game.physics.arcade.enable(splash_ball);
+			splash_ball.renderable = false;
+			splash_ball.body.immovable = true;
+			splash_ball.body.allowGravity = false;
+			splash_ball.body.setCircle(this.arcRange);
+			this.ctx.physics.arcade.overlap(splash_ball, this.ctx.enemy_layer.children, this.arcHit, null, this);
+			splash_ball.destroy();
+			
+			this.charge = 0; // drain charge
+		}
+	}
+};
+
+Weapon_Tesla.prototype.arcHit = function(splashball, enemy) {
+	// draw arc of electricity
+	var explosion = this.game.add.sprite(this.gun_barrel.x, this.gun_barrel.y, 'lightning01');
+	explosion.anchor.set(0.5, 1);
+	explosion.rotation = Math.PI/2 + Phaser.Math.angleBetween(this.gun_barrel.x, this.gun_barrel.y, enemy.world.x, enemy.world.y);
+	explosion.scale.y = Phaser.Math.distance(this.gun_barrel.x, this.gun_barrel.y, enemy.world.x, enemy.world.y) / explosion.height;
+	explosion.animations.add('shock', null, 30);
+	explosion.animations.play('shock', 30, false, true);
+	
+	enemy.klass.takeDamage(this.arcDamage);
+};
+
+
+Weapon_Tesla.prototype.unequip = function() {
+	this.parent.unequip.call(this);
+	
+	this.sprite.destroy();
+};
+
+
 //------------------------------------------- Davey Crocket ---------------------------------------
 // mini nuke with screen desaturation effect
 

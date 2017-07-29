@@ -318,10 +318,20 @@
             "frameMax": -1,
             "margin": 0,
             "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "lightning01",
+            "url": "assets/sprites/weapons/lightning01.png",
+            "frameWidth": 148,
+            "frameHeight": 361,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
         }
     ],
     "meta": {
-        "generated": "1501290075314",
+        "generated": "1501290645893",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",
