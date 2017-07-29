@@ -25,7 +25,7 @@ Level2.prototype.init = function() {
 	    {x: 3900, width: 600, name: "snatcher", restart: true},
     ];
 	this.bgm_transition_width = 300;
-	this.bgm_volume = 0.1;
+	this.bgm_volume = 0.5;
 	
 	this.PLAYER_SPEED = 200;
 	this.JUMP_SPEED = 600;

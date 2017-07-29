@@ -328,7 +328,7 @@ Weapon_Rocket.prototype.onBlockerHit = function(bullet, blocker) {
 	var explosion = this.game.add.sprite(bullet.x, bullet.y, 'explosion_sm');
 	explosion.anchor.set(0.5, 0.5);
 	explosion.animations.add('blowup', null, 60);
-	explosion.animations.play('blowup');
+	explosion.animations.play('blowup', 60, false, true);
 	this.handleSplashDamage(bullet);
 	bullet.kill();
 	this.game.camera.shake(0.005, 100);
@@ -338,7 +338,7 @@ Weapon_Rocket.prototype.hit_effect_callback = function(bullet, blocker) {
 	var explosion = this.game.add.sprite(bullet.x, bullet.y, 'explosion_sm');
 	explosion.anchor.set(0.5, 0.5);
 	explosion.animations.add('blowup', null, 60);
-	explosion.animations.play('blowup');
+	explosion.animations.play('blowup', 60, false, true);
 	this.game.camera.shake(0.005, 100);
 	this.handleSplashDamage(bullet);
 };

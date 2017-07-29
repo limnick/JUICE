@@ -567,7 +567,7 @@ BomberEnemy.prototype.onBulletHit = function(bullet) {
 	var explosion = this.game.add.sprite(bullet.x, bullet.y, 'explosion_sm');
 	explosion.anchor.set(0.5, 0.5);
 	explosion.animations.add('blowup', null, 60);
-	explosion.animations.play('blowup');
+	explosion.animations.play('blowup', 60, false, true);
 	bullet.kill();
 	this.game.camera.shake(0.005, 100);
 };

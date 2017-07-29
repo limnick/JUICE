@@ -332,7 +332,7 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(32, 64, 'mario_nes_tileset', 298, pipe);
 
-	var player = this.game.add.sprite(1840, 519, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(83, 539, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
