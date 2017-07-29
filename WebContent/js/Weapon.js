@@ -267,13 +267,13 @@ Weapon_Rocket.prototype.equip = function() {
 		this.weapon.bulletSpeed = 400;
 		this.weapon.bulletGravity.y = -800;
 		this.weapon.fireRate = 500;
-		this.weapon.splashRadius = 50;
+		this.weapon.splashRadius = 100;
 		this.weapon.splashDmg = 25;
 		
 		this.bullets = this.weapon.bullets;
 		this.ctx.bullet_layer.addChild(this.weapon.bullets);
 		
-		this.damage = 75;
+		this.damage = 25;
 	}
 	
 	this.player.weapon = this;

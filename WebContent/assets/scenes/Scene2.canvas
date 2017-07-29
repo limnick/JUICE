@@ -1611,8 +1611,8 @@
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 83,
-            "y": 539,
+            "x": 6227,
+            "y": 323,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [
@@ -1946,6 +1946,20 @@
                   "width": 32,
                   "height": 64
                 }
+              },
+              {
+                "type": "tileSprite",
+                "id": "f1505102-8ca8-465e-a639-e5feb830efa6",
+                "asset": "25",
+                "info": {
+                  "editorName": "walker_enemy_trigger331",
+                  "x": 3571,
+                  "y": 560,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1,
+                  "width": 32,
+                  "height": 64
+                }
               }
             ]
           }
@@ -1983,9 +1997,24 @@
                 }
               },
               {
+                "type": "image",
+                "id": "61326073-eff8-4d8d-8ddc-248fe0f6a455",
+                "asset": "27",
+                "info": {
+                  "editorName": "gun_rocket",
+                  "editorPublic": true,
+                  "x": 3128,
+                  "y": 464,
+                  "scale.x": 0.4,
+                  "scale.y": 0.4,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1
+                }
+              },
+              {
                 "type": "spritesheet",
                 "id": "74de1d7c-f59c-40ad-a40a-99ee28af5858",
-                "asset": "27",
+                "asset": "28",
                 "info": {
                   "editorName": "gun_laser",
                   "editorPublic": true,
@@ -1998,9 +2027,24 @@
                 }
               },
               {
+                "type": "image",
+                "id": "3f1614a8-033a-4a8a-9f81-0f065bd5f8ef",
+                "asset": "29",
+                "info": {
+                  "editorName": "gun_tesla",
+                  "editorPublic": true,
+                  "x": 13104,
+                  "y": 243,
+                  "scale.x": 2,
+                  "scale.y": 2,
+                  "anchor.x": 0.5,
+                  "anchor.y": 1
+                }
+              },
+              {
                 "type": "spritesheet",
                 "id": "e4f040a0-47fc-4249-9b8f-f8868297b6c3",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "first_block_trigger",
                   "editorPublic": true,
@@ -2019,7 +2063,7 @@
             "children": [{
               "type": "image",
               "id": "5aed2b79-28eb-43ed-b8be-d2c7daa82f6e",
-              "asset": "29",
+              "asset": "31",
               "info": {
                 "editorName": "metalslug_fg",
                 "x": 3935,
@@ -2206,16 +2250,26 @@
     "27": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
+      "asset": "gun_rocket"
+    },
+    "28": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
       "asset": "gun_laser",
       "sprite": "0"
     },
-    "28": {
+    "29": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "gun_tesla"
+    },
+    "30": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "mario_nes_tileset",
       "sprite": "24"
     },
-    "29": {
+    "31": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "metalslug_fg"

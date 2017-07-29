@@ -332,7 +332,7 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(32, 64, 'mario_nes_tileset', 298, pipe);
 
-	var player = this.game.add.sprite(83, 539, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(6227, 323, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
@@ -403,6 +403,9 @@ function Scene2(aGame, aParent) {
 	var walker_enemy_trigger = this.game.add.tileSprite(5168, 372, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
 	walker_enemy_trigger.anchor.setTo(0.5, 1.0);
 
+	var walker_enemy_trigger331 = this.game.add.tileSprite(3571, 560, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	walker_enemy_trigger331.anchor.setTo(0.5, 1.0);
+
 	var EmitterGroup = this.game.add.group(this);
 
 	var triggers = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
@@ -411,9 +414,17 @@ function Scene2(aGame, aParent) {
 	gun_machinegun.scale.setTo(0.5, 0.5);
 	gun_machinegun.anchor.setTo(0.5, 1.0);
 
+	var gun_rocket = this.game.add.sprite(3128, 464, 'gun_rocket', null, triggers);
+	gun_rocket.scale.setTo(0.4, 0.4);
+	gun_rocket.anchor.setTo(0.5, 1.0);
+
 	var gun_laser = this.game.add.sprite(6051, 537, 'gun_laser', 0, triggers);
 	gun_laser.scale.setTo(0.7, 0.7);
 	gun_laser.anchor.setTo(0.5, 1.0);
+
+	var gun_tesla = this.game.add.sprite(13104, 243, 'gun_tesla', null, triggers);
+	gun_tesla.scale.setTo(2.0, 2.0);
+	gun_tesla.anchor.setTo(0.5, 1.0);
 
 	var first_block_trigger = this.game.add.sprite(496, 384, 'mario_nes_tileset', 24, triggers);
 
@@ -443,7 +454,9 @@ function Scene2(aGame, aParent) {
 	this.fEmitterGroup = EmitterGroup;
 	this.fTriggers = triggers;
 	this.fGun_machinegun = gun_machinegun;
+	this.fGun_rocket = gun_rocket;
 	this.fGun_laser = gun_laser;
+	this.fGun_tesla = gun_tesla;
 	this.fFirst_block_trigger = first_block_trigger;
 	this.fUI = UI;
 

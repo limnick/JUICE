@@ -117,8 +117,11 @@ Level2.prototype.create = function() {
 	
 	this.machinegun_pickup_trigger = scene.fGun_machinegun;
 	this.lasergun_pickup_trigger = scene.fGun_laser;
+	this.rocket_pickup_trigger = scene.fGun_rocket;
+	this.tesla_pickup_trigger = scene.fGun_tesla;
 	
-	this.weapon_triggers = [this.machinegun_pickup_trigger, this.lasergun_pickup_trigger,];
+	this.weapon_triggers = [this.machinegun_pickup_trigger, this.lasergun_pickup_trigger, this.rocket_pickup_trigger, 
+	                        this.tesla_pickup_trigger,];
 	
 	// world
 
@@ -269,11 +272,19 @@ Level2.prototype.update = function() {
 	
 	if(this.machinegun_pickup_trigger.alive) {
 		this.physics.arcade.overlap(this.player, this.machinegun_pickup_trigger, this.machinegun_trigger_hit, null, this);
-		this.emitter_shimmer.emit('shimmer', this.machinegun_pickup_trigger.x - this.camera.position.x, this.machinegun_pickup_trigger.y, shimmer_settings);
+		this.emitter_shimmer.emit('shimmer', this.machinegun_pickup_trigger.x - this.camera.position.x, this.machinegun_pickup_trigger.y  - this.camera.position.y, shimmer_settings);
 	}
 	if(this.lasergun_pickup_trigger.alive) {
 		this.physics.arcade.overlap(this.player, this.lasergun_pickup_trigger, this.lasergun_trigger_hit, null, this);
-		this.emitter_shimmer.emit('shimmer', this.lasergun_pickup_trigger.x - this.camera.position.x, this.lasergun_pickup_trigger.y, shimmer_settings);
+		this.emitter_shimmer.emit('shimmer', this.lasergun_pickup_trigger.x - this.camera.position.x, this.lasergun_pickup_trigger.y  - this.camera.position.y, shimmer_settings);
+	}
+	if(this.rocket_pickup_trigger.alive) {
+		this.physics.arcade.overlap(this.player, this.rocket_pickup_trigger, this.rocket_trigger_hit, null, this);
+		this.emitter_shimmer.emit('shimmer', this.rocket_pickup_trigger.x - this.camera.position.x, this.rocket_pickup_trigger.y  - this.camera.position.y, shimmer_settings);
+	}
+	if(this.tesla_pickup_trigger.alive) {
+		this.physics.arcade.overlap(this.player, this.tesla_pickup_trigger, this.tesla_trigger_hit, null, this);
+		this.emitter_shimmer.emit('shimmer', this.tesla_pickup_trigger.x - this.camera.position.x, this.tesla_pickup_trigger.y  - this.camera.position.y, shimmer_settings);
 	}
 
 	var vel = 0;
@@ -558,5 +569,13 @@ Level2.prototype.lasergun_trigger_hit = function(player, trigger) {
 	this.time.events.add(800, function() {
 		this.b_enemy_2.show();
 	}, this);
+};
+
+Level2.prototype.rocket_trigger_hit = function(player, trigger) {
+	this.weapons.rocket.pickup(trigger);
+};
+
+Level2.prototype.tesla_trigger_hit = function(player, trigger) {
+	this.weapons.tesla.pickup(trigger);
 };
 
