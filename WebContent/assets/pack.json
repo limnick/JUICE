@@ -328,10 +328,50 @@
             "frameMax": -1,
             "margin": 0,
             "spacing": 0
+        },
+        {
+            "type": "image",
+            "key": "gradius_boss",
+            "url": "assets/sprites/enemies/gradius_boss.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "turret02",
+            "url": "assets/sprites/turrets/turret02.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "turret03",
+            "url": "assets/sprites/turrets/turret03.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "ui_dialog_box",
+            "url": "assets/sprites/ui/dialog_box.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "ui_portrait_box",
+            "url": "assets/sprites/ui/portrait_box.png",
+            "overwrite": false
+        },
+        {
+            "type": "spritesheet",
+            "key": "peppy_portrait",
+            "url": "assets/sprites/ui/pepe_portrait.png",
+            "frameWidth": 120,
+            "frameHeight": 118,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
         }
     ],
     "meta": {
-        "generated": "1501290645893",
+        "generated": "1501373642996",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

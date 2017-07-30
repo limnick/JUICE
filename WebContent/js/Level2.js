@@ -25,7 +25,7 @@ Level2.prototype.init = function() {
 	    {x: 3900, width: 600, name: "snatcher", restart: true},
     ];
 	this.bgm_transition_width = 300;
-	this.bgm_volume = 0.5;
+	this.bgm_volume = 0.1;
 	
 	this.PLAYER_SPEED = 200;
 	this.JUMP_SPEED = 600;
@@ -73,11 +73,13 @@ Level2.prototype.init = function() {
         {x: 1200, spawned: false, klass: BomberEnemy, args: {}, enemy: null},
         {x: 2000, spawned: false, klass: BomberEnemy, args: {}, enemy: null},
         {x: 1200, spawned: false, klass: WalkerEnemy2, args: {spawn_position: {x: 2255, y: 434}} , enemy: null},
+//        {x: 18800, spawned: false, klass: Gradius_Miniboss_Enemy, args: {}, enemy: null},
     ];
 	
 	
 	this.funcTriggers = [
         {x: 700, func: this.showHealthBars},
+        {x: 18800, func: this.miniboss_trigger},
 	];
 	
 	this.first_block_gag_triggered = false;
@@ -150,10 +152,17 @@ Level2.prototype.create = function() {
 	this.b_enemy_1 = new BomberEnemy({ctx: this,});
 	this.b_enemy_2 = new BomberEnemy({ctx: this,});
 	
+	this.miniboss_1 = new Gradius_Miniboss_Enemy({ctx: this});
+	
 	this.enemies = [this.t_enemy_2, this.b_enemy_1, this.b_enemy_2, ];
 	
 	scene.fTriggers_walker_enemy.forEach(function(enemy_trigger){
 		this.spawnList.push({x: enemy_trigger.world.x - 1000, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: enemy_trigger.world.x, y: enemy_trigger.world.y}} , enemy: null});
+		enemy_trigger.renderable = false;
+	}, this);
+	
+	scene.fTriggers_shooter_enemy.forEach(function(enemy_trigger){
+		this.spawnList.push({x: enemy_trigger.world.x, spawned: false, klass: Tetris_T_Enemy, args: {spawn_position: {x: enemy_trigger.world.x, y: enemy_trigger.world.y}} , enemy: null});
 		enemy_trigger.renderable = false;
 	}, this);
 
@@ -470,6 +479,10 @@ Level2.prototype.render = function() {
 //		this.game.debug.body(this.player.weapon.splash_ball);
 //		this.game.debug.bodyInfo(this.player.weapon.splash_ball, 32, 32);
 //	}
+//	
+	if (this.game.debugbody) {
+		this.game.debug.body(this.game.debugbody);
+	}
 };
 
 Level2.prototype.nextWeapon = function() {
@@ -577,5 +590,41 @@ Level2.prototype.rocket_trigger_hit = function(player, trigger) {
 
 Level2.prototype.tesla_trigger_hit = function(player, trigger) {
 	this.weapons.tesla.pickup(trigger);
+};
+
+Level2.prototype.miniboss_trigger = function() {
+	this.game.physics.arcade.isPaused = true;
+	
+	var dialog_box = this.game.add.sprite(230, this.camera.height * (3 / 5), 'ui_dialog_box');
+	this.ui.addChild(dialog_box);
+	
+	var portrait_box = this.game.add.sprite(50, this.camera.height * (3 / 5), 'ui_portrait_box');
+	this.ui.addChild(portrait_box);
+	
+	var portrait = this.game.add.sprite(58, this.camera.height * (3 / 5) + 8, 'peppy_portrait');
+	portrait.scale.set(1.2, 1.55);
+	portrait.animations.add('idle', null);
+	portrait.animations.play('idle', 8, true);
+	this.ui.addChild(portrait);
+	
+	
+	this.ui.main_text_raw = 'test test test test test test test\ntest test test test test test test';
+	this.ui.dialog_text = this.game.add.text(250, this.camera.height * (3 / 5) + 10, '', { font: "25px \"Comic Sans MS\"", fill: "#fff" });
+	this.ui_dialog_position = 0;
+	this.ui.addChild(this.ui.dialog_text);
+	
+	this.update_dialogbox();
+	
+//	this.miniboss_1.show();
+};
+
+Level2.prototype.update_dialogbox = function() {
+	this.time.events.add(100, function() {
+		this.ui_dialog_position += 1;
+		this.ui.dialog_text.text = this.ui.main_text_raw.slice(0, this.ui_dialog_position);
+		if (this.ui_dialog_position < this.ui.main_text_raw.length) {
+			this.update_dialogbox();
+		}
+	}, this);
 };
 

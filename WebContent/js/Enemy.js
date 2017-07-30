@@ -354,7 +354,7 @@ WalkerEnemy2.prototype.initCycle = function() {
 };
 
 ShootingEnemy = function(options) {
-	this.base_sprite = "tetris_t";
+	this.base_sprite = this.base_sprite || "tetris_t";
 	return Enemy.call(this, options);
 	
 };
@@ -370,8 +370,8 @@ ShootingEnemy.prototype.show = function() {
 	Enemy.prototype.show.call(this);
 	
 	// block slide in from top
-	this.group.position.set(this.player.x, -100);
-	this.tweens.push(this.game.add.tween(this.group.position).to( {y: 100} , 1200, Phaser.Easing.Cubic.None, true));
+//	this.group.position.set(this.player.x, -100);
+//	this.tweens.push(this.game.add.tween(this.group.position).to( {y: 100} , 1200, Phaser.Easing.Cubic.None, true));
 };
 
 ShootingEnemy.prototype.update = function() {
@@ -459,8 +459,8 @@ Tetris_T_Enemy.prototype.show = function() {
 	this.parent.show.call(this);
 	
 	// block slide in from top
-	this.group.position.set(this.player.x, -100);
-	this.tweens.push(this.game.add.tween(this.group.position).to( {y: 150} , 1200, Phaser.Easing.Cubic.None, true));
+	this.group.position.set(this.player.x, this.game.camera.y - 100);
+	this.tweens.push(this.game.add.tween(this.group.position).to( {y: this.game.camera.y + (Math.random() * 20) + 130} , 1200, Phaser.Easing.Cubic.None, true));
 };
 
 Tetris_T_Enemy.prototype.createWeapons = function() {
@@ -595,3 +595,84 @@ BomberEnemy.prototype.wallHit = function(wall, bullet) {
 //	}, this);
 //    
 //};
+
+
+Gradius_Miniboss_Enemy = function(options) {
+	this.base_sprite = "gradius_boss";
+	this.max_health = 1500;
+	this.shoot_timer_default = 1200;
+	return ShootingEnemy.call(this, options);
+	
+};
+
+Gradius_Miniboss_Enemy.prototype = Object.create(ShootingEnemy.prototype);
+Gradius_Miniboss_Enemy.prototype.constructor = ShootingEnemy;
+Gradius_Miniboss_Enemy.prototype.parent = ShootingEnemy.prototype;
+
+Gradius_Miniboss_Enemy.prototype.show = function() {
+	if (this.alive) { return; }
+	this.parent.show.call(this);
+	
+	this.healthbar.position.y += 20;
+
+	this.body.anchor.set(0.5, 0.5);
+	this.body.rotation = Math.PI/2;
+	this.body.scale.set(1.7);
+	
+	// block slide in from top
+	this.group.position.set(this.player.x, this.game.camera.y - 100);
+	this.tweens.push(this.game.add.tween(this.group.position).to( {y: this.game.camera.y + 200} , 1200, Phaser.Easing.Cubic.None, true));
+};
+
+Gradius_Miniboss_Enemy.prototype.createWeapons = function() {
+	this.weapon = this.ctx.add.weapon(80, "items");
+	this.weapon.setBulletFrames(8, 10, true);
+	this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
+	this.weapon.bulletSpeed = 200;
+	this.weapon.bulletGravity.y = -800;
+	this.weapon.fireRate = 0;
+	this.weapon.multiFire = true;
+	this.weapon.damage = 10;
+};
+
+Gradius_Miniboss_Enemy.prototype.createTurrets = function() {
+	var turretData = [
+	  {x: -92, y: 32, ax: 0.5, ay: 0.25, sprite: "turret02"},
+	  {x: 92, y: 32, ax: 0.5, ay: 0.25, sprite: "turret02"},
+	  {x: -113, y: -22, ax: 0.5, ay: 0.25, sprite: "turret02"},
+	  {x: 113, y: -22, ax: 0.5, ay: 0.25, sprite: "turret02"},
+	];
+	turretData.forEach(function(turret_data){
+		var turret = this.game.add.sprite(0, 0, turret_data.sprite);
+		turret.anchor.set(turret_data.ax, turret_data.ay);
+		turret.position.set(turret_data.x, turret_data.y);
+		this.group.add(turret);
+		this.turrets.push(turret);
+	}, this);
+};
+
+Gradius_Miniboss_Enemy.prototype.doMove = function() {
+	this.tweens.push(this.game.add.tween(this.group.position).to( {x: this.player.world.x} , 2000, Phaser.Easing.Linear.None, true));
+};
+
+Gradius_Miniboss_Enemy.prototype.doShoot = function() {
+	this.turrets.forEach(function(turret) {
+		var t1_rot = -1.5708 + Phaser.Math.angleBetween(turret.world.x, turret.world.y, this.player.world.x, this.player.world.y);
+		this.game.add.tween(turret).to({rotation: t1_rot}, 200, Phaser.Easing.Linear.None, true);
+		
+		this.ctx.time.events.add(200, function() {
+			var turret_barrel_1 = {
+				x: turret.world.x + 5 + (turret.height * 0.9) * -1 * Math.sin(turret.rotation),
+				y: turret.world.y + (turret.height * 0.9) * Math.cos(turret.rotation),
+			};
+			
+			var turret_barrel_2 = {
+				x: turret.world.x - 5 + (turret.height * 0.9) * -1 * Math.sin(turret.rotation),
+				y: turret.world.y + (turret.height * 0.9) * Math.cos(turret.rotation),
+			};
+			
+			this.weapon.fire(turret_barrel_1, this.player.world.x + 5, this.player.world.y);
+			this.weapon.fire(turret_barrel_2, this.player.world.x - 5, this.player.world.y);
+		}, this);
+	}, this);
+};

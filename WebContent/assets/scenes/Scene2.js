@@ -332,7 +332,7 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(32, 64, 'mario_nes_tileset', 298, pipe);
 
-	var player = this.game.add.sprite(6227, 323, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(18703, 421, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
@@ -403,8 +403,25 @@ function Scene2(aGame, aParent) {
 	var walker_enemy_trigger = this.game.add.tileSprite(5168, 372, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
 	walker_enemy_trigger.anchor.setTo(0.5, 1.0);
 
+	var walker_enemy_trigger1211111 = this.game.add.tileSprite(15453, 241, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	walker_enemy_trigger1211111.anchor.setTo(0.5, 1.0);
+
 	var walker_enemy_trigger331 = this.game.add.tileSprite(3571, 560, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
 	walker_enemy_trigger331.anchor.setTo(0.5, 1.0);
+
+	var triggers_shooter_enemy = this.game.add.group(this);
+
+	this.game.add.tileSprite(3224, -145, 64, 64, 'mario_nes_tileset', 247, triggers_shooter_enemy);
+
+	this.game.add.tileSprite(7245, -11, 64, 64, 'mario_nes_tileset', 247, triggers_shooter_enemy);
+
+	this.game.add.tileSprite(2761, -202, 64, 64, 'mario_nes_tileset', 247, triggers_shooter_enemy);
+
+	this.game.add.tileSprite(12904, -69, 64, 64, 'mario_nes_tileset', 247, triggers_shooter_enemy);
+
+	this.game.add.tileSprite(14726, -142, 64, 64, 'mario_nes_tileset', 247, triggers_shooter_enemy);
+
+	this.game.add.tileSprite(9410, -105, 64, 64, 'mario_nes_tileset', 247, triggers_shooter_enemy);
 
 	var EmitterGroup = this.game.add.group(this);
 
@@ -451,6 +468,7 @@ function Scene2(aGame, aParent) {
 	this.fEnemy_spawn_trigger_1 = enemy_spawn_trigger_1;
 	this.fFloor_fall_trigger = floor_fall_trigger;
 	this.fTriggers_walker_enemy = triggers_walker_enemy;
+	this.fTriggers_shooter_enemy = triggers_shooter_enemy;
 	this.fEmitterGroup = EmitterGroup;
 	this.fTriggers = triggers;
 	this.fGun_machinegun = gun_machinegun;
