@@ -23,6 +23,8 @@ Level2.prototype.init = function() {
 	    {x: 1400, width: 300, name: "mario_1"},
 	    {x: 2600, width: 300, name: "mario_2"},
 	    {x: 3900, width: 600, name: "snatcher", restart: true},
+	    {x: 9250, width: 2500, name: "meo_rescueme", restart: true},
+	    
     ];
 	this.bgm_transition_width = 300;
 	this.bgm_volume = 0.1;
@@ -44,8 +46,17 @@ Level2.prototype.init = function() {
     });
 	
 	this.ps_manager.addData('spritedie', {
-        lifespan: { min: 200, max: 600 },
+        lifespan: { min: 200, max: 1000 },
         green: 255,
+        vx: { min: -1, max: 1 },
+        vy: { min: -1, max: 4 }
+    });
+	
+	this.ps_manager.addData('spritedie_tesla', {
+        lifespan: { min: 1000, max: 3000 },
+        red: { min: 128, max: 255 },
+        green: { min: 0, max: 10 },
+        blue: { min: 0, max: 25 },
         vx: { min: -1, max: 1 },
         vy: { min: -1, max: 4 }
     });
@@ -154,7 +165,7 @@ Level2.prototype.create = function() {
 	
 	this.miniboss_1 = new Gradius_Miniboss_Enemy({ctx: this});
 	
-	this.enemies = [this.t_enemy_2, this.b_enemy_1, this.b_enemy_2, ];
+	this.enemies = [this.t_enemy_2, this.b_enemy_1, this.b_enemy_2, this.miniboss_1, ];
 	
 	scene.fTriggers_walker_enemy.forEach(function(enemy_trigger){
 		this.spawnList.push({x: enemy_trigger.world.x - 1000, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: enemy_trigger.world.x, y: enemy_trigger.world.y}} , enemy: null});
@@ -203,8 +214,9 @@ Level2.prototype.create = function() {
 	};
 	
 	this.emitter_group = scene.fEmitterGroup;
-	this.world.addChild(this.emitter_group);
 	this.emitter_group.fixedToCamera = true;
+	
+	this.emitter_group_world = scene.fEmitterGroupWorld;
 	
 	// particle emitters
 	this.bloodParticleGravity = 0.2;
@@ -592,38 +604,69 @@ Level2.prototype.tesla_trigger_hit = function(player, trigger) {
 	this.weapons.tesla.pickup(trigger);
 };
 
-Level2.prototype.miniboss_trigger = function() {
+Level2.prototype.miniboss_trigger = function() {	
 	this.game.physics.arcade.isPaused = true;
 	
-	var dialog_box = this.game.add.sprite(230, this.camera.height * (3 / 5), 'ui_dialog_box');
-	this.ui.addChild(dialog_box);
+	var text_raw = 'George: You\'ll never get past me.\n         I am UNDEFEATABLE.        \n          I cannot be defeated.   No sir.';
+	this.setup_dialogbox(text_raw);
 	
-	var portrait_box = this.game.add.sprite(50, this.camera.height * (3 / 5), 'ui_portrait_box');
-	this.ui.addChild(portrait_box);
+	this.ui.dialogCallback = function() {
+		this.game.physics.arcade.isPaused = false;
+		this.miniboss_1.show();
+	};
 	
-	var portrait = this.game.add.sprite(58, this.camera.height * (3 / 5) + 8, 'peppy_portrait');
-	portrait.scale.set(1.2, 1.55);
-	portrait.animations.add('idle', null);
-	portrait.animations.play('idle', 8, true);
-	this.ui.addChild(portrait);
+	this.update_dialogbox(this.ui.dialogCallback);
 	
+
+};
+
+Level2.prototype.setup_dialogbox = function(text) {
 	
-	this.ui.main_text_raw = 'test test test test test test test\ntest test test test test test test';
+//	var desat_effect = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'desat_tiles');
+//	desat_effect.animations.add('low', [0,1,2]);
+//	desat_effect.animations.add('med', [3,4,5]);
+//	desat_effect.animations.add('high', [6,7,8]);
+//	desat_effect.animations.add('max', [9,10,11]);
+//	desat_effect.blendMode = Phaser.blendModes.SATURATION;
+//	this.ui.addChild(desat_effect);
+//	desat_effect.animations.play('low', 5, true);
+	
+	this.ui.dialog_box = this.game.add.sprite(230, this.camera.height * (3 / 5), 'ui_dialog_box');
+	this.ui.addChild(this.ui.dialog_box);
+	
+	this.ui.portrait_box = this.game.add.sprite(50, this.camera.height * (3 / 5), 'ui_portrait_box');
+	this.ui.addChild(this.ui.portrait_box);
+	
+	this.ui_portrait = this.game.add.sprite(58, this.camera.height * (3 / 5) + 8, 'george_portrait');
+	//this.ui_portrait.scale.set(1.2, 1.55); // peppy scale
+	this.ui_portrait.scale.set(0.96, 1.15);
+	this.ui_portrait.animations.add('idle', null);
+	this.ui_portrait.animations.play('idle', 8, true);
+	this.ui.addChild(this.ui_portrait);
+
+	this.ui.main_text_raw = text;
 	this.ui.dialog_text = this.game.add.text(250, this.camera.height * (3 / 5) + 10, '', { font: "25px \"Comic Sans MS\"", fill: "#fff" });
 	this.ui_dialog_position = 0;
 	this.ui.addChild(this.ui.dialog_text);
-	
-	this.update_dialogbox();
-	
-//	this.miniboss_1.show();
 };
 
-Level2.prototype.update_dialogbox = function() {
+Level2.prototype.update_dialogbox = function(callback_func) {
 	this.time.events.add(100, function() {
 		this.ui_dialog_position += 1;
 		this.ui.dialog_text.text = this.ui.main_text_raw.slice(0, this.ui_dialog_position);
 		if (this.ui_dialog_position < this.ui.main_text_raw.length) {
-			this.update_dialogbox();
+			this.update_dialogbox(callback_func);
+		} else {
+			//dialogue complete
+			this.time.events.add(2000, function() {
+				this.ui.dialog_box.destroy();
+				this.ui.portrait_box.destroy();
+				this.ui_portrait.destroy();
+				this.ui.dialog_text.destroy();
+				if (callback_func) {
+					callback_func.call(this);
+				}
+			}, this);
 		}
 	}, this);
 };

@@ -368,10 +368,39 @@
             "frameMax": -1,
             "margin": 0,
             "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "desat_tiles",
+            "url": "assets/sprites/ui/desat_tiles.png",
+            "frameWidth": 50,
+            "frameHeight": 50,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "george_portrait",
+            "url": "assets/sprites/ui/george_portrait.png",
+            "frameWidth": 150,
+            "frameHeight": 159,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
+        },
+        {
+            "type": "audio",
+            "key": "meo_rescueme",
+            "urls": [
+                "assets/audio/meo_rescueme.mp3",
+                "assets/audio/meo_rescueme.ogg"
+            ],
+            "autoDecode": true
         }
     ],
     "meta": {
-        "generated": "1501373642996",
+        "generated": "1501393548093",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

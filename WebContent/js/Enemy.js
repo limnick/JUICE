@@ -163,14 +163,49 @@ Enemy.prototype.die = function(weapon_key) {
 		}, this);
 	} else if (weapon_key == 'laser') {
 		var tmpSprite =  new Phaser.Sprite(this.game, 0, 0, this.base_sprite, 0);
+		tmpSprite.scale.set(Math.abs(this.body.scale.x), this.body.scale.y);
 		var enemy_sprite_zone = this.ctx.ps_manager.createImageZone(tmpSprite);
 		this.enemydie_emitter = this.ctx.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.ctx.world.bounds.width, this.ctx.world.bounds.height);
 		this.enemydie_emitter.addToWorld(this.ctx.emitter_group);
 		
-	    this.enemydie_emitter.emit('spritedie', this.body.world.x - (Math.abs(this.body.width) / 2) - this.ctx.camera.position.x, this.body.world.y - this.body.height - this.ctx.camera.position.y, { zone: enemy_sprite_zone, full: true, setColor: true });
+	    this.enemydie_emitter.emit('spritedie',
+	    		this.body.world.x - (Math.abs(this.body.width) * this.body.anchor.x) - this.ctx.camera.position.x,
+	    		this.body.world.y - (this.body.height * this.body.anchor.y) 		- this.ctx.camera.position.y,
+	    		{ zone: enemy_sprite_zone, full: true, setColor: true });
 	    this.body.destroy();
 	    
 	    this.ctx.time.events.add(2000, function() {
+	    	this.ctx.ps_manager.removeEmitter(this.enemydie_emitter);
+	    	this.enemydie_emitter.destroy();
+	    	
+	    	this.destroyAfterBullets();
+	
+		}, this);
+	} else if (weapon_key == 'tesla') {
+		var tmpSprite =  new Phaser.Sprite(this.game, 0, 0, this.base_sprite, 0);
+		tmpSprite.scale.set(Math.abs(this.body.scale.x), this.body.scale.y);
+		var enemy_sprite_zone = this.ctx.ps_manager.createImageZone(tmpSprite);
+		this.enemydie_emitter = this.ctx.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.ctx.world.bounds.width, this.ctx.world.bounds.height);
+		this.enemydie_emitter.renderer.pixelSize = 2;
+		this.enemydie_emitter.force.y = 0.5;
+		this.enemydie_emitter.addToWorld(this.ctx.emitter_group);
+		
+		this.enemydie_emitter2 = this.ctx.ps_manager.createEmitter(Phaser.ParticleStorm.PIXEL, this.ctx.world.bounds.width, this.ctx.world.bounds.height);
+		this.enemydie_emitter2.renderer.pixelSize = 5;
+		this.enemydie_emitter2.force.y = 0.5;
+		this.enemydie_emitter2.addToWorld(this.ctx.emitter_group);
+		
+	    this.enemydie_emitter.emit('spritedie_tesla',
+	    		this.body.world.x - (Math.abs(this.body.width) * this.body.anchor.x) - this.ctx.camera.position.x,
+	    		this.body.world.y - (this.body.height * this.body.anchor.y) 		- this.ctx.camera.position.y,
+	    		{ zone: enemy_sprite_zone, random: true, total: 200 });
+	    this.enemydie_emitter2.emit('spritedie_tesla',
+	    		this.body.world.x - (Math.abs(this.body.width) * this.body.anchor.x) - this.ctx.camera.position.x,
+	    		this.body.world.y - (this.body.height * this.body.anchor.y) 		- this.ctx.camera.position.y,
+	    		{ zone: enemy_sprite_zone, random: true, total: 40 });
+	    this.body.destroy();
+	    
+	    this.ctx.time.events.add(3300, function() {
 	    	this.ctx.ps_manager.removeEmitter(this.enemydie_emitter);
 	    	this.enemydie_emitter.destroy();
 	    	
