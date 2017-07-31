@@ -90,7 +90,8 @@ Level2.prototype.init = function() {
 	
 	this.funcTriggers = [
         {x: 700, func: this.showHealthBars},
-        {x: 18800, func: this.miniboss_trigger},
+        {x: 18800, width: 1000, func: this.miniboss_trigger},
+        {x: 22600, width: 3000, func: this.boss_trigger},
 	];
 	
 	this.first_block_gag_triggered = false;
@@ -163,9 +164,11 @@ Level2.prototype.create = function() {
 	this.b_enemy_1 = new BomberEnemy({ctx: this,});
 	this.b_enemy_2 = new BomberEnemy({ctx: this,});
 	
-	this.miniboss_1 = new Gradius_Miniboss_Enemy({ctx: this});
+	this.miniboss_1 = new Gradius_Miniboss_Enemy({ctx: this,});
 	
-	this.enemies = [this.t_enemy_2, this.b_enemy_1, this.b_enemy_2, this.miniboss_1, ];
+	this.boss_1 = new Final_Boss_Enemy({ctx: this,});
+	
+	this.enemies = [this.t_enemy_2, this.b_enemy_1, this.b_enemy_2, this.miniboss_1, this.boss_1, ];
 	
 	scene.fTriggers_walker_enemy.forEach(function(enemy_trigger){
 		this.spawnList.push({x: enemy_trigger.world.x - 1000, spawned: false, klass: WalkerEnemy, args: {spawn_position: {x: enemy_trigger.world.x, y: enemy_trigger.world.y}} , enemy: null});
@@ -471,7 +474,14 @@ Level2.prototype.update = function() {
 		funcTrigger = this.funcTriggers[i];
 		if (funcTrigger.triggered) { continue; }
 		
-		if (this.player.x >= funcTrigger.x) {
+		var shouldCall = false;
+		if (funcTrigger.width) {
+			if (this.player.x >= funcTrigger.x && this.player.x < (funcTrigger.x + funcTrigger.width)) { shouldCall = true; }
+		} else {
+			if (this.player.x >= funcTrigger.x) { shouldCall = true; }
+		}
+		
+		if (shouldCall) {
 			funcTrigger.triggered = true;
 			funcTrigger.func.call(this);
 		}
@@ -578,11 +588,20 @@ Level2.prototype.floor_fall = function(player, trigger) {
 };
 
 Level2.prototype.machinegun_trigger_hit = function(player, trigger) {
-	this.weapons.machinegun.pickup(trigger);
-	
-	this.time.events.add(500, function() {
-		this.t_enemy_2.show();
-	}, this);
+	if (!this.mgun_hit) {
+		this.mgun_hit = true;
+		this.weapons.machinegun.pickup(trigger);
+		
+		var text_raw = 'Use the mouse to aim\nClick to shoot\nHold to autofire';
+		this.ui.dialogCallback = function() {
+			this.time.events.add(500, function() {
+				this.t_enemy_2.show();
+			}, this);
+		};
+		
+		this.setup_dialogbox(text_raw, 'peppy_portrait', this.ui.dialogCallback);
+		
+	}
 };
 
 
@@ -605,23 +624,21 @@ Level2.prototype.tesla_trigger_hit = function(player, trigger) {
 };
 
 Level2.prototype.miniboss_trigger = function() {	
-	this.game.physics.arcade.isPaused = true;
-	
 	var text_raw = 'George: You\'ll never get past me.\n         I am UNDEFEATABLE.        \n          I cannot be defeated.   No sir.';
-	this.setup_dialogbox(text_raw);
-	
 	this.ui.dialogCallback = function() {
-		this.game.physics.arcade.isPaused = false;
 		this.miniboss_1.show();
 	};
 	
-	this.update_dialogbox(this.ui.dialogCallback);
-	
+	this.setup_dialogbox(text_raw, 'george_portrait', this.ui.dialogCallback);
 
 };
 
-Level2.prototype.setup_dialogbox = function(text) {
-	
+Level2.prototype.boss_trigger = function() {
+	this.boss_1.show();
+};
+
+Level2.prototype.setup_dialogbox = function(text, portrait_name, callback_func) {
+	this.game.physics.arcade.isPaused = true;
 //	var desat_effect = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'desat_tiles');
 //	desat_effect.animations.add('low', [0,1,2]);
 //	desat_effect.animations.add('med', [3,4,5]);
@@ -637,9 +654,14 @@ Level2.prototype.setup_dialogbox = function(text) {
 	this.ui.portrait_box = this.game.add.sprite(50, this.camera.height * (3 / 5), 'ui_portrait_box');
 	this.ui.addChild(this.ui.portrait_box);
 	
-	this.ui_portrait = this.game.add.sprite(58, this.camera.height * (3 / 5) + 8, 'george_portrait');
-	//this.ui_portrait.scale.set(1.2, 1.55); // peppy scale
-	this.ui_portrait.scale.set(0.96, 1.15);
+	this.ui_portrait = this.game.add.sprite(58, this.camera.height * (3 / 5) + 8, portrait_name);
+	
+	if (portrait_name == "peppy_portrait") {
+		this.ui_portrait.scale.set(1.2, 1.55); // peppy scale
+	} else if (portrait_name == "george_portrait") {
+		this.ui_portrait.scale.set(0.96, 1.15);
+	}
+	
 	this.ui_portrait.animations.add('idle', null);
 	this.ui_portrait.animations.play('idle', 8, true);
 	this.ui.addChild(this.ui_portrait);
@@ -648,6 +670,8 @@ Level2.prototype.setup_dialogbox = function(text) {
 	this.ui.dialog_text = this.game.add.text(250, this.camera.height * (3 / 5) + 10, '', { font: "25px \"Comic Sans MS\"", fill: "#fff" });
 	this.ui_dialog_position = 0;
 	this.ui.addChild(this.ui.dialog_text);
+	
+	this.update_dialogbox(callback_func);
 };
 
 Level2.prototype.update_dialogbox = function(callback_func) {
@@ -663,6 +687,7 @@ Level2.prototype.update_dialogbox = function(callback_func) {
 				this.ui.portrait_box.destroy();
 				this.ui_portrait.destroy();
 				this.ui.dialog_text.destroy();
+				this.game.physics.arcade.isPaused = false;
 				if (callback_func) {
 					callback_func.call(this);
 				}

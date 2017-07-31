@@ -397,10 +397,40 @@
                 "assets/audio/meo_rescueme.ogg"
             ],
             "autoDecode": true
+        },
+        {
+            "type": "spritesheet",
+            "key": "romero_portrait",
+            "url": "assets/sprites/ui/romero_portrait.png",
+            "frameWidth": 64,
+            "frameHeight": 87,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "background_final_1x8",
+            "url": "assets/sprites/backgrounds/background_final_1x8.png",
+            "frameWidth": 752,
+            "frameHeight": 224,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
+        },
+        {
+            "type": "spritesheet",
+            "key": "breakout_blocks",
+            "url": "assets/sprites/breakout_blocks.png",
+            "frameWidth": 7,
+            "frameHeight": 15,
+            "frameMax": -1,
+            "margin": 0,
+            "spacing": 0
         }
     ],
     "meta": {
-        "generated": "1501393548093",
+        "generated": "1501454527998",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

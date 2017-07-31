@@ -29,6 +29,9 @@ function Scene2(aGame, aParent) {
 	water_temple_outside.scale.setTo(2.2, 2.2);
 	water_temple_outside.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7], 6, true);
 
+	var background_final_1x8 = this.game.add.sprite(22221, -96, 'background_final_1x8', 0, background);
+	background_final_1x8.scale.setTo(3.0, 3.0);
+
 	var factory = this.game.add.sprite(19973, -84, 'factory', 0, background);
 	factory.scale.setTo(3.0, 3.0);
 	factory.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7], 10, true);
@@ -280,7 +283,7 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.tileSprite(4142, 293, 32, 16, 'mario_nes_tileset', 894, floor);
 
-	this.game.add.tileSprite(16233, 517, 7000, 32, 'mario_nes_tileset', 894, floor);
+	this.game.add.tileSprite(16233, 517, 9000, 32, 'mario_nes_tileset', 894, floor);
 
 	var walls = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 
@@ -344,7 +347,7 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(32, 64, 'mario_nes_tileset', 298, pipe);
 
-	var player = this.game.add.sprite(8682, 163, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(23013, 318, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
