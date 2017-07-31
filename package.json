@@ -1,0 +1,8 @@
+{
+  "name": "game-builder",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "^1.0.0",
+    "grunt-contrib-uglify": "~3.0.1"
+  }
+}
