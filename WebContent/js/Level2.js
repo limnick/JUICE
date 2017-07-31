@@ -151,6 +151,12 @@ Level2.prototype.create = function() {
 	this.water_floor = scene.fWater_floor;
 	this.bg_anims = [scene.fWater_temple, scene.fWater_temple_outside, scene.fFactory, ];
 	
+	this.elevator01 = scene.fBoss_elevator01;
+//	this.elevator01.body.checkCollision.left = false;
+//	this.elevator01.body.checkCollision.right = false;
+	
+	this.elevators = scene.fElevators;
+	
 	this.ui.fixedToCamera = true;
 	
 	this.bg_anims.forEach(function(bg_anim){
@@ -182,7 +188,7 @@ Level2.prototype.create = function() {
 
 	// init physics
 	
-	var immovables = [ this.ground, this.walls, this.triggers, this.triggers_invis];
+	var immovables = [ this.ground, this.walls, this.triggers, this.triggers_invis, this.elevators];
 
 	for (var i = 0; i < immovables.length; i++) {
 		var g = immovables[i];
@@ -279,17 +285,22 @@ Level2.prototype.update = function() {
 		return;
 	}
 	
+	
 	// world bounds track player location
 	this.world.setBounds(Math.max(0, this.player.x - 400), -200, 1000, 800);
 
 	// update player velocity
 	this.physics.arcade.overlap(this.player, this.water_floor, this.triggerSplash, null, this);
 	this.physics.arcade.collide(this.player, this.ground);
+	this.physics.arcade.collide(this.player, this.elevators, this.elevator_hit, null, this);
+	
 	this.physics.arcade.collide(this.player, this.walls);
 	this.physics.arcade.collide(this.player, this.blocking_objects.children);
 	this.physics.arcade.collide(this.player, this.first_block_trigger, this.first_block_hit, null, this);
 	
 	this.physics.arcade.overlap(this.player, this.floor_fall_trigger, this.floor_fall, null, this);
+	
+	
 
 	//call emit for each weapon trigger with its x/y location
 	var shimmer_settings = { total: 4, repeat: 0, frequency: 0 };
@@ -635,6 +646,23 @@ Level2.prototype.miniboss_trigger = function() {
 
 Level2.prototype.boss_trigger = function() {
 	this.boss_1.show();
+};
+
+Level2.prototype.elevator_hit = function(player, elevator) {
+	if (!this.tweens_done_time || this.game.time.now > this.tweens_done_time) {
+		var elevator_up = this.game.add.tween(elevator.position).to( { y: elevator.position.y - 200, }, 5000, "Linear");
+		var elevator_down = this.game.add.tween(elevator.position).to( { y: elevator.position.y, }, 5000, "Linear");
+		elevator_up.chain(elevator_down);
+		elevator_up.start();
+		this.tweens_done_time = this.game.time.now + 12000;
+	}
+	
+//	debugger;
+//	if (elevator.)
+	this.player.body.velocity.y = -100;
+	
+//	this.player.y = elevator.position.y+1;
+	
 };
 
 Level2.prototype.setup_dialogbox = function(text, portrait_name, callback_func) {

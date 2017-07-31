@@ -315,6 +315,14 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.tileSprite(946, 323, 160, 32, 'mario_nes_tileset', 1, walls);
 
+	var elevators = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
+
+	var boss_elevator011 = this.game.add.tileSprite(23571, 516, 127, 500, 'rust_block', null, elevators);
+
+	var boss_elevator012 = this.game.add.tileSprite(23990, 442, 127, 500, 'rust_block', null, elevators);
+
+	var boss_elevator01 = this.game.add.tileSprite(22733, 516, 127, 500, 'rust_block', null, elevators);
+
 	var blocking_objects = this.game.add.group(this);
 
 	var pipe1 = this.game.add.group(blocking_objects);
@@ -477,6 +485,10 @@ function Scene2(aGame, aParent) {
 	this.fFloor = floor;
 	this.fWater_floor = water_floor;
 	this.fWalls = walls;
+	this.fElevators = elevators;
+	this.fBoss_elevator011 = boss_elevator011;
+	this.fBoss_elevator012 = boss_elevator012;
+	this.fBoss_elevator01 = boss_elevator01;
 	this.fBlocking_objects = blocking_objects;
 	this.fPlayer = player;
 	this.fEnemies = enemies;
