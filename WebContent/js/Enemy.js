@@ -6,6 +6,8 @@ Enemy = function (options) {
 	this.spawn_trigger = options.spawn_trigger;
 	this.ctx = options.ctx;
 	
+	this.sfx = {};
+	
 	this.game = this.ctx.game;
 	this.player = this.ctx.player;
 	
@@ -83,6 +85,7 @@ Enemy.prototype.doMove = function() {};
 Enemy.prototype.doShoot = function() {};
 
 Enemy.prototype.takeDamage = function(damage) {
+	if (this.sfx.hit) { this.sfx.hit.play("", 0, 0.2, false); }
 	this.health -= damage;
 	if (this.health < 0) this.health = 0;
 };
@@ -123,6 +126,15 @@ Enemy.prototype.update = function() {
 	this.tick.call(this);
 };
 
+Enemy.prototype.showExplosion = function(x, y) {
+	var explosion = this.game.add.sprite(x, y, 'explosion_sm');
+	explosion.anchor.set(0.5, 0.5);
+	explosion.animations.add('blowup', null, 30);
+	explosion.animations.play('blowup', 30, false, true);
+	this.group.addChild(explosion);
+//	this.game.camera.shake(0.005, 100);
+};
+
 Enemy.prototype.die = function(weapon_key) {
 	if (!this.alive) return; // already dead
 	
@@ -151,7 +163,23 @@ Enemy.prototype.die = function(weapon_key) {
 		}, this);
 	}
 	
-	if (weapon_key == 'machinegun') {
+	if (this.boss) {
+		for (var i = 0; i < 100; i++) {
+			this.ctx.time.events.add(50*i, function() {
+				this.showExplosion(this.body.body.x - this.body.world.x + Math.floor(Math.random()*this.body.body.width),
+						this.body.body.y - this.body.world.y + Math.floor(Math.random()*this.body.body.height));
+			}, this);	
+		}
+		
+		this.game.add.tween(this.group.position).to({
+			x: this.group.position.x + 50,
+			y: this.game.camera.y + 900}, 6000, Phaser.Easing.Elastic.None, true);
+		
+		this.ctx.time.events.add(7000, function() {
+	    	this.destroyAfterBullets();
+	
+		}, this);
+	} else if (weapon_key == 'machinegun') {
 		console.log(this.group.position.x + 50, this.group.position.y + 800);
 		this.game.add.tween(this.group.position).to({
 			x: this.group.position.x + 50,
@@ -250,11 +278,11 @@ Enemy.prototype.destroy = function() {
 
 
 walker_types = [
-	{sprite: "digdug", scale: {x: 2, y: 2}},
-	{sprite: "mario_mole", scale: {x: 1, y: 1}},
-	{sprite: "joust_bird", scale: {x: 3, y: 3}},
-	{sprite: "robolady", scale: {x: 2, y: 2}},
-	{sprite: "marge", scale: {x: 1.5, y: 1.5}},
+	{sprite: "digdug", 		sfx_hit: "sfx_digdug_hit", scale: {x: 2, y: 2}},
+	{sprite: "mario_mole", 	sfx_hit: "sfx_digdug_hit", scale: {x: 1, y: 1}},
+	{sprite: "joust_bird", 	sfx_hit: "sfx_digdug_hit", scale: {x: 3, y: 3}},
+	{sprite: "robolady", 	sfx_hit: "sfx_digdug_hit", scale: {x: 2, y: 2}},
+	{sprite: "marge", 		sfx_hit: "sfx_marge_hit",  scale: {x: 1.5, y: 1.5}},
 ];
 
 WalkerEnemy = function(options) {
@@ -274,6 +302,7 @@ WalkerEnemy.prototype.parent = Enemy.prototype;
 
 WalkerEnemy.prototype.show = function() {
 	if (this.alive) { return; }
+	this.sfx.hit = this.game.sound.add(this.meta_info.sfx_hit, 0.1, true);
 	console.log("walker show");
 	this.initCycle();
 	this.createWeapons();
@@ -481,6 +510,7 @@ ShootingEnemy.prototype.doShoot = function() {
 
 Tetris_T_Enemy = function(options) {
 	this.base_sprite = "tetris_t";
+	this.max_health = 300;
 	return ShootingEnemy.call(this, options);
 	
 };
@@ -634,8 +664,9 @@ BomberEnemy.prototype.wallHit = function(wall, bullet) {
 
 Gradius_Miniboss_Enemy = function(options) {
 	this.base_sprite = "gradius_boss";
-	this.max_health = 1500;
+	this.max_health = 2500;
 	this.shoot_timer_default = 1200;
+	this.boss = true;
 	return ShootingEnemy.call(this, options);
 	
 };
@@ -716,7 +747,9 @@ Gradius_Miniboss_Enemy.prototype.doShoot = function() {
 Final_Boss_Enemy = function(options) {
 	this.base_sprite = "romero_portrait";
 	this.max_health = 1500;
+	this.max_health = 2;
 	this.shoot_timer_default = 1200;
+	this.boss = true;
 	return ShootingEnemy.call(this, options);
 	
 };
@@ -769,9 +802,9 @@ Final_Boss_Enemy.prototype.update = function() {
 		}, this);
 	}
 	
-	if (shieldsAlive) {
-		this.health = this.max_health;
-	}
+//	if (shieldsAlive) {
+//		this.health = this.max_health;
+//	}
 
 };
 
@@ -779,6 +812,7 @@ Final_Boss_Enemy.prototype.shieldHit = function(shield, bullet) {
 	shield.health -= this.player.weapon.damage;
 	var health_pct = (shield.health / shield.max_health);
 	shield.frame = shield.frame_base + Math.floor(health_pct * 3);
+	if (this.player.weapon.hit_effect_callback) { this.player.weapon.hit_effect_callback.call(this.player.weapon, bullet, shield); }
 	if (shield.health < 0) {
 		shield.kill();
 	}
@@ -802,7 +836,7 @@ Final_Boss_Enemy.prototype.shieldPlayerHit = function(shield, player) {
 };
 
 Final_Boss_Enemy.prototype.createWeapons = function() {
-	this.weapon = this.ctx.add.weapon(80, "items");
+	this.weapon = this.ctx.add.weapon(80, "bullet_blue");
 	this.weapon.setBulletFrames(8, 10, true);
 	this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
 	this.weapon.bulletSpeed = 200;
@@ -848,10 +882,12 @@ Final_Boss_Enemy.prototype.createShields = function(circle_radius, num_to_spawn,
 	
 Final_Boss_Enemy.prototype.createTurrets = function() {
 	var turretData = [
-//	  {x: -92, y: 32, ax: 0.5, ay: 0.25, sprite: "turret02"},
-//	  {x: 92, y: 32, ax: 0.5, ay: 0.25, sprite: "turret02"},
-//	  {x: -113, y: -22, ax: 0.5, ay: 0.25, sprite: "turret02"},
-//	  {x: 113, y: -22, ax: 0.5, ay: 0.25, sprite: "turret02"},
+	  {x: -52, y: 32, ax: 0.5, ay: 0.25, sprite: "turret03"},
+	  {x: 72, y: 32, ax: 0.5, ay: 0.25, sprite: "turret03"},
+	  {x: -52, y: -22, ax: 0.5, ay: 0.25, sprite: "turret01"},
+	  {x: 72, y: -22, ax: 0.5, ay: 0.25, sprite: "turret01"},
+	  {x: -52, y: -72, ax: 0.5, ay: 0.25, sprite: "turret03"},
+	  {x: 72, y: -72, ax: 0.5, ay: 0.25, sprite: "turret03"},
 	];
 	turretData.forEach(function(turret_data){
 		var turret = this.game.add.sprite(0, 0, turret_data.sprite);
@@ -872,17 +908,28 @@ Final_Boss_Enemy.prototype.doShoot = function() {
 		
 		this.ctx.time.events.add(200, function() {
 			var turret_barrel_1 = {
-				x: turret.world.x + 5 + (turret.height * 0.9) * -1 * Math.sin(turret.rotation),
-				y: turret.world.y + (turret.height * 0.9) * Math.cos(turret.rotation),
-			};
-			
-			var turret_barrel_2 = {
 				x: turret.world.x - 5 + (turret.height * 0.9) * -1 * Math.sin(turret.rotation),
 				y: turret.world.y + (turret.height * 0.9) * Math.cos(turret.rotation),
 			};
 			
-			this.weapon.fire(turret_barrel_1, this.player.world.x + 5, this.player.world.y);
-			this.weapon.fire(turret_barrel_2, this.player.world.x - 5, this.player.world.y);
+//			this.weapon.fire(turret_barrel_1, this.player.world.x + 5, this.player.world.y);
+			this.weapon.fire(turret_barrel_1, this.player.world.x, this.player.world.y);
 		}, this);
+	}, this);
+};
+
+Final_Boss_Enemy.prototype.die = function(weapon_key) {
+	this.weapon.killAll();
+	this.body.frame = 1;
+	Enemy.prototype.die.call(this, weapon_key);
+	this.ctx.player_has_control = false;
+	this.ctx.end_credits_start = true;
+};
+
+Final_Boss_Enemy.prototype.takeDamage = function(damage) {
+	Enemy.prototype.takeDamage.call(this, damage);
+	this.body.frame = 1;
+	this.ctx.time.events.add(400, function() {
+		this.body.frame = 0;
 	}, this);
 };

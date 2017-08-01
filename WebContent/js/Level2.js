@@ -114,7 +114,7 @@ Level2.prototype.create = function() {
 
 	this.player = scene.fPlayer;
 	this.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
-	this.player.maxHealth = 100;
+	this.player.maxHealth = 300;
 	this.player.health = this.player.maxHealth;
 
 	// weapon
@@ -126,6 +126,10 @@ Level2.prototype.create = function() {
 		tesla: new Weapon_Tesla({ctx: this}),
 	};
 	this.player.weapons_available = [];
+	
+	this.crosshair = this.game.add.sprite(0,0,"crosshair");
+	this.crosshair.anchor.set(0.5, 0.5);
+	this.crosshair.renderable = false;
 
 	// weapon pickup
 	
@@ -139,6 +143,10 @@ Level2.prototype.create = function() {
 	
 	// world
 
+	this.credits_layer = scene.fCredits;
+	this.credits_bg = scene.fCredits_bg;
+	this.credits_layer.fixedToCamera = true;
+	this.credits_bg.fixedToCamera = true;
 	this.enemy_layer = scene.fEnemies;
 	this.bullet_layer = scene.fBullets;
 	this.ui = scene.fUI;
@@ -300,7 +308,7 @@ Level2.prototype.update = function() {
 	
 	this.physics.arcade.overlap(this.player, this.floor_fall_trigger, this.floor_fall, null, this);
 	
-	
+	this.crosshair.position.set(this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
 
 	//call emit for each weapon trigger with its x/y location
 	var shimmer_settings = { total: 4, repeat: 0, frequency: 0 };
@@ -379,6 +387,21 @@ Level2.prototype.update = function() {
 	
 		} else {
 			this.player.play("jump");
+		}
+	}
+	
+	if (this.end_credits_start) {
+		this.player.play("walk");
+		this.player.body.velocity.x = this.PLAYER_SPEED;
+		if (!this.credits_background) {
+			this.credits_background = this.game.add.sprite(0, 0, "black");
+			this.credits_background.scale.set(200, 200);
+			this.credits_background.alpha = 0;
+			this.credits_bg.addChild(this.credits_background);
+			this.game.add.tween(this.credits_background).to( { alpha: 1, }, 8000, "Linear", true);
+			this.time.events.add(8000, function() {
+				this.showCredits();
+			}, this);
 		}
 	}
 	
@@ -503,6 +526,10 @@ Level2.prototype.update = function() {
 		this.life.updateCrop();
 	}
 	
+	if (this.player.health <= 0) {
+		this.die();
+	}
+	
 };
 
 Level2.prototype.render = function() {
@@ -513,9 +540,9 @@ Level2.prototype.render = function() {
 //		this.game.debug.bodyInfo(this.player.weapon.splash_ball, 32, 32);
 //	}
 //	
-	if (this.game.debugbody) {
-		this.game.debug.body(this.game.debugbody);
-	}
+//	if (this.game.debugbody) {
+//		this.game.debug.body(this.game.debugbody);
+//	}
 };
 
 Level2.prototype.nextWeapon = function() {
@@ -566,9 +593,10 @@ Level2.prototype.cropHealthBar = function() {
 
 Level2.prototype.die = function() {
 	// game over
-	this.player.play("die");
+	
+//	this.player.play("die");
 	this.player.kill();
-	this.player.visible = true;
+//	this.player.visible = true;
 	this.camera.fade();
 	this.time.events.add(500, function() {
 		this.game.state.start("level");
@@ -603,7 +631,7 @@ Level2.prototype.machinegun_trigger_hit = function(player, trigger) {
 		this.mgun_hit = true;
 		this.weapons.machinegun.pickup(trigger);
 		
-		var text_raw = 'Use the mouse to aim\nClick to shoot\nHold to autofire';
+		var text_raw = 'Use the mouse to aim. Click to shoot\npress Q to change weapons';
 		this.ui.dialogCallback = function() {
 			this.time.events.add(500, function() {
 				this.t_enemy_2.show();
@@ -722,5 +750,14 @@ Level2.prototype.update_dialogbox = function(callback_func) {
 			}, this);
 		}
 	}, this);
+};
+
+Level2.prototype.showCredits = function() {
+	this.end_credits_start = false;
+	var thanks_text = this.game.add.text(150, this.camera.height * (1 / 3), 'Thanks for playing JUICE!', { font: "25px \"Comic Sans MS\"", fill: "#fff" });
+	this.credits_layer.addChild(thanks_text);
+	
+	var thanks_text2 = this.game.add.text(150, this.camera.height * (2 / 3), '-Sharktopus', { font: "25px \"Comic Sans MS\"", fill: "#fff" })
+	this.credits_layer.addChild(thanks_text2);
 };
 

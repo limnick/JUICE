@@ -1363,7 +1363,7 @@
                   "editorName": "mario_nes_tileset3322211112122",
                   "x": 16233,
                   "y": 517,
-                  "width": 9000,
+                  "width": 10000,
                   "height": 32
                 }
               }
@@ -1563,22 +1563,8 @@
                 "info": {
                   "editorName": "boss_elevator011",
                   "editorPublic": true,
-                  "x": 23571,
-                  "y": 516,
-                  "body": {"type": "ARCADE_RECT"},
-                  "width": 127,
-                  "height": 500
-                }
-              },
-              {
-                "type": "tileSprite",
-                "id": "9294a1ea-d06d-40fc-a584-094cf08d8498",
-                "asset": "22",
-                "info": {
-                  "editorName": "boss_elevator012",
-                  "editorPublic": true,
-                  "x": 23990,
-                  "y": 442,
+                  "x": 23693,
+                  "y": 515,
                   "body": {"type": "ARCADE_RECT"},
                   "width": 127,
                   "height": 500
@@ -1591,8 +1577,8 @@
                 "info": {
                   "editorName": "boss_elevator01",
                   "editorPublic": true,
-                  "x": 22733,
-                  "y": 516,
+                  "x": 22906,
+                  "y": 514,
                   "body": {"type": "ARCADE_RECT"},
                   "width": 127,
                   "height": 500
@@ -1742,14 +1728,38 @@
           }
         },
         {
+          "type": "image",
+          "id": "50ed1dae-42dd-40d8-ab6e-31f11da06a76",
+          "asset": "27",
+          "info": {
+            "editorName": "mario_castle",
+            "x": 24308,
+            "y": 165,
+            "scale.x": 2,
+            "scale.y": 2
+          }
+        },
+        {
+          "type": "image",
+          "id": "aaed76c5-ade2-4458-a4ee-b6363efd2482",
+          "asset": "28",
+          "info": {
+            "editorName": "mario_flag",
+            "x": 24218,
+            "y": 171,
+            "scale.x": 2,
+            "scale.y": 2
+          }
+        },
+        {
           "type": "spritesheet",
           "id": "acd9fa19-0ddd-4a63-9fc0-40e0c622d65f",
-          "asset": "27",
+          "asset": "29",
           "info": {
             "editorName": "player",
             "editorPublic": true,
-            "x": 23013,
-            "y": 318,
+            "x": 22750,
+            "y": 441,
             "anchor.x": 0.5,
             "anchor.y": 0.5,
             "animations": [
@@ -1849,7 +1859,7 @@
               {
                 "type": "tileSprite",
                 "id": "1a585c08-c5d4-4edc-9c38-8b429dd2000e",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger1",
                   "x": 6600,
@@ -1863,7 +1873,7 @@
               {
                 "type": "tileSprite",
                 "id": "532585d0-4a81-483e-a273-77b349504158",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger2",
                   "x": 5939,
@@ -1877,7 +1887,7 @@
               {
                 "type": "tileSprite",
                 "id": "c74b11ac-6455-49a3-8a6b-07a345aa37f4",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger3",
                   "x": 2850,
@@ -1891,7 +1901,7 @@
               {
                 "type": "tileSprite",
                 "id": "4f1fed06-4951-4dc4-8673-0e48ce3dc407",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger31",
                   "x": 1640,
@@ -1905,7 +1915,7 @@
               {
                 "type": "tileSprite",
                 "id": "3985c4e8-a373-43e7-b1a1-c43e4ea04827",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger11",
                   "x": 8130,
@@ -1919,7 +1929,7 @@
               {
                 "type": "tileSprite",
                 "id": "12dce14e-9620-4dcd-a48e-9d70ef7d86d3",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger111",
                   "x": 8922,
@@ -1933,7 +1943,7 @@
               {
                 "type": "tileSprite",
                 "id": "45c45e3f-98f7-47ae-9f00-f2592c6af5d3",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger12",
                   "x": 9919,
@@ -1947,7 +1957,7 @@
               {
                 "type": "tileSprite",
                 "id": "106545cb-f741-4952-95a1-9d53002850fd",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger121",
                   "x": 12487,
@@ -1961,7 +1971,7 @@
               {
                 "type": "tileSprite",
                 "id": "5e46d9ca-9f8a-4b51-a757-e4ccdba0581c",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger1211",
                   "x": 14014,
@@ -1975,7 +1985,7 @@
               {
                 "type": "tileSprite",
                 "id": "20abbf68-8973-43f2-87c8-7a67f9343d90",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger12111",
                   "x": 14465,
@@ -1989,7 +1999,7 @@
               {
                 "type": "tileSprite",
                 "id": "eab594eb-9d0e-4862-9d5a-93b936b3223f",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger121111",
                   "x": 15666,
@@ -2003,7 +2013,7 @@
               {
                 "type": "tileSprite",
                 "id": "409e12a3-a916-4ac8-adbb-d780a3306383",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger4",
                   "x": 4398,
@@ -2017,7 +2027,7 @@
               {
                 "type": "tileSprite",
                 "id": "a529b3f8-9f78-48f3-91c5-513d0582d3b1",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger112",
                   "x": 8506,
@@ -2031,7 +2041,7 @@
               {
                 "type": "tileSprite",
                 "id": "2b2fdb03-1732-48c7-9ce8-db3a9b961688",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger1121",
                   "x": 9768,
@@ -2045,7 +2055,7 @@
               {
                 "type": "tileSprite",
                 "id": "2e0c1cdf-a0ea-48d3-ac79-372bbd0f3fa7",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger32",
                   "x": 3514,
@@ -2059,7 +2069,7 @@
               {
                 "type": "tileSprite",
                 "id": "95c86a64-65ce-4ca1-b749-b25e4f322209",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger33",
                   "x": 3394,
@@ -2073,7 +2083,7 @@
               {
                 "type": "tileSprite",
                 "id": "e3d14798-e320-4246-aa9e-656d2a8976e6",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger",
                   "x": 5168,
@@ -2087,7 +2097,7 @@
               {
                 "type": "tileSprite",
                 "id": "231cd53e-e3cc-4550-90b7-902302639f0d",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger1211111",
                   "x": 15453,
@@ -2101,7 +2111,7 @@
               {
                 "type": "tileSprite",
                 "id": "f1505102-8ca8-465e-a639-e5feb830efa6",
-                "asset": "28",
+                "asset": "30",
                 "info": {
                   "editorName": "walker_enemy_trigger331",
                   "x": 3571,
@@ -2125,7 +2135,7 @@
               {
                 "type": "tileSprite",
                 "id": "db9c8e46-977b-457d-ac8d-14af82b786e2",
-                "asset": "29",
+                "asset": "31",
                 "info": {
                   "editorName": "mario_nes_tileset211",
                   "x": 3224,
@@ -2137,7 +2147,7 @@
               {
                 "type": "tileSprite",
                 "id": "5360fa2e-fa21-4cf7-9368-285325000fbc",
-                "asset": "29",
+                "asset": "31",
                 "info": {
                   "editorName": "mario_nes_tileset2111",
                   "x": 7245,
@@ -2149,7 +2159,7 @@
               {
                 "type": "tileSprite",
                 "id": "d7a76815-c767-428b-a5c7-3d435f8d2624",
-                "asset": "29",
+                "asset": "31",
                 "info": {
                   "editorName": "mario_nes_tileset21",
                   "x": 2761,
@@ -2161,7 +2171,7 @@
               {
                 "type": "tileSprite",
                 "id": "632b9a4c-08ad-454f-a4b3-56889e0a5040",
-                "asset": "29",
+                "asset": "31",
                 "info": {
                   "editorName": "mario_nes_tileset211111",
                   "x": 12904,
@@ -2173,7 +2183,7 @@
               {
                 "type": "tileSprite",
                 "id": "89b35c18-4e48-4903-a242-1aa6b640bf56",
-                "asset": "29",
+                "asset": "31",
                 "info": {
                   "editorName": "mario_nes_tileset2111111",
                   "x": 14726,
@@ -2185,7 +2195,7 @@
               {
                 "type": "tileSprite",
                 "id": "29ddea4e-9bfc-4b62-8916-a0ff45a2b69e",
-                "asset": "29",
+                "asset": "31",
                 "info": {
                   "editorName": "mario_nes_tileset21111",
                   "x": 9410,
@@ -2226,7 +2236,7 @@
               {
                 "type": "image",
                 "id": "4321db90-a47e-47c5-bcf6-77e6fc755224",
-                "asset": "30",
+                "asset": "32",
                 "info": {
                   "editorName": "gun_machinegun",
                   "editorPublic": true,
@@ -2241,7 +2251,7 @@
               {
                 "type": "image",
                 "id": "61326073-eff8-4d8d-8ddc-248fe0f6a455",
-                "asset": "31",
+                "asset": "33",
                 "info": {
                   "editorName": "gun_rocket",
                   "editorPublic": true,
@@ -2256,7 +2266,7 @@
               {
                 "type": "spritesheet",
                 "id": "74de1d7c-f59c-40ad-a40a-99ee28af5858",
-                "asset": "32",
+                "asset": "34",
                 "info": {
                   "editorName": "gun_laser",
                   "editorPublic": true,
@@ -2271,7 +2281,7 @@
               {
                 "type": "image",
                 "id": "3f1614a8-033a-4a8a-9f81-0f065bd5f8ef",
-                "asset": "33",
+                "asset": "35",
                 "info": {
                   "editorName": "gun_tesla",
                   "editorPublic": true,
@@ -2286,7 +2296,7 @@
               {
                 "type": "spritesheet",
                 "id": "e4f040a0-47fc-4249-9b8f-f8868297b6c3",
-                "asset": "34",
+                "asset": "36",
                 "info": {
                   "editorName": "first_block_trigger",
                   "editorPublic": true,
@@ -2305,7 +2315,7 @@
             "children": [{
               "type": "image",
               "id": "5aed2b79-28eb-43ed-b8be-d2c7daa82f6e",
-              "asset": "35",
+              "asset": "37",
               "info": {
                 "editorName": "metalslug_fg",
                 "x": 3935,
@@ -2321,6 +2331,24 @@
           "id": "90b8f0f0-3273-4c69-ab35-fc4fa79d3c8c",
           "info": {
             "editorName": "UI",
+            "editorPublic": true,
+            "children": []
+          }
+        },
+        {
+          "type": "group",
+          "id": "60062faf-4a2c-4f00-bdb1-1b0848356add",
+          "info": {
+            "editorName": "credits_bg",
+            "editorPublic": true,
+            "children": []
+          }
+        },
+        {
+          "type": "group",
+          "id": "a4af246f-ef07-464f-9b1e-1b7d16ea73bc",
+          "info": {
+            "editorName": "credits",
             "editorPublic": true,
             "children": []
           }
@@ -2492,49 +2520,59 @@
     "27": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
+      "asset": "mario_castle"
+    },
+    "28": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "mario_flag"
+    },
+    "29": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
       "asset": "mario_nes_small",
       "sprite": "1"
     },
-    "28": {
+    "30": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "mario_nes_tileset",
       "sprite": "651"
     },
-    "29": {
+    "31": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "mario_nes_tileset",
       "sprite": "247"
     },
-    "30": {
+    "32": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "gun_machinegun"
     },
-    "31": {
+    "33": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "gun_rocket"
     },
-    "32": {
+    "34": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "gun_laser",
       "sprite": "0"
     },
-    "33": {
+    "35": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "gun_tesla"
     },
-    "34": {
+    "36": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "mario_nes_tileset",
       "sprite": "24"
     },
-    "35": {
+    "37": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
       "asset": "metalslug_fg"

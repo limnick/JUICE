@@ -433,10 +433,148 @@
             "key": "rust_block",
             "url": "assets/sprites/backgrounds/rust_block.png",
             "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "crosshair",
+            "url": "assets/sprites/crosshair.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "mario_castle",
+            "url": "assets/sprites/mario_castle.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "mario_flag",
+            "url": "assets/sprites/mario_flag.png",
+            "overwrite": false
+        },
+        {
+            "type": "audio",
+            "key": "sfx_charge",
+            "urls": [
+                "assets/audio/sfx_charge.mp3",
+                "assets/audio/sfx_charge.ogg"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "sfx_digdug_die",
+            "urls": [
+                "assets/audio/sfx_digdug_die.mp3",
+                "assets/audio/sfx_digdug_die.ogg"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "sfx_digdug_hit",
+            "urls": [
+                "assets/audio/sfx_digdug_hit.ogg",
+                "assets/audio/sfx_digdug_hit.mp3"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "sfx_explosion",
+            "urls": [
+                "assets/audio/sfx_explosion.mp3",
+                "assets/audio/sfx_explosion.ogg"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "sfx_laser",
+            "urls": [
+                "assets/audio/sfx_laser.ogg",
+                "assets/audio/sfx_laser.mp3"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "sfx_machinegun",
+            "urls": [
+                "assets/audio/sfx_machinegun.ogg",
+                "assets/audio/sfx_machinegun.mp3"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "sfx_marge_groan",
+            "urls": [
+                "assets/audio/sfx_marge_groan.mp3",
+                "assets/audio/sfx_marge_groan.ogg"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "sfx_marge_hit",
+            "urls": [
+                "assets/audio/sfx_marge_hit.mp3",
+                "assets/audio/sfx_marge_hit.ogg"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "sfx_mario_mama_mia",
+            "urls": [
+                "assets/audio/sfx_mario_mama_mia.mp3",
+                "assets/audio/sfx_mario_mama_mia.ogg"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "sfx_mario_unh",
+            "urls": [
+                "assets/audio/sfx_mario_unh.mp3",
+                "assets/audio/sfx_mario_unh.ogg"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "sfx_rocket",
+            "urls": [
+                "assets/audio/sfx_rocket.mp3",
+                "assets/audio/sfx_rocket.ogg"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "sfx_shock",
+            "urls": [
+                "assets/audio/sfx_shock.ogg",
+                "assets/audio/sfx_shock.mp3"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "image",
+            "key": "bullet_blue",
+            "url": "assets/sprites/bullets/bullet_blue.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "black",
+            "url": "assets/sprites/black.png",
+            "overwrite": false
         }
     ],
     "meta": {
-        "generated": "1501469019636",
+        "generated": "1501577732903",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

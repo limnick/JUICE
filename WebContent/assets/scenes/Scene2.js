@@ -283,7 +283,7 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.tileSprite(4142, 293, 32, 16, 'mario_nes_tileset', 894, floor);
 
-	this.game.add.tileSprite(16233, 517, 9000, 32, 'mario_nes_tileset', 894, floor);
+	this.game.add.tileSprite(16233, 517, 10000, 32, 'mario_nes_tileset', 894, floor);
 
 	var walls = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 
@@ -317,11 +317,9 @@ function Scene2(aGame, aParent) {
 
 	var elevators = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 
-	var boss_elevator011 = this.game.add.tileSprite(23571, 516, 127, 500, 'rust_block', null, elevators);
+	var boss_elevator011 = this.game.add.tileSprite(23693, 515, 127, 500, 'rust_block', null, elevators);
 
-	var boss_elevator012 = this.game.add.tileSprite(23990, 442, 127, 500, 'rust_block', null, elevators);
-
-	var boss_elevator01 = this.game.add.tileSprite(22733, 516, 127, 500, 'rust_block', null, elevators);
+	var boss_elevator01 = this.game.add.tileSprite(22906, 514, 127, 500, 'rust_block', null, elevators);
 
 	var blocking_objects = this.game.add.group(this);
 
@@ -355,7 +353,13 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.sprite(32, 64, 'mario_nes_tileset', 298, pipe);
 
-	var player = this.game.add.sprite(23013, 318, 'mario_nes_small', 1, this);
+	var mario_castle = this.game.add.sprite(24308, 165, 'mario_castle', null, this);
+	mario_castle.scale.setTo(2.0, 2.0);
+
+	var mario_flag = this.game.add.sprite(24218, 171, 'mario_flag', null, this);
+	mario_flag.scale.setTo(2.0, 2.0);
+
+	var player = this.game.add.sprite(22750, 441, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
@@ -477,6 +481,10 @@ function Scene2(aGame, aParent) {
 
 	var UI = this.game.add.group(this);
 
+	var credits_bg = this.game.add.group(this);
+
+	var credits = this.game.add.group(this);
+
 	 // public fields
 
 	this.fWater_temple = water_temple;
@@ -487,7 +495,6 @@ function Scene2(aGame, aParent) {
 	this.fWalls = walls;
 	this.fElevators = elevators;
 	this.fBoss_elevator011 = boss_elevator011;
-	this.fBoss_elevator012 = boss_elevator012;
 	this.fBoss_elevator01 = boss_elevator01;
 	this.fBlocking_objects = blocking_objects;
 	this.fPlayer = player;
@@ -507,6 +514,8 @@ function Scene2(aGame, aParent) {
 	this.fGun_tesla = gun_tesla;
 	this.fFirst_block_trigger = first_block_trigger;
 	this.fUI = UI;
+	this.fCredits_bg = credits_bg;
+	this.fCredits = credits;
 
 	/* --- post-init-begin --- */
 
