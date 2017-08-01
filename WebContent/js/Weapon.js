@@ -349,6 +349,9 @@ Weapon_Rocket.prototype.onBlockerHit = function(bullet, blocker) {
 	explosion.anchor.set(0.5, 0.5);
 	explosion.animations.add('blowup', null, 60);
 	explosion.animations.play('blowup', 60, false, true);
+	this.ctx.time.events.add(800, function() {
+		explosion.destroy();
+	}, this);
 	this.handleSplashDamage(bullet);
 	bullet.kill();
 	this.game.camera.shake(0.005, 100);
@@ -362,6 +365,9 @@ Weapon_Rocket.prototype.hit_effect_callback = function(bullet, blocker) {
 	explosion.anchor.set(0.5, 0.5);
 	explosion.animations.add('blowup', null, 60);
 	explosion.animations.play('blowup', 60, false, true);
+	this.ctx.time.events.add(800, function() {
+		explosion.destroy();
+	}, this);
 	this.game.camera.shake(0.005, 100);
 	this.handleSplashDamage(bullet);
 	if (this.weapon.bullets.countLiving() <= 1) { this.sfx.rocket.stop(); }
@@ -471,6 +477,10 @@ Weapon_Tesla.prototype.arcHit = function(splashball, enemy) {
 	explosion.scale.y = Phaser.Math.distance(this.gun_barrel.x, this.gun_barrel.y, enemy.world.x, enemy.world.y) / explosion.height;
 	explosion.animations.add('shock', null, 30);
 	explosion.animations.play('shock', 30, false, true);
+	
+	this.ctx.time.events.add(800, function() {
+		explosion.destroy();
+	}, this);
 	
 	enemy.klass.takeDamage(this.arcDamage);
 };

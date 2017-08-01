@@ -24,6 +24,9 @@ Level2.prototype.init = function() {
 	    {x: 2600, width: 300, name: "mario_2"},
 	    {x: 3900, width: 600, name: "snatcher", restart: true},
 	    {x: 9250, width: 2500, name: "meo_rescueme", restart: true},
+	    {x: 16000, width: 1000, name: "bgm_cqc", restart: true},
+	    {x: 19800, width: 400, name: "bgm_boss", restart: true},
+	    {x: 24000, width: 100, name: "bgm_credits", restart: true},
 	    
     ];
 	this.bgm_transition_width = 300;
@@ -158,6 +161,8 @@ Level2.prototype.create = function() {
 	this.floor_fall_trigger = scene.fFloor_fall_trigger;
 	this.water_floor = scene.fWater_floor;
 	this.bg_anims = [scene.fWater_temple, scene.fWater_temple_outside, scene.fFactory, ];
+	this.final_boss_wall = scene.fFinal_boss_wall;
+	this.health_packs = scene.fHealth_packs;
 	
 	this.elevator01 = scene.fBoss_elevator01;
 //	this.elevator01.body.checkCollision.left = false;
@@ -196,7 +201,7 @@ Level2.prototype.create = function() {
 
 	// init physics
 	
-	var immovables = [ this.ground, this.walls, this.triggers, this.triggers_invis, this.elevators];
+	var immovables = [ this.ground, this.walls, this.triggers, this.triggers_invis, this.elevators, this.health_packs];
 
 	for (var i = 0; i < immovables.length; i++) {
 		var g = immovables[i];
@@ -293,6 +298,8 @@ Level2.prototype.update = function() {
 		return;
 	}
 	
+	console.log("world children: ", this.game.world.children.length);
+	
 	
 	// world bounds track player location
 	this.world.setBounds(Math.max(0, this.player.x - 400), -200, 1000, 800);
@@ -307,6 +314,9 @@ Level2.prototype.update = function() {
 	this.physics.arcade.collide(this.player, this.first_block_trigger, this.first_block_hit, null, this);
 	
 	this.physics.arcade.overlap(this.player, this.floor_fall_trigger, this.floor_fall, null, this);
+	
+	this.physics.arcade.overlap(this.player, this.health_packs, this.health_pickup, null, this);
+	
 	
 	this.crosshair.position.set(this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
 
@@ -693,6 +703,13 @@ Level2.prototype.elevator_hit = function(player, elevator) {
 	
 };
 
+Level2.prototype.health_pickup = function(player, healthpack) {
+	if (this.player.health < this.player.maxHealth) {
+		healthpack.destroy();
+		this.player.health = Math.min(this.player.health + 50, this.player.maxHealth); // clamp to max health
+	}
+};
+
 Level2.prototype.setup_dialogbox = function(text, portrait_name, callback_func) {
 	this.game.physics.arcade.isPaused = true;
 //	var desat_effect = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'desat_tiles');
@@ -754,10 +771,13 @@ Level2.prototype.update_dialogbox = function(callback_func) {
 
 Level2.prototype.showCredits = function() {
 	this.end_credits_start = false;
-	var thanks_text = this.game.add.text(150, this.camera.height * (1 / 3), 'Thanks for playing JUICE!', { font: "25px \"Comic Sans MS\"", fill: "#fff" });
+	var thanks_text = this.game.add.text(150, 100, 'Thanks for playing JUICE!', { font: "25px \"Comic Sans MS\"", fill: "#fff" });
 	this.credits_layer.addChild(thanks_text);
 	
-	var thanks_text2 = this.game.add.text(150, this.camera.height * (2 / 3), '-Sharktopus', { font: "25px \"Comic Sans MS\"", fill: "#fff" })
+	var thanks_text2 = this.game.add.text(250, 150, '-Sharktopus', { font: "25px \"Comic Sans MS\"", fill: "#fff" });
 	this.credits_layer.addChild(thanks_text2);
+	
+	var thanks_text3 = this.game.add.text(150, 500, '(p.s. press Z for all weapons next game)', { font: "25px \"Comic Sans MS\"", fill: "#fff" });
+	this.credits_layer.addChild(thanks_text3);
 };
 

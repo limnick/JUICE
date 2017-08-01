@@ -131,6 +131,9 @@ Enemy.prototype.showExplosion = function(x, y) {
 	explosion.anchor.set(0.5, 0.5);
 	explosion.animations.add('blowup', null, 30);
 	explosion.animations.play('blowup', 30, false, true);
+	this.ctx.time.events.add(800, function() {
+		explosion.destroy();
+	}, this);
 	this.group.addChild(explosion);
 //	this.game.camera.shake(0.005, 100);
 };
@@ -255,6 +258,8 @@ Enemy.prototype.die = function(weapon_key) {
 
 Enemy.prototype.destroyAfterBullets = function() {
 	if (this.weapon.bullets.countLiving() == 0) {
+		this.body.destroy();
+		this.group.destroy();
 		this.destroy();
 	} else {
 		this.ctx.time.events.add(1000, function() {
@@ -633,6 +638,9 @@ BomberEnemy.prototype.onBulletHit = function(bullet) {
 	explosion.anchor.set(0.5, 0.5);
 	explosion.animations.add('blowup', null, 60);
 	explosion.animations.play('blowup', 60, false, true);
+	this.ctx.time.events.add(800, function() {
+		explosion.destroy();
+	}, this);
 	bullet.kill();
 	this.game.camera.shake(0.005, 100);
 };
@@ -924,6 +932,7 @@ Final_Boss_Enemy.prototype.die = function(weapon_key) {
 	Enemy.prototype.die.call(this, weapon_key);
 	this.ctx.player_has_control = false;
 	this.ctx.end_credits_start = true;
+	this.ctx.final_boss_wall.destroy();
 };
 
 Final_Boss_Enemy.prototype.takeDamage = function(damage) {

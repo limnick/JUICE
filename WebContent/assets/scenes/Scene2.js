@@ -313,6 +313,10 @@ function Scene2(aGame, aParent) {
 
 	this.game.add.tileSprite(19221, 296, 128, 32, 'mario_nes_tileset', 215, walls);
 
+	this.game.add.tileSprite(24688, 26, 32, 512, 'mario_nes_tileset', 215, walls);
+
+	var final_boss_wall = this.game.add.tileSprite(23991, -358, 32, 1024, 'mario_nes_tileset', 215, walls);
+
 	this.game.add.tileSprite(946, 323, 160, 32, 'mario_nes_tileset', 1, walls);
 
 	var elevators = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
@@ -359,7 +363,7 @@ function Scene2(aGame, aParent) {
 	var mario_flag = this.game.add.sprite(24218, 171, 'mario_flag', null, this);
 	mario_flag.scale.setTo(2.0, 2.0);
 
-	var player = this.game.add.sprite(22750, 441, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(6788, 509, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);
@@ -370,6 +374,26 @@ function Scene2(aGame, aParent) {
 	var enemies = this.game.add.group(this);
 
 	var bullets = this.game.add.group(this);
+
+	var health_packs = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
+
+	var healthpack1 = this.game.add.sprite(17386, 470, 'healthpack', null, health_packs);
+	healthpack1.scale.setTo(0.5, 0.5);
+
+	var healthpack11 = this.game.add.sprite(17560, 472, 'healthpack', null, health_packs);
+	healthpack11.scale.setTo(0.5, 0.5);
+
+	var healthpack12 = this.game.add.sprite(17722, 471, 'healthpack', null, health_packs);
+	healthpack12.scale.setTo(0.5, 0.5);
+
+	var healthpack2 = this.game.add.sprite(13830, 163, 'healthpack', null, health_packs);
+	healthpack2.scale.setTo(0.5, 0.5);
+
+	var healthpack3 = this.game.add.sprite(6322, 494, 'healthpack', null, health_packs);
+	healthpack3.scale.setTo(0.5, 0.5);
+
+	var healthpack = this.game.add.sprite(17216, 471, 'healthpack', null, health_packs);
+	healthpack.scale.setTo(0.5, 0.5);
 
 	var triggers_invis = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
 
@@ -433,6 +457,15 @@ function Scene2(aGame, aParent) {
 	var walker_enemy_trigger1211111 = this.game.add.tileSprite(15453, 241, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
 	walker_enemy_trigger1211111.anchor.setTo(0.5, 1.0);
 
+	var walker_enemy_trigger12111111 = this.game.add.tileSprite(20282, 518, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	walker_enemy_trigger12111111.anchor.setTo(0.5, 1.0);
+
+	var walker_enemy_trigger3311 = this.game.add.tileSprite(20987, 518, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	walker_enemy_trigger3311.anchor.setTo(0.5, 1.0);
+
+	var walker_enemy_trigger33111 = this.game.add.tileSprite(20661, 516, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
+	walker_enemy_trigger33111.anchor.setTo(0.5, 1.0);
+
 	var walker_enemy_trigger331 = this.game.add.tileSprite(3571, 560, 32, 64, 'mario_nes_tileset', 651, triggers_walker_enemy);
 	walker_enemy_trigger331.anchor.setTo(0.5, 1.0);
 
@@ -447,6 +480,10 @@ function Scene2(aGame, aParent) {
 	this.game.add.tileSprite(12904, -69, 64, 64, 'mario_nes_tileset', 247, triggers_shooter_enemy);
 
 	this.game.add.tileSprite(14726, -142, 64, 64, 'mario_nes_tileset', 247, triggers_shooter_enemy);
+
+	this.game.add.tileSprite(20371, -58, 64, 64, 'mario_nes_tileset', 247, triggers_shooter_enemy);
+
+	this.game.add.tileSprite(21264, -70, 64, 64, 'mario_nes_tileset', 247, triggers_shooter_enemy);
 
 	this.game.add.tileSprite(9410, -105, 64, 64, 'mario_nes_tileset', 247, triggers_shooter_enemy);
 
@@ -493,6 +530,7 @@ function Scene2(aGame, aParent) {
 	this.fFloor = floor;
 	this.fWater_floor = water_floor;
 	this.fWalls = walls;
+	this.fFinal_boss_wall = final_boss_wall;
 	this.fElevators = elevators;
 	this.fBoss_elevator011 = boss_elevator011;
 	this.fBoss_elevator01 = boss_elevator01;
@@ -500,6 +538,7 @@ function Scene2(aGame, aParent) {
 	this.fPlayer = player;
 	this.fEnemies = enemies;
 	this.fBullets = bullets;
+	this.fHealth_packs = health_packs;
 	this.fTriggers_invis = triggers_invis;
 	this.fEnemy_spawn_trigger_1 = enemy_spawn_trigger_1;
 	this.fFloor_fall_trigger = floor_fall_trigger;

@@ -571,10 +571,44 @@
             "key": "black",
             "url": "assets/sprites/black.png",
             "overwrite": false
+        },
+        {
+            "type": "audio",
+            "key": "bgm_boss",
+            "urls": [
+                "assets/audio/bgm_boss.ogg",
+                "assets/audio/bgm_boss.mp3",
+                "assets/audio/bgm_boss.wav"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "bgm_cqc",
+            "urls": [
+                "assets/audio/bgm_cqc.mp3",
+                "assets/audio/bgm_cqc.ogg"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "audio",
+            "key": "bgm_credits",
+            "urls": [
+                "assets/audio/bgm_credits.ogg",
+                "assets/audio/bgm_credits.mp3"
+            ],
+            "autoDecode": true
+        },
+        {
+            "type": "image",
+            "key": "healthpack",
+            "url": "assets/sprites/healthpack.png",
+            "overwrite": false
         }
     ],
     "meta": {
-        "generated": "1501577732903",
+        "generated": "1501612048096",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",
