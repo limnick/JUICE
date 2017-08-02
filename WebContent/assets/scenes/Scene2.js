@@ -363,7 +363,7 @@ function Scene2(aGame, aParent) {
 	var mario_flag = this.game.add.sprite(24218, 171, 'mario_flag', null, this);
 	mario_flag.scale.setTo(2.0, 2.0);
 
-	var player = this.game.add.sprite(6788, 509, 'mario_nes_small', 1, this);
+	var player = this.game.add.sprite(53, 525, 'mario_nes_small', 1, this);
 	player.anchor.setTo(0.5, 0.5);
 	player.animations.add('walk', [0, 1, 2], 10, true);
 	player.animations.add('jump', [4], 30, false);

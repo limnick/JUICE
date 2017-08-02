@@ -18,19 +18,19 @@ Level2.prototype.init = function() {
 	this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	this.world.setBounds(0, -200, 1000, 800);
 	
+	this.bgm_volume = 0.9;
 	this.bgm_metadata = [
-        {x: -100, width: 10, name: "mario_clean"},
-	    {x: 1400, width: 300, name: "mario_1"},
-	    {x: 2600, width: 300, name: "mario_2"},
-	    {x: 3900, width: 600, name: "snatcher", restart: true},
-	    {x: 9250, width: 2500, name: "meo_rescueme", restart: true},
-	    {x: 16000, width: 1000, name: "bgm_cqc", restart: true},
-	    {x: 19800, width: 400, name: "bgm_boss", restart: true},
-	    {x: 24000, width: 100, name: "bgm_credits", restart: true},
+        {x: -100, width: 10, vol: 1.1, name: "mario_clean"},
+	    {x: 1400, width: 300, vol: 1.1, name: "mario_1"},
+	    {x: 2600, width: 300, vol: 1.1, name: "mario_2"},
+	    {x: 3900, width: 600, vol: 1.3, name: "snatcher", restart: true},
+	    {x: 9250, width: 2500, vol: this.bgm_volume, name: "meo_rescueme", restart: true},
+	    {x: 16000, width: 1000, vol: 0.5, name: "bgm_cqc", restart: true},
+	    {x: 19800, width: 400, vol: 0.7, name: "bgm_boss", restart: true},
+	    {x: 24000, width: 100, vol: this.bgm_volume, name: "bgm_credits", restart: true},
 	    
     ];
-	this.bgm_transition_width = 300;
-	this.bgm_volume = 0.1;
+
 	
 	this.PLAYER_SPEED = 200;
 	this.JUMP_SPEED = 600;
@@ -273,15 +273,15 @@ Level2.prototype.create = function() {
 		var mdata = this.bgm_metadata[i];
 		var mdata_prev = this.bgm_metadata[i-1];
 		if (this.player.x < mdata.x) {
-			this.sfx.bgm = this.game.sound.add(mdata_prev.name, this.bgm_volume, true);
-			this.sfx.bgm.play("", 0, this.bgm_volume, false);
+			this.sfx.bgm = this.game.sound.add(mdata_prev.name, mdata_prev.vol, true);
+			this.sfx.bgm.play("", 0, mdata_prev.vol, false);
 			break;
 		}
 		
 		if (i == this.bgm_metadata.length - 1) {
 			// if we get here without breaking out, we are at the last trigger
-			this.sfx.bgm = this.game.sound.add(mdata.name, this.bgm_volume, true);
-			this.sfx.bgm.play("", 0, this.bgm_volume, false);
+			this.sfx.bgm = this.game.sound.add(mdata.name, mdata.vol, true);
+			this.sfx.bgm.play("", 0,  mdata.vol, false);
 		}
 	}
 };
@@ -298,7 +298,7 @@ Level2.prototype.update = function() {
 		return;
 	}
 	
-	console.log("world children: ", this.game.world.children.length);
+//	console.log("world children: ", this.game.world.children.length);
 	
 	
 	// world bounds track player location

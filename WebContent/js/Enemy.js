@@ -755,7 +755,6 @@ Gradius_Miniboss_Enemy.prototype.doShoot = function() {
 Final_Boss_Enemy = function(options) {
 	this.base_sprite = "romero_portrait";
 	this.max_health = 1500;
-	this.max_health = 2;
 	this.shoot_timer_default = 1200;
 	this.boss = true;
 	return ShootingEnemy.call(this, options);

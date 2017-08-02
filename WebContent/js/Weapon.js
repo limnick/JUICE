@@ -118,7 +118,7 @@ Weapon_Machinegun.prototype.update = function(blockers) {
 	
 	if (this.ctx.player_has_control && (this.ctx.buttons.fire.isDown || this.game.input.activePointer.leftButton.isDown)) {
 		var fired_bullet = this.weapon.fire(gun_barrel, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
-		if (fired_bullet) { this.sfx.fire.play("", 0, 0.1, false); }
+		if (fired_bullet) { this.sfx.fire.play("", 0, 0.5, false); }
 	}
 };
 
@@ -152,8 +152,8 @@ Weapon_Laser.prototype.equip = function() {
 
 	this.player.addChild(this.sprite);
 	
-	this.sfx.charge = this.game.sound.add('sfx_charge', 0.5, true);
-	this.sfx.fire = this.game.sound.add('sfx_laser', 0.5, true);
+	this.sfx.charge = this.game.sound.add('sfx_charge', 0.7, true);
+	this.sfx.fire = this.game.sound.add('sfx_laser', 0.7, true);
 	
 	if (!this.weapon) {
 		this.weapon = this.ctx.add.weapon(30, "laser_beam");
@@ -190,7 +190,7 @@ Weapon_Laser.prototype.update = function(blockers) {
 	if (this.ctx.player_has_control && (this.ctx.buttons.fire.isDown || this.game.input.activePointer.leftButton.isDown)) {
 		if (this.weapon.charge == 0) {
 			// start charging noise audio here
-			this.sfx.charge.play("", 0, 0.3, false);
+			this.sfx.charge.play("", 0, 0.7, false);
 		}
 		
 		this.weapon.charge += this.weapon.chargeRate;
@@ -210,7 +210,7 @@ Weapon_Laser.prototype.update = function(blockers) {
 			beam_sprite_base.addChild(beam_sprite_body);
 			this.weapon.fire(gun_barrel, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
 			
-			this.sfx.fire.play("", 0, 0.2, false);
+			this.sfx.fire.play("", 0, 0.5, false);
 			
 			this.weapon.charge = 0;
 			this.game.add.tween(beam_sprite_base).to( {alpha: 0} , 600, Phaser.Easing.Linear.None, true);
@@ -312,7 +312,7 @@ Weapon_Rocket.prototype.update = function(blockers) {
 	
 	if (this.ctx.player_has_control && (this.ctx.buttons.fire.isDown || this.game.input.activePointer.leftButton.isDown)) {
 		var fired_bullet = this.weapon.fire(gun_barrel, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY);
-		if (fired_bullet) { this.sfx.rocket.play("", 0, 0.2, false); }
+		if (fired_bullet) { this.sfx.rocket.play("", 0, 0.7, false); }
 	}
 	
 	
@@ -339,12 +339,14 @@ Weapon_Rocket.prototype.handleSplashDamage = function(bullet) {
 };
 
 Weapon_Rocket.prototype.splashHit = function(splashball, enemy) {
-	enemy.klass.takeDamage(this.weapon.splashDmg);
+	if (enemy.klass) {
+		enemy.klass.takeDamage(this.weapon.splashDmg);
+	}
 };
 
 Weapon_Rocket.prototype.onBlockerHit = function(bullet, blocker) {
 	
-	this.sfx.explosion.play("", 0, 0.3, false);
+	this.sfx.explosion.play("", 0, 0.7, false);
 	var explosion = this.game.add.sprite(bullet.x, bullet.y, 'explosion_sm');
 	explosion.anchor.set(0.5, 0.5);
 	explosion.animations.add('blowup', null, 60);
@@ -360,7 +362,7 @@ Weapon_Rocket.prototype.onBlockerHit = function(bullet, blocker) {
 
 Weapon_Rocket.prototype.hit_effect_callback = function(bullet, blocker) {
 	
-	this.sfx.explosion.play("", 0, 0.3, false);
+	this.sfx.explosion.play("", 0, 0.7, false);
 	var explosion = this.game.add.sprite(bullet.x, bullet.y, 'explosion_sm');
 	explosion.anchor.set(0.5, 0.5);
 	explosion.animations.add('blowup', null, 60);
@@ -394,7 +396,7 @@ Weapon_Tesla.prototype.equip = function() {
 	this.sprite.scale.setTo(1, 1);
 	this.sprite.anchor.setTo(0, 0.2);
 	
-	this.sfx.shock = this.game.sound.add("sfx_shock", 0.2, true);
+	this.sfx.shock = this.game.sound.add("sfx_shock", 0.5, true);
 
 	this.player.addChild(this.sprite);
 	
@@ -464,7 +466,7 @@ Weapon_Tesla.prototype.update = function(blockers) {
 			
 			this.charge = 0; // drain charge
 			
-			this.sfx.shock.play("", 0, 0.2, false);
+			this.sfx.shock.play("", 0, 0.5, false);
 		}
 	}
 };
